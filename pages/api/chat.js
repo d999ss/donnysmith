@@ -1,5 +1,8 @@
-import { openai } from '@ai-sdk/openai'
-import { streamText } from 'ai'
+import OpenAI from 'openai'
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+})
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -9,8 +12,8 @@ export default async function handler(req, res) {
   try {
     const { messages } = req.body
     
-    const result = await streamText({
-      model: openai('gpt-4o-mini'),
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
@@ -29,12 +32,18 @@ Respond in a terminal/command line style format like you're running commands. Be
         },
         ...messages
       ],
+      stream: false
     })
 
-    return result.toDataStreamResponse()
+    const response = completion.choices[0].message.content
+
+    // Return simple text response that useChat can handle
+    res.setHeader('Content-Type', 'text/plain')
+    res.setHeader('Cache-Control', 'no-cache')
+    res.status(200).send(response)
 
   } catch (error) {
-    console.error('Chat API error:', error)
-    return res.status(500).json({ error: 'Failed to generate response' })
+    console.error('OpenAI API error:', error)
+    res.status(500).json({ error: 'Failed to generate response' })
   }
 }
