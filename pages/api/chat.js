@@ -1,31 +1,37 @@
-export default function handler(req, res) {
+export default async function handler(req, res) {
+  console.log('Chat API called:', req.method, req.body)
+  
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { messages } = req.body || {}
-  const userMessage = messages?.[messages.length - 1]?.content || 'Hello'
-  
-  const response = `$ echo "Message received: ${userMessage}"
-Message received: ${userMessage}
+  try {
+    const { messages } = req.body || {}
+    const userMessage = messages?.[messages.length - 1]?.content || 'test'
+    
+    console.log('Processing message:', userMessage)
+    
+    // Simple delay to show it's working
+    await new Promise(resolve => setTimeout(resolve, 500))
+    
+    const response = `$ echo "${userMessage}"
+${userMessage}
 
-$ whoami  
-Donny Smith - Brand strategist & digital designer
+$ whoami
+Donny Smith - Brand strategist
 
-$ cat ~/status.txt
-Available for projects! Specializing in:
-• Brand strategy & visual identity
-• AI-powered design workflows
-• Digital product experiences
+This is a test response. The chat is working!`
 
-What can I help you build?`
+    console.log('Sending response:', response.substring(0, 50) + '...')
 
-  // Return streaming response that useChat expects
-  res.setHeader('Content-Type', 'text/plain; charset=utf-8')
-  res.setHeader('Cache-Control', 'no-cache')
-  
-  // Send the complete response as a single chunk
-  res.write(`0:"${response.replace(/\n/g, '\\n').replace(/"/g, '\\"')}"\n`)
-  res.write('d:""\n')
-  res.end()
+    // Return the simplest possible format
+    return res.status(200).json({
+      role: 'assistant',
+      content: response
+    })
+    
+  } catch (error) {
+    console.error('Chat error:', error)
+    return res.status(500).json({ error: error.message })
+  }
 }

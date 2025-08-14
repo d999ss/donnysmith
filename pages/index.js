@@ -12,7 +12,8 @@ export default function Home() {
     input, 
     handleInputChange, 
     handleSubmit, 
-    isLoading 
+    isLoading,
+    error
   } = useChat({
     api: '/api/chat',
     initialMessages: [
@@ -38,6 +39,9 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
     ],
     body: {
       provider: selectedProvider
+    },
+    onError: (error) => {
+      console.error('Chat error:', error)
     }
   })
   
@@ -241,6 +245,24 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
                 <span>●</span>
                 <span>●</span>
                 <span style={{ color: '#FFFF00' }}>thinking...</span>
+              </div>
+            </div>
+          )}
+          
+          {error && (
+            <div style={{ marginBottom: '16px' }}>
+              <div style={{ 
+                color: '#FF0000',
+                marginBottom: '4px',
+                fontSize: '12px'
+              }}>
+                error@donnysmith ~ $
+              </div>
+              <div style={{
+                color: '#FF0000',
+                paddingLeft: '16px'
+              }}>
+                {error.message || 'Something went wrong'}
               </div>
             </div>
           )}
