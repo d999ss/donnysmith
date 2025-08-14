@@ -197,7 +197,8 @@ export default function Home() {
           height: 'calc(100vh - 100px)',
           overflowY: 'auto',
           padding: '16px',
-          paddingBottom: '100px'
+          paddingBottom: '100px',
+          background: '#000000'
         }}>
           {messages.map((msg, i) => (
             <div key={msg.id || i} style={{ marginBottom: '16px' }}>
