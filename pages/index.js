@@ -21,7 +21,7 @@ export default function Home() {
       {
         id: 'welcome',
         role: 'assistant',
-        content: `donnysmith@bttr ~ $ echo "Creative Director helping ambitious teams design a better future. What can we build?"`
+        content: `donnysmith@bttr ~ $ echo "Creative Director helping ambitious teams design a better future. What can I help you build?"`
       }
     ],
     body: {
