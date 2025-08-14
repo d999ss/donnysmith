@@ -291,7 +291,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
         }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ color: '#FF00FF', fontSize: '12px', flexShrink: 0 }}>
-              user@terminal ~ $
+              >
             </span>
             <input
               type="text"

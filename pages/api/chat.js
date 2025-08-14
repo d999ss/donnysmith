@@ -7,6 +7,16 @@ export default async function handler(req, res) {
     const { messages } = req.body || {}
     const userMessage = messages?.[messages.length - 1]?.content || 'test'
     
+    // Set headers for streaming
+    res.writeHead(200, {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Cache-Control': 'no-cache, no-transform',
+      'Connection': 'keep-alive',
+    })
+
+    // Add small delay to show thinking
+    await new Promise(resolve => setTimeout(resolve, 800))
+    
     const response = `$ echo "${userMessage}"
 ${userMessage}
 
@@ -21,17 +31,12 @@ Available for projects! Specializing in:
 
 What can I help you build?`
 
-    // Return proper streaming format that useChat expects
-    res.setHeader('Content-Type', 'text/plain; charset=utf-8')
-    res.setHeader('Cache-Control', 'no-cache')
-    
-    // Send response in AI SDK streaming format
-    res.write(`0:${JSON.stringify(response)}\n`)
-    res.write(`d:\n`)
+    // Stream the response
+    res.write(response)
     res.end()
     
   } catch (error) {
     console.error('Chat error:', error)
-    return res.status(500).json({ error: error.message })
+    res.status(500).json({ error: error.message })
   }
 }
