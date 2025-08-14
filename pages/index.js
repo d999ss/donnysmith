@@ -111,6 +111,9 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
             color: #808080;
           }
           @media (max-width: 768px) {
+            body, div, span, button {
+              font-size: 11px !important;
+            }
             input[type="text"] {
               font-size: 16px !important;
             }
@@ -123,7 +126,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
         background: '#000000',
         color: '#D4D4D4',
         fontFamily: "'Triakis', 'SF Mono', 'Monaco', monospace",
-        fontSize: '11px',
+        fontSize: '14px',
         lineHeight: '1.4',
         padding: 0,
         margin: 0
@@ -144,7 +147,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
           gap: '8px'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-            <span style={{ color: '#D4D4D4', fontSize: '11px', whiteSpace: 'nowrap' }}>donnysmith@terminal ~ $</span>
+            <span style={{ color: '#D4D4D4', fontSize: '14px', whiteSpace: 'nowrap' }}>donnysmith@terminal ~ $</span>
           </div>
           
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -158,7 +161,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                   color: '#D4D4D4',
                   padding: '4px 8px',
                   borderRadius: '4px',
-                  fontSize: '11px',
+                  fontSize: '14px',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
@@ -166,7 +169,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                 }}
               >
                 {providers.find(p => p.id === selectedProvider)?.name}
-                <span style={{ fontSize: '10px' }}>▼</span>
+                <span style={{ fontSize: '12px' }}>▼</span>
               </button>
               
               {showProviders && (
@@ -196,11 +199,11 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                         background: selectedProvider === provider.id ? '#264F78' : 'transparent',
                         color: '#D4D4D4',
                         cursor: 'pointer',
-                        fontSize: '11px'
+                        fontSize: '14px'
                       }}
                     >
                       <div>{provider.name}</div>
-                      <div style={{ fontSize: '10px', color: '#C0C0C0' }}>
+                      <div style={{ fontSize: '12px', color: '#C0C0C0' }}>
                         {provider.speed} • {provider.cost}
                       </div>
                     </button>
@@ -224,7 +227,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
           {/* Login message */}
           <div style={{ 
             color: '#D4D4D4', 
-            fontSize: '11px', 
+            fontSize: '14px', 
             marginBottom: '8px',
             lineHeight: '1.1'
           }}>
@@ -235,7 +238,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
               <div style={{ 
                 color: msg.role === 'user' ? '#569CD6' : '#6A9955',
                 marginBottom: '1px',
-                fontSize: '11px'
+                fontSize: '14px'
               }}>
                 {msg.role === 'user' ? 'user@terminal ~ $' : 'assistant@donnysmith ~ $'}
               </div>
@@ -244,7 +247,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                 whiteSpace: 'pre-wrap',
                 wordBreak: 'break-word',
                 paddingLeft: '12px',
-                fontSize: '11px',
+                fontSize: '14px',
                 lineHeight: '1.4'
               }}>
                 {msg.content}
@@ -257,7 +260,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
               <div style={{ 
                 color: '#D4D4D4',
                 marginBottom: '1px',
-                fontSize: '11px'
+                fontSize: '14px'
               }}>
                 assistant@donnysmith ~ $
               </div>
@@ -267,7 +270,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                fontSize: '11px'
+                fontSize: '14px'
               }}>
                 <span>●</span>
                 <span>●</span>
@@ -282,14 +285,14 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
               <div style={{ 
                 color: '#F44747',
                 marginBottom: '1px',
-                fontSize: '11px'
+                fontSize: '14px'
               }}>
                 error@donnysmith ~ $
               </div>
               <div style={{
                 color: '#F44747',
                 paddingLeft: '12px',
-                fontSize: '11px'
+                fontSize: '14px'
               }}>
                 {error.message || 'Something went wrong'}
               </div>
@@ -312,7 +315,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
           zIndex: 200
         }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ color: '#569CD6', fontSize: '11px', flexShrink: 0 }}>
+            <span style={{ color: '#569CD6', fontSize: '14px', flexShrink: 0 }}>
               {'>'}
             </span>
             <input
@@ -331,7 +334,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                 background: 'transparent',
                 border: 'none',
                 color: '#D4D4D4',
-                fontSize: '11px',
+                fontSize: '14px',
                 fontFamily: 'inherit',
                 outline: 'none',
                 padding: '6px 0',
@@ -348,7 +351,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                 border: '1px solid #808080',
                 borderRadius: '4px',
                 color: input.trim() ? '#4EC9B0' : '#808080',
-                fontSize: '11px',
+                fontSize: '14px',
                 cursor: input.trim() ? 'pointer' : 'default',
                 padding: '6px 12px',
                 flexShrink: 0,
