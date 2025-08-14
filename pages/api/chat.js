@@ -78,6 +78,8 @@ export default async function handler(req, res) {
 
     // Demo mode responses
     if (!process.env.OPENAI_API_KEY) {
+      console.log('Demo mode - no API key')
+      
       let response = DEMO_RESPONSES.default
       
       if (lastMessage.includes('work') || lastMessage.includes('project') || lastMessage.includes('branding')) {
@@ -92,30 +94,31 @@ export default async function handler(req, res) {
         response = DEMO_RESPONSES.creation
       }
       
-      // Return response using AI SDK streaming format
-      const encoder = new TextEncoder()
-      const stream = new ReadableStream({
-        async start(controller) {
-          // Split response into chunks to simulate typing
-          const words = response.split(' ')
-          for (let i = 0; i < words.length; i++) {
-            const word = i === 0 ? words[i] : ' ' + words[i]
-            const chunk = `0:${JSON.stringify(word)}\n`
-            controller.enqueue(encoder.encode(chunk))
-            await new Promise(resolve => setTimeout(resolve, 50))
-          }
-          // Send completion signal
-          controller.enqueue(encoder.encode('d:\n'))
-          controller.close()
+      console.log('Selected response:', response.substring(0, 100) + '...')
+      
+      // Create a mock streamText result for demo mode
+      const mockResult = {
+        toDataStreamResponse: () => {
+          const encoder = new TextEncoder()
+          const stream = new ReadableStream({
+            start(controller) {
+              // Send the response as data stream
+              const chunk = `0:"${response.replace(/"/g, '\\"')}"\n`
+              controller.enqueue(encoder.encode(chunk))
+              controller.enqueue(encoder.encode('d:""\n'))
+              controller.close()
+            }
+          })
+          
+          return new Response(stream, {
+            headers: {
+              'Content-Type': 'text/plain; charset=utf-8'
+            }
+          })
         }
-      })
-
-      return new Response(stream, {
-        headers: {
-          'Content-Type': 'text/plain; charset=utf-8',
-          'Transfer-Encoding': 'chunked'
-        }
-      })
+      }
+      
+      return mockResult.toDataStreamResponse()
     }
 
     // AI SDK v5 streaming
