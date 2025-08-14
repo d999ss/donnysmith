@@ -92,9 +92,26 @@ export default async function handler(req, res) {
         response = DEMO_RESPONSES.creation
       }
       
-      // Simulate streaming delay
-      await new Promise(resolve => setTimeout(resolve, 500))
-      return res.json({ message: response, provider: 'demo' })
+      // Create streaming response compatible with AI SDK
+      const encoder = new TextEncoder()
+      const stream = new ReadableStream({
+        start(controller) {
+          // Send chunks in the format expected by AI SDK
+          const lines = response.split('')
+          lines.forEach((char, index) => {
+            const chunk = `0:"${char}"\n`
+            controller.enqueue(encoder.encode(chunk))
+          })
+          controller.enqueue(encoder.encode('d:""\n'))
+          controller.close()
+        }
+      })
+
+      return new Response(stream, {
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8'
+        }
+      })
     }
 
     // AI SDK v5 streaming
