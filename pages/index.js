@@ -352,6 +352,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                 borderRadius: '4px',
                 color: input.trim() ? '#4EC9B0' : '#808080',
                 fontSize: '14px',
+                fontFamily: "'Triakis', 'SF Mono', 'Monaco', monospace",
                 cursor: input.trim() ? 'pointer' : 'default',
                 padding: '6px 12px',
                 flexShrink: 0,
