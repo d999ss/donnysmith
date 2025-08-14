@@ -51,9 +51,9 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
   })
   
   const providers = [
-    { id: 'gpt-4o-mini', name: 'GPT-4o Mini', speed: 'Fast', cost: 'Low' },
-    { id: 'gpt-4o', name: 'GPT-4o', speed: 'Medium', cost: 'High' },
-    { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo', speed: 'Very Fast', cost: 'Very Low' }
+    { id: 'gpt-4o-mini', name: 'Nexus-4 Spinner', speed: 'Spinner Class', cost: 'Low Nuyen' },
+    { id: 'gpt-4o', name: 'Nexus-4', speed: 'Off-World Model', cost: 'High Nuyen' },
+    { id: 'gpt-3.5-turbo', name: 'Nexus-3 Turbo', speed: 'Street Mod', cost: 'Very Low Nuyen' }
   ]
 
   const scrollToBottom = () => {
@@ -186,7 +186,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                     >
                       <div>{provider.name}</div>
                       <div style={{ fontSize: '10px', color: '#C0C0C0' }}>
-                        {provider.speed} • {provider.cost} Cost
+                        {provider.speed} • {provider.cost}
                       </div>
                     </button>
                   ))}
