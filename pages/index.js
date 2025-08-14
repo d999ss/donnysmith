@@ -19,7 +19,21 @@ export default function Home() {
       {
         id: 'welcome',
         role: 'assistant',
-        content: 'donnysmith@terminal ~ $ Welcome to Donny\'s AI assistant. Type your message below to get started.'
+        content: `donnysmith@terminal ~ $ whoami
+Donny Smith - Brand strategist, digital designer, AI enthusiast
+
+donnysmith@terminal ~ $ cat ~/about.txt
+Building compelling visual identities and strategic brands since 2010.
+Currently exploring the intersection of AI and creative workflows.
+Available for brand strategy, design systems, and automation projects.
+
+donnysmith@terminal ~ $ ls -la services/
+drwxr-xr-x  brand-strategy/
+drwxr-xr-x  visual-identity/  
+drwxr-xr-x  digital-marketing/
+drwxr-xr-x  ai-automation/
+
+donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
       }
     ],
     body: {
