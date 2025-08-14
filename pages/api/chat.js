@@ -16,6 +16,68 @@ export default async function handler(req) {
   }
 
   const { messages } = await req.json()
+  
+  // Check if the last message is a command
+  const lastMessage = messages[messages.length - 1]
+  if (lastMessage?.content?.startsWith('/')) {
+    const command = lastMessage.content
+    const commandResponses = {
+      '/portfolio': `$ ls -la ~/portfolio/
+drwxr-xr-x  Ikon Pass App - Complete redesign serving millions of skiers
+drwxr-xr-x  GE Vernova GridOS - AI-powered energy grid modernization
+drwxr-xr-x  Air Company - Sustainability brand transformation
+drwxr-xr-x  GE Aerospace - Enterprise UI innovation
+drwxr-xr-x  Allergan Aesthetics - Medical practice experiences
+
+$ open makebttr.com/work
+→ View full portfolio at makebttr.com`,
+
+      '/contact': `$ cat ~/contact.txt
+Email: donny@makebttr.com
+Location: Park City, Utah
+Company: Bttr. Digital Product Agency
+Website: makebttr.com
+X/Twitter: @donnysmith
+
+$ echo "Let's build something inevitable together."`,
+
+      '/philosophy': `$ cat ~/philosophy.md
+# Design Philosophy
+
+"An object in motion stays in motion."
+
+## Core Principles:
+- Clarity, precision, and emotional resonance create lasting impact
+- Every product should feel inevitable in hindsight
+- First-principles thinking: Strip down to core truths
+- High-craft execution: Every pixel is deliberate
+- Story-first design: Products must communicate narratives people care about
+
+## Bored Optimism™
+Calm confidence in future success, paired with obsession for excellence.
+Building as if the win is already inevitable.`,
+
+      '/clients': `$ grep -r "client" ~/projects/
+GE Aerospace - Aviation & defense systems
+GE Vernova - Renewable energy transformation
+Pepsi - Global beverage innovation
+Allergan Aesthetics - Medical aesthetics
+Alterra Mountain Company - Ikon Pass platform
+Air Company - Carbon transformation technology
+
+$ wc -l ~/clients/fortune500.txt
+12 Fortune 500 companies served`
+    }
+    
+    if (commandResponses[command]) {
+      // Return the command response directly
+      return new Response(commandResponses[command], {
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+        },
+      })
+    }
+  }
 
   const result = await streamText({
     model: openai('gpt-4o-mini'),

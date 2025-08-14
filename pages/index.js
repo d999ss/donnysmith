@@ -5,6 +5,7 @@ import { useChat } from '@ai-sdk/react'
 export default function Home() {
   const [selectedProvider, setSelectedProvider] = useState('gpt-4o-mini')
   const [showProviders, setShowProviders] = useState(false)
+  const [showCommands, setShowCommands] = useState(false)
   const messagesEndRef = useRef(null)
   
   const { 
@@ -71,6 +72,19 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
     }
   }
 
+  const handleCommand = (command) => {
+    // Set the input value to the command
+    handleInputChange({ target: { value: command } })
+    
+    // Submit it after a brief delay so the UI updates
+    setTimeout(() => {
+      const fakeEvent = {
+        preventDefault: () => {},
+      }
+      handleSubmit(fakeEvent)
+    }, 50)
+  }
+
   return (
     <>
       <Head>
@@ -123,7 +137,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
           }
           @media (max-width: 768px) {
             body, div, span, button {
-              font-size: 14px !important;
+              font-size: 12px !important;
             }
             input[type="text"] {
               font-size: 16px !important;
@@ -137,7 +151,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
         background: '#000000',
         color: '#D4D4D4',
         fontFamily: "'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace",
-        fontSize: '16px',
+        fontSize: '13px',
         lineHeight: '1.5',
         padding: 0,
         margin: 0
@@ -172,7 +186,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                   color: '#D4D4D4',
                   padding: '4px 8px',
                   borderRadius: '4px',
-                  fontSize: '16px',
+                  fontSize: '13px',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
@@ -238,11 +252,61 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
           {/* Login message */}
           <div style={{ 
             color: '#D4D4D4', 
-            fontSize: '16px', 
+            fontSize: '13px', 
             marginBottom: '8px',
             lineHeight: '1.1'
           }}>
             Last login: {new Date().toDateString()} {new Date().toTimeString().split(' ')[0]}
+          </div>
+          
+          {/* Command shortcuts */}
+          <div style={{
+            marginBottom: '16px',
+            padding: '12px',
+            background: '#0a0a0a',
+            border: '1px solid #1a1a1a',
+            borderRadius: '4px'
+          }}>
+            <div style={{ 
+              color: '#808080', 
+              fontSize: '12px',
+              marginBottom: '8px'
+            }}>
+              Quick commands:
+            </div>
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              {['/portfolio', '/contact', '/philosophy', '/clients'].map(cmd => (
+                <button
+                  key={cmd}
+                  onClick={() => handleCommand(cmd)}
+                  style={{
+                    background: '#1a1a1a',
+                    border: '1px solid #404040',
+                    color: '#4EC9B0',
+                    padding: '6px 12px',
+                    borderRadius: '4px',
+                    fontSize: '12px',
+                    fontFamily: 'inherit',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    ':hover': {
+                      background: '#2a2a2a',
+                      borderColor: '#4EC9B0'
+                    }
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = '#2a2a2a'
+                    e.target.style.borderColor = '#4EC9B0'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = '#1a1a1a'
+                    e.target.style.borderColor = '#404040'
+                  }}
+                >
+                  {cmd}
+                </button>
+              ))}
+            </div>
           </div>
           {messages.map((msg, i) => (
             <div key={msg.id || i} style={{ marginBottom: '8px' }}>
@@ -258,7 +322,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                 whiteSpace: 'pre-wrap',
                 wordBreak: 'break-word',
                 paddingLeft: '12px',
-                fontSize: '16px',
+                fontSize: '13px',
                 lineHeight: '1.4'
               }}>
                 {msg.content}
@@ -347,7 +411,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                   background: 'transparent',
                   border: 'none',
                   color: '#D4D4D4',
-                  fontSize: '16px',
+                  fontSize: '13px',
                   fontFamily: 'inherit',
                   outline: 'none',
                   padding: '6px 0',
@@ -365,7 +429,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                 border: '1px solid #808080',
                 borderRadius: '4px',
                 color: input.trim() ? '#4EC9B0' : '#808080',
-                fontSize: '16px',
+                fontSize: '13px',
                 fontFamily: "'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace",
                 cursor: input.trim() ? 'pointer' : 'default',
                 padding: '6px 12px',
