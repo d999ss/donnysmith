@@ -7,13 +7,6 @@ export default async function handler(req, res) {
     const { messages } = req.body || {}
     const userMessage = messages?.[messages.length - 1]?.content || 'test'
     
-    // Set headers for streaming
-    res.writeHead(200, {
-      'Content-Type': 'text/plain; charset=utf-8',
-      'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
-    })
-
     // Add small delay to show thinking
     await new Promise(resolve => setTimeout(resolve, 800))
     
@@ -41,21 +34,17 @@ drwxr-xr-x  team-consulting/
 
 What ambitious project can we help you build?`
 
-    // Stream with proper format for useChat
-    const encoder = new TextEncoder()
-    const stream = new ReadableStream({
-      start(controller) {
-        // Send the response as chunks
-        const chunks = response.split(' ')
-        chunks.forEach((chunk, index) => {
-          controller.enqueue(encoder.encode(chunk + (index < chunks.length - 1 ? ' ' : '')))
-        })
-        controller.close()
-      }
-    })
-
-    // Simple approach - just write the response
-    res.write(response)
+    // Return simple streaming format that AI SDK v4 expects
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+    res.setHeader('Cache-Control', 'no-cache')
+    res.setHeader('Connection', 'keep-alive')
+    
+    // Write response character by character for proper streaming
+    for (const char of response) {
+      res.write(char)
+      await new Promise(resolve => setTimeout(resolve, 10))
+    }
+    
     res.end()
     
   } catch (error) {
