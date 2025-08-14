@@ -86,10 +86,14 @@ export default function Home() {
           }
           .cursor::after {
             content: '█';
-            display: inline-block;
+            position: absolute;
             animation: blink 1s infinite;
             color: #38FE27;
-            margin-left: 2px;
+            left: 0;
+            top: 0;
+            pointer-events: none;
+            font-size: 12px;
+            line-height: 1.2;
           }
           body {
             margin: 0;
@@ -325,7 +329,7 @@ export default function Home() {
                 value={input}
                 onChange={handleInputChange}
                 onKeyPress={handleKeyPress}
-                placeholder="Type your message..."
+                placeholder=""
                 disabled={isLoading}
                 autoComplete="off"
                 autoCorrect="off"
@@ -343,9 +347,25 @@ export default function Home() {
                   padding: '6px 0',
                   caretColor: 'transparent',
                   WebkitAppearance: 'none',
-                  borderRadius: 0
+                  borderRadius: 0,
+                  position: 'relative'
                 }}
               />
+              {!input && (
+                <div style={{
+                  position: 'absolute',
+                  left: '0px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: '#38FE27',
+                  fontSize: '12px',
+                  animation: 'blink 1s infinite',
+                  pointerEvents: 'none',
+                  fontFamily: 'inherit'
+                }}>
+                  █
+                </div>
+              )}
             </div>
             <button
               type="submit"
