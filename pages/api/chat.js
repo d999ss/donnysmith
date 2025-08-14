@@ -1,8 +1,5 @@
-import OpenAI from 'openai'
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-})
+import { openai } from '@ai-sdk/openai'
+import { streamText } from 'ai'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -12,10 +9,12 @@ export default async function handler(req, res) {
   try {
     const { messages } = req.body
     
-    // Create system message with your persona
-    const systemMessage = {
-      role: 'system',
-      content: `You are Donny Smith's AI assistant. You represent him on his personal website.
+    const result = await streamText({
+      model: openai('gpt-4o-mini'),
+      messages: [
+        {
+          role: 'system',
+          content: `You are Donny Smith's AI assistant. You represent him on his personal website.
 
 About Donny:
 - Executive Creative Director 
@@ -27,31 +26,15 @@ About Donny:
 - Services: brand strategy, digital experiences, creative direction, team consulting
 
 Respond in a terminal/command line style format like you're running commands. Be helpful, creative, and embody Donny's "Bored Optimism" personality - smart but not pretentious, creative but grounded.`
-    }
-
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [systemMessage, ...messages],
-      stream: true,
+        },
+        ...messages
+      ],
     })
 
-    // Set up streaming response
-    res.setHeader('Content-Type', 'text/plain; charset=utf-8')
-    res.setHeader('Cache-Control', 'no-cache')
-    res.setHeader('Connection', 'keep-alive')
-
-    // Stream the response
-    for await (const chunk of completion) {
-      const content = chunk.choices[0]?.delta?.content || ''
-      if (content) {
-        res.write(content)
-      }
-    }
-    
-    res.end()
+    return result.toDataStreamResponse()
 
   } catch (error) {
-    console.error('OpenAI API error:', error)
-    res.status(500).json({ error: 'Failed to generate response' })
+    console.error('Chat API error:', error)
+    return res.status(500).json({ error: 'Failed to generate response' })
   }
 }
