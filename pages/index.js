@@ -145,7 +145,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
           }
           @media (max-width: 768px) {
             body, div, span, button {
-              font-size: 12px !important;
+              font-size: 13px !important;
             }
             input[type="text"] {
               font-size: 16px !important;
@@ -180,7 +180,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
           gap: '8px'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-            <span style={{ color: '#00FF41', fontSize: '16px', whiteSpace: 'nowrap' }}>donnysmith@terminal ~ $</span>
+            <span style={{ color: '#00FF41', fontSize: '13px', whiteSpace: 'nowrap' }}>donnysmith@terminal ~ $</span>
           </div>
           
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -232,7 +232,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                         background: selectedProvider === provider.id ? '#264F78' : 'transparent',
                         color: '#00FF41',
                         cursor: 'pointer',
-                        fontSize: '16px'
+                        fontSize: '13px'
                       }}
                     >
                       <div>{provider.name}</div>
@@ -321,7 +321,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
               <div style={{ 
                 color: msg.role === 'user' ? '#569CD6' : '#6A9955',
                 marginBottom: '1px',
-                fontSize: '16px'
+                fontSize: '13px'
               }}>
                 {msg.role === 'user' ? 'user@terminal ~ $' : 'assistant@donnysmith ~ $'}
               </div>
@@ -343,7 +343,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
               <div style={{ 
                 color: '#00FF41',
                 marginBottom: '1px',
-                fontSize: '16px'
+                fontSize: '13px'
               }}>
                 assistant@donnysmith ~ $
               </div>
@@ -353,7 +353,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                fontSize: '16px'
+                fontSize: '13px'
               }}>
                 <span>●</span>
                 <span>●</span>
@@ -368,14 +368,14 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
               <div style={{ 
                 color: '#F44747',
                 marginBottom: '1px',
-                fontSize: '16px'
+                fontSize: '13px'
               }}>
                 error@donnysmith ~ $
               </div>
               <div style={{
                 color: '#F44747',
                 paddingLeft: '12px',
-                fontSize: '16px'
+                fontSize: '13px'
               }}>
                 {error.message || 'Something went wrong'}
               </div>
@@ -398,7 +398,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
           zIndex: 200
         }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ color: '#00FF41', fontSize: '16px', flexShrink: 0 }}>
+            <span style={{ color: '#00FF41', fontSize: '13px', flexShrink: 0 }}>
               {'>'}
             </span>
             <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
