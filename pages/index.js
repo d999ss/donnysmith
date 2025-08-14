@@ -105,8 +105,8 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
         background: '#000000',
         color: '#00FF00',
         fontFamily: "'Andale Mono', monospace",
-        fontSize: '14px',
-        lineHeight: '1.6',
+        fontSize: '13px',
+        lineHeight: '1.4',
         padding: 0,
         margin: 0
       }}>
@@ -129,7 +129,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
               <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ffbd2e' }} />
               <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#27ca3f' }} />
             </div>
-            <span style={{ color: '#00FF00', marginLeft: '12px' }}>donnysmith@terminal ~ $</span>
+            <span style={{ color: '#00FF00', marginLeft: '12px', fontSize: '13px' }}>donnysmith@terminal ~ $</span>
           </div>
           
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -210,7 +210,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
               <div style={{ 
                 color: msg.role === 'user' ? '#FF00FF' : '#00FF00',
                 marginBottom: '4px',
-                fontSize: '12px'
+                fontSize: '13px'
               }}>
                 {msg.role === 'user' ? 'user@terminal ~ $' : 'assistant@donnysmith ~ $'}
               </div>
@@ -218,7 +218,8 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
                 color: '#00FF00',
                 whiteSpace: 'pre-wrap',
                 wordBreak: 'break-word',
-                paddingLeft: '16px'
+                paddingLeft: '16px',
+                fontSize: '13px'
               }}>
                 {msg.content}
               </div>
@@ -230,7 +231,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
               <div style={{ 
                 color: '#00FF00',
                 marginBottom: '4px',
-                fontSize: '12px'
+                fontSize: '13px'
               }}>
                 assistant@donnysmith ~ $
               </div>
@@ -239,7 +240,8 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
                 paddingLeft: '16px',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px'
+                gap: '8px',
+                fontSize: '13px'
               }}>
                 <span>●</span>
                 <span>●</span>
@@ -254,13 +256,14 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
               <div style={{ 
                 color: '#FF0000',
                 marginBottom: '4px',
-                fontSize: '12px'
+                fontSize: '13px'
               }}>
                 error@donnysmith ~ $
               </div>
               <div style={{
                 color: '#FF0000',
-                paddingLeft: '16px'
+                paddingLeft: '16px',
+                fontSize: '13px'
               }}>
                 {error.message || 'Something went wrong'}
               </div>
@@ -280,7 +283,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
           padding: '16px'
         }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ color: '#FF00FF', fontSize: '12px', flexShrink: 0 }}>
+            <span style={{ color: '#FF00FF', fontSize: '13px', flexShrink: 0 }}>
               user@terminal ~ $
             </span>
             <input
@@ -295,7 +298,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
                 background: 'transparent',
                 border: 'none',
                 color: '#00FF00',
-                fontSize: '14px',
+                fontSize: '13px',
                 fontFamily: 'inherit',
                 outline: 'none',
                 padding: '4px 0',
@@ -310,7 +313,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
                   background: 'transparent',
                   border: 'none',
                   color: '#00FFFF',
-                  fontSize: '12px',
+                  fontSize: '13px',
                   cursor: 'pointer',
                   padding: '4px 8px'
                 }}
