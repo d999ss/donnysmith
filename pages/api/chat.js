@@ -4,6 +4,13 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || '',
 })
 
+// Multiple AI providers configuration
+const AI_PROVIDERS = {
+  'gpt-4o-mini': { provider: 'openai', model: 'gpt-4o-mini', name: 'GPT-4o Mini' },
+  'gpt-4o': { provider: 'openai', model: 'gpt-4o', name: 'GPT-4o' },
+  'gpt-3.5-turbo': { provider: 'openai', model: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo' }
+}
+
 const DONNY_CONTEXT = `
 You are Donny Smith's AI assistant on his personal website. You represent Donny professionally.
 
@@ -23,8 +30,43 @@ YOUR ROLE:
 - Share insights about his design work and expertise
 - Be conversational but professional
 
-Keep responses concise, helpful, and professional. Focus on how Donny can help with design and creative projects.
+RESPONSE FORMAT:
+- For simple questions, respond normally
+- For project inquiries, structure your response with clear sections
+- If someone wants to hire Donny, ask for: project type, timeline, budget range, contact info
+- Always be helpful and represent Donny's expertise professionally
+
+Keep responses engaging, helpful, and professional.
 `
+
+// Streaming response helper
+function createStreamingResponse(text) {
+  const encoder = new TextEncoder()
+  const words = text.split(' ')
+  
+  return new ReadableStream({
+    async start(controller) {
+      for (let i = 0; i < words.length; i++) {
+        const chunk = i === 0 ? words[i] : ' ' + words[i]
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: chunk, done: false })}\n\n`))
+        
+        // Simulate natural typing speed
+        await new Promise(resolve => setTimeout(resolve, 50 + Math.random() * 100))
+      }
+      
+      controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: '', done: true })}\n\n`))
+      controller.close()
+    }
+  })
+}
+
+// Demo streaming responses
+const DEMO_RESPONSES = {
+  default: "Thanks for checking out my AI assistant! I'm a digital branding specialist who runs a design firm. I help companies develop their visual identity, brand strategy, and digital presence. I also enjoy building AI tools and automation systems like this one. How can I help you today?",
+  work: "I help clients with digital branding, visual identity, and web design. My firm specializes in creating cohesive brand experiences that combine strategic thinking with beautiful design. We work with startups, established businesses, and everything in between. What kind of project are you working on?",
+  contact: "I'd be happy to discuss your project! For the best response, it helps to know: 1) What type of project you have in mind, 2) Your timeline, 3) Rough budget range. You can reach me directly and I'll get back to you within 24-48 hours with thoughts on how I can help.",
+  ai: "I'm fascinated by AI and automation tools! This assistant is just one example - I love exploring how technology can enhance creative work and client interactions. I've built various AI-powered tools for project management, content generation, and workflow optimization. Are you interested in AI for business applications?"
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -32,39 +74,87 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { messages } = req.body
+    const { messages, provider = 'gpt-4o-mini', stream = true } = req.body
     const apiKey = process.env.OPENAI_API_KEY
+    const lastMessage = messages[messages.length - 1]?.content?.toLowerCase() || ''
 
-    // Demo mode - provide mock responses when no API key
+    // Demo mode with streaming
     if (!apiKey) {
-      const lastMessage = messages[messages.length - 1]?.content?.toLowerCase() || ''
+      let response = DEMO_RESPONSES.default
       
-      let response = "Thanks for checking out my AI assistant! "
-      
-      if (lastMessage.includes('work') || lastMessage.includes('project')) {
-        response += "I help clients with digital branding, visual identity, and web design. What kind of project are you working on?"
-      } else if (lastMessage.includes('contact') || lastMessage.includes('hire')) {
-        response += "I'd be happy to discuss your project! You can reach out directly and I'll get back to you within 24-48 hours."
-      } else {
-        response += "I'm a digital branding specialist who runs a design firm. I help companies develop their visual identity and brand strategy. How can I help you?"
+      if (lastMessage.includes('work') || lastMessage.includes('project') || lastMessage.includes('branding')) {
+        response = DEMO_RESPONSES.work
+      } else if (lastMessage.includes('contact') || lastMessage.includes('hire') || lastMessage.includes('discuss')) {
+        response = DEMO_RESPONSES.contact
+      } else if (lastMessage.includes('ai') || lastMessage.includes('automation') || lastMessage.includes('technology')) {
+        response = DEMO_RESPONSES.ai
       }
       
-      return res.json({ message: response })
+      if (stream) {
+        res.setHeader('Content-Type', 'text/event-stream')
+        res.setHeader('Cache-Control', 'no-cache')
+        res.setHeader('Connection', 'keep-alive')
+        
+        const streamResponse = createStreamingResponse(response)
+        const reader = streamResponse.getReader()
+        
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          res.write(value)
+        }
+        
+        res.end()
+        return
+      }
+      
+      return res.json({ message: response, provider: 'demo' })
     }
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        { role: 'system', content: DONNY_CONTEXT },
-        ...messages
-      ],
-      temperature: 0.7,
-      max_tokens: 400,
-    })
+    // Get provider config
+    const providerConfig = AI_PROVIDERS[provider] || AI_PROVIDERS['gpt-4o-mini']
+    
+    if (stream) {
+      res.setHeader('Content-Type', 'text/event-stream')
+      res.setHeader('Cache-Control', 'no-cache')
+      res.setHeader('Connection', 'keep-alive')
 
-    res.json({
-      message: completion.choices[0]?.message?.content || "I'm having trouble responding right now. Please try again."
-    })
+      const stream = await openai.chat.completions.create({
+        model: providerConfig.model,
+        messages: [
+          { role: 'system', content: DONNY_CONTEXT },
+          ...messages
+        ],
+        temperature: 0.7,
+        max_tokens: 500,
+        stream: true,
+      })
+
+      for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content || ''
+        if (content) {
+          res.write(`data: ${JSON.stringify({ text: content, done: false })}\n\n`)
+        }
+      }
+      
+      res.write(`data: ${JSON.stringify({ text: '', done: true })}\n\n`)
+      res.end()
+    } else {
+      const completion = await openai.chat.completions.create({
+        model: providerConfig.model,
+        messages: [
+          { role: 'system', content: DONNY_CONTEXT },
+          ...messages
+        ],
+        temperature: 0.7,
+        max_tokens: 500,
+      })
+
+      res.json({
+        message: completion.choices[0]?.message?.content || "I'm having trouble responding right now. Please try again.",
+        provider: providerConfig.name
+      })
+    }
   } catch (error) {
     console.error('API error:', error)
     res.status(500).json({ error: 'Failed to generate response' })
