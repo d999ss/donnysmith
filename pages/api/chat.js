@@ -1,16 +1,23 @@
+import { createOpenAI } from '@ai-sdk/openai'
+import { streamText } from 'ai'
+
+// Create a mock OpenAI instance for demo
+const openai = createOpenAI({
+  apiKey: 'demo-key',
+  baseURL: 'https://api.openai.com/v1', // This won't be called since we'll override
+})
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
   try {
-    const { messages } = req.body || {}
-    const userMessage = messages?.[messages.length - 1]?.content || 'test'
+    const { messages } = req.body
+    const userMessage = messages?.[messages.length - 1]?.content || 'hello'
     
-    // Add small delay to show thinking
-    await new Promise(resolve => setTimeout(resolve, 800))
-    
-    const response = `$ echo "${userMessage}"
+    // Mock response without calling OpenAI
+    const mockResponse = `$ echo "${userMessage}"
 ${userMessage}
 
 $ whoami
@@ -34,20 +41,33 @@ drwxr-xr-x  team-consulting/
 
 What ambitious project can we help you build?`
 
-    // Just return the response as JSON like it was working before
-    return res.json({
-      id: 'demo-' + Date.now(),
-      object: 'chat.completion',  
-      created: Math.floor(Date.now() / 1000),
-      model: 'terminal-demo',
-      choices: [{
-        index: 0,
-        message: {
-          role: 'assistant',
-          content: response
-        },
-        finish_reason: 'stop'
-      }]
+    // Create a readable stream that AI SDK expects
+    const stream = new ReadableStream({
+      start(controller) {
+        const encoder = new TextEncoder()
+        // Send data in the format AI SDK expects
+        const chunks = mockResponse.split('')
+        let i = 0
+        
+        const sendChunk = () => {
+          if (i < chunks.length) {
+            controller.enqueue(encoder.encode(`0:"${chunks[i]}"\n`))
+            i++
+            setTimeout(sendChunk, 20)
+          } else {
+            controller.close()
+          }
+        }
+        
+        setTimeout(sendChunk, 500) // Small delay
+      }
+    })
+
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-cache',
+      },
     })
     
   } catch (error) {
