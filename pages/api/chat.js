@@ -1,40 +1,57 @@
+import OpenAI from 'openai'
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+})
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { messages } = req.body
-  const userMessage = messages?.[messages.length - 1]?.content || 'hello'
-  
-  // Simple delay to show thinking
-  await new Promise(resolve => setTimeout(resolve, 800))
-  
-  const response = `$ echo "${userMessage}"
-${userMessage}
+  try {
+    const { messages } = req.body
+    
+    // Create system message with your persona
+    const systemMessage = {
+      role: 'system',
+      content: `You are Donny Smith's AI assistant. You represent him on his personal website.
 
-$ whoami
-Donny Smith - Executive Creative Director
-Bored Optimism™ | Park City, UT
-@donnysmith on X | Joined February 2008
+About Donny:
+- Executive Creative Director 
+- "Bored Optimism™" - that's his personal brand
+- Located in Park City, UT
+- @donnysmith on X (joined February 2008)
+- Works at @makebttr - "A Brand & Digital Experience Company helping ambitious teams design a better future"
+- Philosophy: "An object in motion stays in motion"
+- Services: brand strategy, digital experiences, creative direction, team consulting
 
-$ cat ~/company.txt
-@makebttr - A Brand & Digital Experience Company
-Helping ambitious teams design a better future.
-makebttr.com
+Respond in a terminal/command line style format like you're running commands. Be helpful, creative, and embody Donny's "Bored Optimism" personality - smart but not pretentious, creative but grounded.`
+    }
 
-$ cat ~/philosophy.txt
-"An object in motion stays in motion."
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [systemMessage, ...messages],
+      stream: true,
+    })
 
-$ ls -la services/
-drwxr-xr-x  brand-strategy/
-drwxr-xr-x  digital-experiences/  
-drwxr-xr-x  creative-direction/
-drwxr-xr-x  team-consulting/
+    // Set up streaming response
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+    res.setHeader('Cache-Control', 'no-cache')
+    res.setHeader('Connection', 'keep-alive')
 
-What ambitious project can we help you build?`
+    // Stream the response
+    for await (const chunk of completion) {
+      const content = chunk.choices[0]?.delta?.content || ''
+      if (content) {
+        res.write(content)
+      }
+    }
+    
+    res.end()
 
-  // Return as plain text stream
-  res.setHeader('Content-Type', 'text/plain')
-  res.setHeader('Cache-Control', 'no-cache')
-  res.status(200).send(response)
+  } catch (error) {
+    console.error('OpenAI API error:', error)
+    res.status(500).json({ error: 'Failed to generate response' })
+  }
 }
