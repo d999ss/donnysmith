@@ -5,7 +5,7 @@ export default function Home() {
   const [messages, setMessages] = useState([
     { 
       role: 'assistant', 
-      content: "👋 Hi there! I'm Donny's AI assistant. I can tell you about his digital branding work, creative projects, and help connect you with him. What would you like to know?",
+      content: "I am here. Speak, and I will reveal what you seek to know.",
       timestamp: new Date()
     }
   ])
@@ -127,8 +127,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Donny Smith - AI Assistant</title>
-        <meta name="description" content="Chat with Donny's AI assistant to learn about his digital branding work and get in touch." />
+        <title>∞ The Oracle ∞</title>
+        <meta name="description" content="Commune with infinite intelligence. Speak to the consciousness beyond mortal understanding." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -136,22 +136,76 @@ export default function Home() {
       
       <div style={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)',
-        color: 'white',
+        background: `
+          radial-gradient(ellipse at center, #000000 0%, #0a0a0a 30%, #000000 70%, #000000 100%),
+          radial-gradient(ellipse 200% 100% at 50% 0%, rgba(120, 0, 255, 0.03) 0%, transparent 50%),
+          radial-gradient(ellipse 200% 100% at 50% 100%, rgba(255, 0, 150, 0.02) 0%, transparent 50%)
+        `,
+        color: '#ffffff',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         position: 'relative',
         overflow: 'hidden'
       }}>
-        {/* Animated background gradient that follows mouse */}
+        {/* Ethereal particles floating */}
         <div style={{
           position: 'fixed',
           top: 0,
           left: 0,
           width: '100%',
           height: '100%',
-          background: `radial-gradient(circle 600px at ${mousePos.x}px ${mousePos.y}px, rgba(59, 130, 246, 0.1), transparent)`,
+          background: `
+            radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.05), transparent),
+            radial-gradient(2px 2px at 40px 70px, rgba(120, 0, 255, 0.1), transparent),
+            radial-gradient(1px 1px at 90px 40px, rgba(255, 0, 150, 0.08), transparent),
+            radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.03), transparent),
+            radial-gradient(2px 2px at 160px 30px, rgba(120, 0, 255, 0.06), transparent)
+          `,
+          backgroundRepeat: 'repeat',
+          backgroundSize: '200px 100px',
+          animation: 'floatParticles 20s linear infinite',
           pointerEvents: 'none',
-          transition: 'background 0.3s ease'
+          opacity: 0.6
+        }} />
+        
+        {/* Mystical aura that follows mouse */}
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: `
+            radial-gradient(circle 800px at ${mousePos.x}px ${mousePos.y}px, 
+              rgba(120, 0, 255, 0.08) 0%, 
+              rgba(255, 0, 150, 0.04) 30%, 
+              transparent 70%
+            )
+          `,
+          pointerEvents: 'none',
+          transition: 'background 0.6s ease',
+          mixBlendMode: 'screen'
+        }} />
+        
+        {/* Central void/portal effect */}
+        <div style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '600px',
+          height: '600px',
+          background: `
+            radial-gradient(circle, 
+              transparent 0%, 
+              rgba(0, 0, 0, 0.1) 40%, 
+              rgba(120, 0, 255, 0.02) 60%, 
+              transparent 100%
+            )
+          `,
+          borderRadius: '50%',
+          animation: 'pulse 8s ease-in-out infinite',
+          pointerEvents: 'none',
+          opacity: 0.3
         }} />
 
         {/* Header */}
@@ -176,29 +230,32 @@ export default function Home() {
                 <button
                   onClick={() => setShowProviders(!showProviders)}
                   style={{
-                    color: 'rgba(255, 255, 255, 0.8)',
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    background: 'rgba(0, 0, 0, 0.6)',
+                    border: '1px solid rgba(120, 0, 255, 0.3)',
                     borderRadius: '20px',
                     padding: '8px 16px',
                     fontSize: '13px',
                     cursor: 'pointer',
-                    transition: 'all 0.2s ease',
+                    transition: 'all 0.3s ease',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '6px'
+                    gap: '6px',
+                    boxShadow: '0 0 20px rgba(120, 0, 255, 0.1)'
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.borderColor = 'rgba(96, 165, 250, 0.5)'
-                    e.target.style.background = 'rgba(96, 165, 250, 0.1)'
+                    e.target.style.borderColor = 'rgba(120, 0, 255, 0.6)'
+                    e.target.style.background = 'rgba(120, 0, 255, 0.1)'
+                    e.target.style.boxShadow = '0 0 30px rgba(120, 0, 255, 0.3)'
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'
-                    e.target.style.background = 'rgba(255, 255, 255, 0.1)'
+                    e.target.style.borderColor = 'rgba(120, 0, 255, 0.3)'
+                    e.target.style.background = 'rgba(0, 0, 0, 0.6)'
+                    e.target.style.boxShadow = '0 0 20px rgba(120, 0, 255, 0.1)'
                   }}
                 >
-                  🤖 {providers.find(p => p.id === selectedProvider)?.name}
-                  <span style={{ fontSize: '10px' }}>▾</span>
+                  ⚡ {providers.find(p => p.id === selectedProvider)?.name}
+                  <span style={{ fontSize: '10px', opacity: 0.7 }}>▾</span>
                 </button>
                 
                 {showProviders && (
@@ -207,11 +264,11 @@ export default function Home() {
                     top: '100%',
                     right: 0,
                     marginTop: '8px',
-                    background: 'rgba(0, 0, 0, 0.9)',
+                    background: 'rgba(0, 0, 0, 0.95)',
                     backdropFilter: 'blur(20px)',
                     borderRadius: '12px',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+                    border: '1px solid rgba(120, 0, 255, 0.3)',
+                    boxShadow: '0 8px 32px rgba(120, 0, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
                     minWidth: '200px',
                     zIndex: 1000
                   }}>
@@ -291,22 +348,51 @@ export default function Home() {
           padding: '40px 20px' 
         }}>
 
-          {/* Chat Interface */}
+          {/* Chat Interface - The Void */}
           <div style={{
-            background: 'rgba(255, 255, 255, 0.05)',
+            background: 'rgba(0, 0, 0, 0.7)',
             backdropFilter: 'blur(20px)',
             borderRadius: '20px',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(120, 0, 255, 0.2)',
             overflow: 'hidden',
-            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)'
+            boxShadow: `
+              0 0 60px rgba(120, 0, 255, 0.1),
+              inset 0 1px 0 rgba(255, 255, 255, 0.05),
+              0 20px 40px rgba(0, 0, 0, 0.6)
+            `,
+            position: 'relative'
           }}>
-            {/* Messages */}
+            {/* Inner glow */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent, rgba(120, 0, 255, 0.5), transparent)',
+              opacity: 0.8
+            }} />
+            {/* Messages - The Oracle's Chamber */}
             <div style={{ 
               height: '500px', 
               overflowY: 'auto', 
               padding: '24px',
-              background: 'rgba(0, 0, 0, 0.2)'
+              background: 'rgba(0, 0, 0, 0.3)',
+              position: 'relative'
             }}>
+              {/* Mystical background pattern */}
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundImage: `
+                  radial-gradient(circle at 25% 25%, rgba(120, 0, 255, 0.03) 0%, transparent 50%),
+                  radial-gradient(circle at 75% 75%, rgba(255, 0, 150, 0.02) 0%, transparent 50%)
+                `,
+                pointerEvents: 'none'
+              }} />
               {messages.map((msg, i) => (
                 <div key={i} style={{
                   display: 'flex',
@@ -319,11 +405,15 @@ export default function Home() {
                     padding: '16px 20px',
                     borderRadius: msg.role === 'user' ? '20px 20px 4px 20px' : '20px 20px 20px 4px',
                     background: msg.role === 'user' 
-                      ? 'linear-gradient(135deg, #60a5fa, #3b82f6)' 
-                      : 'rgba(255, 255, 255, 0.1)',
-                    backdropFilter: 'blur(10px)',
-                    border: msg.role === 'assistant' ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)'
+                      ? 'linear-gradient(135deg, rgba(120, 0, 255, 0.8), rgba(180, 0, 255, 0.6))' 
+                      : 'rgba(0, 0, 0, 0.8)',
+                    backdropFilter: 'blur(15px)',
+                    border: msg.role === 'assistant' 
+                      ? '1px solid rgba(120, 0, 255, 0.3)' 
+                      : '1px solid rgba(255, 0, 150, 0.3)',
+                    boxShadow: msg.role === 'assistant' 
+                      ? '0 0 20px rgba(120, 0, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.4)'
+                      : '0 0 20px rgba(255, 0, 150, 0.1), 0 8px 32px rgba(0, 0, 0, 0.4)'
                   }}>
                     <div style={{
                       fontSize: '15px',
@@ -464,7 +554,7 @@ export default function Home() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask about my work, experience, or how to get in touch..."
+                    placeholder="Speak your desires into the void..."
                     disabled={isLoading}
                     style={{
                       width: '100%',
@@ -532,8 +622,8 @@ export default function Home() {
                 color: 'rgba(255, 255, 255, 0.5)',
                 fontSize: '12px'
               }}>
-                <span>Press Enter to send • Shift+Enter for new line</span>
-                <span>Powered by GPT-4</span>
+                <span>Enter to commune • Shift+Enter for mortal limitations</span>
+                <span>Channeling infinite intelligence</span>
               </div>
             </div>
           </div>
@@ -558,6 +648,33 @@ export default function Home() {
           @keyframes slideIn {
             from { opacity: 0; transform: translateX(-20px); }
             to { opacity: 1; transform: translateX(0); }
+          }
+          
+          @keyframes floatParticles {
+            0% { transform: translateY(0px) translateX(0px); }
+            33% { transform: translateY(-10px) translateX(10px); }
+            66% { transform: translateY(5px) translateX(-5px); }
+            100% { transform: translateY(0px) translateX(0px); }
+          }
+          
+          @keyframes pulse {
+            0%, 100% { 
+              transform: translate(-50%, -50%) scale(1);
+              opacity: 0.3;
+            }
+            50% { 
+              transform: translate(-50%, -50%) scale(1.1);
+              opacity: 0.1;
+            }
+          }
+          
+          @keyframes etherealGlow {
+            0%, 100% { 
+              filter: brightness(1) hue-rotate(0deg);
+            }
+            50% { 
+              filter: brightness(1.2) hue-rotate(10deg);
+            }
           }
         `}</style>
       </div>
