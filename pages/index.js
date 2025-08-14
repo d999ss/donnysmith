@@ -81,12 +81,12 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
             box-sizing: border-box;
           }
           ::selection {
-            background: #1A215E;
-            color: #00FF00;
+            background: #264F78;
+            color: #D4D4D4;
           }
           ::-moz-selection {
-            background: #1A215E;
-            color: #00FF00;
+            background: #264F78;
+            color: #D4D4D4;
           }
           input::placeholder {
             color: #808080;
@@ -103,10 +103,10 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
       <div style={{
         minHeight: '100vh',
         background: '#000000',
-        color: '#00FF00',
-        fontFamily: "'Andale Mono', monospace",
-        fontSize: '12px',
-        lineHeight: '1.2',
+        color: '#D4D4D4',
+        fontFamily: "'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace",
+        fontSize: '11px',
+        lineHeight: '1.1',
         padding: 0,
         margin: 0
       }}>
@@ -124,7 +124,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
           zIndex: 100
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ color: '#00FF00', fontSize: '12px' }}>donnysmith@terminal ~ $</span>
+            <span style={{ color: '#D4D4D4', fontSize: '11px' }}>donnysmith@terminal ~ $</span>
           </div>
           
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -135,10 +135,10 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                 style={{
                   background: '#000000',
                   border: '1px solid #808080',
-                  color: '#00FF00',
+                  color: '#D4D4D4',
                   padding: '4px 8px',
                   borderRadius: '4px',
-                  fontSize: '12px',
+                  fontSize: '11px',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
@@ -173,10 +173,10 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                         textAlign: 'left',
                         padding: '8px 12px',
                         border: 'none',
-                        background: selectedProvider === provider.id ? '#1A215E' : 'transparent',
-                        color: '#00FF00',
+                        background: selectedProvider === provider.id ? '#264F78' : 'transparent',
+                        color: '#D4D4D4',
                         cursor: 'pointer',
-                        fontSize: '12px'
+                        fontSize: '11px'
                       }}
                     >
                       <div>{provider.name}</div>
@@ -202,29 +202,29 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
         }}>
           {/* Login message */}
           <div style={{ 
-            color: '#00FF00', 
-            fontSize: '12px', 
-            marginBottom: '12px',
-            lineHeight: '1.2'
+            color: '#D4D4D4', 
+            fontSize: '11px', 
+            marginBottom: '8px',
+            lineHeight: '1.1'
           }}>
             Last login: {new Date().toDateString()} {new Date().toTimeString().split(' ')[0]}
           </div>
           {messages.map((msg, i) => (
-            <div key={msg.id || i} style={{ marginBottom: '12px' }}>
+            <div key={msg.id || i} style={{ marginBottom: '8px' }}>
               <div style={{ 
-                color: msg.role === 'user' ? '#FF00FF' : '#00FF00',
-                marginBottom: '2px',
-                fontSize: '12px'
+                color: msg.role === 'user' ? '#569CD6' : '#6A9955',
+                marginBottom: '1px',
+                fontSize: '11px'
               }}>
                 {msg.role === 'user' ? 'user@terminal ~ $' : 'assistant@donnysmith ~ $'}
               </div>
               <div style={{
-                color: '#00FF00',
+                color: '#D4D4D4',
                 whiteSpace: 'pre-wrap',
                 wordBreak: 'break-word',
-                paddingLeft: '16px',
-                fontSize: '12px',
-                lineHeight: '1.2'
+                paddingLeft: '12px',
+                fontSize: '11px',
+                lineHeight: '1.1'
               }}>
                 {msg.content}
               </div>
@@ -232,21 +232,21 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
           ))}
           
           {isLoading && (
-            <div style={{ marginBottom: '12px' }}>
+            <div style={{ marginBottom: '8px' }}>
               <div style={{ 
-                color: '#00FF00',
-                marginBottom: '2px',
-                fontSize: '12px'
+                color: '#D4D4D4',
+                marginBottom: '1px',
+                fontSize: '11px'
               }}>
                 assistant@donnysmith ~ $
               </div>
               <div style={{
-                color: '#00FF00',
-                paddingLeft: '16px',
+                color: '#D4D4D4',
+                paddingLeft: '12px',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                fontSize: '12px'
+                fontSize: '11px'
               }}>
                 <span>●</span>
                 <span>●</span>
@@ -257,18 +257,18 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
           )}
           
           {error && (
-            <div style={{ marginBottom: '12px' }}>
+            <div style={{ marginBottom: '8px' }}>
               <div style={{ 
-                color: '#FF0000',
-                marginBottom: '2px',
-                fontSize: '12px'
+                color: '#F44747',
+                marginBottom: '1px',
+                fontSize: '11px'
               }}>
                 error@donnysmith ~ $
               </div>
               <div style={{
-                color: '#FF0000',
-                paddingLeft: '16px',
-                fontSize: '12px'
+                color: '#F44747',
+                paddingLeft: '12px',
+                fontSize: '11px'
               }}>
                 {error.message || 'Something went wrong'}
               </div>
@@ -290,7 +290,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)'
         }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ color: '#FF00FF', fontSize: '12px', flexShrink: 0 }}>
+            <span style={{ color: '#569CD6', fontSize: '11px', flexShrink: 0 }}>
               >
             </span>
             <input
@@ -304,12 +304,12 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                 flex: 1,
                 background: 'transparent',
                 border: 'none',
-                color: '#00FF00',
-                fontSize: '12px',
+                color: '#D4D4D4',
+                fontSize: '11px',
                 fontFamily: 'inherit',
                 outline: 'none',
                 padding: '4px 0',
-                caretColor: '#00FF00'
+                caretColor: '#D4D4D4'
               }}
             />
             {input.trim() && (
@@ -319,8 +319,8 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: '#00FFFF',
-                  fontSize: '12px',
+                  color: '#4EC9B0',
+                  fontSize: '11px',
                   cursor: 'pointer',
                   padding: '4px 8px'
                 }}

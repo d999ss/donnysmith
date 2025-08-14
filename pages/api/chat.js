@@ -7,11 +7,13 @@ export default async function handler(req, res) {
     const { messages } = req.body || {}
     const userMessage = messages?.[messages.length - 1]?.content || 'test'
     
-    // Set headers for streaming
+    // Set headers for Server-Sent Events
     res.writeHead(200, {
       'Content-Type': 'text/plain; charset=utf-8',
-      'Cache-Control': 'no-cache, no-transform',
+      'Cache-Control': 'no-cache',
       'Connection': 'keep-alive',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Content-Type',
     })
 
     // Add small delay to show thinking
@@ -36,12 +38,19 @@ drwxr-xr-x  team-consulting/
 
 What ambitious project can we help you build?`
 
-    // Stream the response
-    res.write(response)
+    // Write the response in chunks to simulate streaming
+    const chunks = response.split('\n')
+    for (const chunk of chunks) {
+      res.write(chunk + '\n')
+      await new Promise(resolve => setTimeout(resolve, 50))
+    }
+    
     res.end()
     
   } catch (error) {
     console.error('Chat error:', error)
-    res.status(500).json({ error: error.message })
+    if (!res.headersSent) {
+      res.status(500).json({ error: error.message })
+    }
   }
 }
