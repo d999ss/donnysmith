@@ -20,24 +20,12 @@ Available for projects! Specializing in:
 
 What can I help you build?`
 
-  // Return OpenAI-compatible response
-  return res.json({
-    id: `chatcmpl-${Date.now()}`,
-    object: 'chat.completion',
-    created: Math.floor(Date.now() / 1000),
-    model: 'terminal-demo',
-    choices: [{
-      index: 0,
-      message: {
-        role: 'assistant',
-        content: response
-      },
-      finish_reason: 'stop'
-    }],
-    usage: {
-      prompt_tokens: userMessage.length,
-      completion_tokens: response.length,
-      total_tokens: userMessage.length + response.length
-    }
-  })
+  // Return streaming response that useChat expects
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+  res.setHeader('Cache-Control', 'no-cache')
+  
+  // Send the complete response as a single chunk
+  res.write(`0:"${response.replace(/\n/g, '\\n').replace(/"/g, '\\"')}"\n`)
+  res.write('d:""\n')
+  res.end()
 }
