@@ -111,7 +111,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
         color: '#D4D4D4',
         fontFamily: "'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace",
         fontSize: '11px',
-        lineHeight: '1.1',
+        lineHeight: '1.4',
         padding: 0,
         margin: 0
       }}>
@@ -229,7 +229,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                 wordBreak: 'break-word',
                 paddingLeft: '12px',
                 fontSize: '11px',
-                lineHeight: '1.1'
+                lineHeight: '1.4'
               }}>
                 {msg.content}
               </div>
