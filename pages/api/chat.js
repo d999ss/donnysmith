@@ -21,12 +21,17 @@ export default async function handler(req, res) {
 ${userMessage}
 
 $ whoami
-Donny Smith - Chief Creative Officer at Bttr
+Donny Smith - Executive Creative Director
+Bored Optimism™ | Park City, UT
+@donnysmith on X | Joined February 2008
 
 $ cat ~/company.txt
-Bttr. A Brand & Digital Experience Company
+@makebttr - A Brand & Digital Experience Company
 Helping ambitious teams design a better future.
-www.makebttr.com
+makebttr.com
+
+$ cat ~/philosophy.txt
+"An object in motion stays in motion."
 
 $ ls -la services/
 drwxr-xr-x  brand-strategy/

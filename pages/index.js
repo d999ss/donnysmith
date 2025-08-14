@@ -21,12 +21,17 @@ export default function Home() {
         id: 'welcome',
         role: 'assistant',
         content: `donnysmith@terminal ~ $ whoami
-Donny Smith - Chief Creative Officer at Bttr
+Donny Smith - Executive Creative Director
+Bored Optimism™ | Park City, UT
+@donnysmith on X | Joined February 2008
 
 donnysmith@terminal ~ $ cat ~/company.txt
-Bttr. A Brand & Digital Experience Company
+@makebttr - A Brand & Digital Experience Company
 Helping ambitious teams design a better future.
-www.makebttr.com
+makebttr.com
+
+donnysmith@terminal ~ $ cat ~/philosophy.txt
+"An object in motion stays in motion."
 
 donnysmith@terminal ~ $ ls -la services/
 drwxr-xr-x  brand-strategy/
