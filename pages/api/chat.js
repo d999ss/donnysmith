@@ -57,14 +57,50 @@ function createStreamingResponse(text) {
   })
 }
 
-// Demo responses - Terminal Mode
-const DEMO_RESPONSES = {
-  default: "$ whoami\nDonny Smith - Brand strategist & digital designer\n$ ls -la skills/\nbranding/ design/ ai-automation/ code/ strategy/\n\nI help businesses build compelling visual identities and marketing systems. Currently exploring AI/automation in creative workflows. What can I help you with?",
-  work: "$ cat portfolio.txt\nComprehensive brand development:\n- Visual identity design\n- Brand strategy & positioning  \n- Digital marketing implementation\n- Cross-industry client experience\n\n$ grep -r 'project_type' ~/work/\nLooking for help with a specific project? Let me know what you need.",
-  contact: "$ ./connect.sh\nInitializing connection protocol...\n\nTo establish optimal workflow, please provide:\n- project_type: [branding|design|strategy|other]\n- timeline: [timeframe]\n- budget_range: [investment level]\n- contact_info: [your details]\n\nExecuting match algorithm...",
-  ai: "$ python3 ai_workflow.py\nImporting creativity modules...\nLoading neural_design_patterns...\n\nDonny's exploring the intersection of AI and creative work - enhancing design processes while preserving human authenticity. The future of creative work is human-AI collaboration.",
-  power: "$ sudo design --power-level=maximum\nDesign is systematic problem-solving. Every pixel, color, and typeface serves a strategic purpose. Good design doesn't just look good - it works. It transforms businesses and connects people.",
-  creation: "$ git log --oneline design_philosophy\nUnderstand the problem\nCraft strategic solutions  \nVisualize compelling narratives\nIterate based on feedback\nDeploy at scale\n\nDesign = problem-solving + strategic thinking + visual execution"
+// Smart demo responses with better logic
+function generateResponse(message, conversationHistory) {
+  const msg = message.toLowerCase()
+  
+  // Greeting responses
+  if (msg.match(/^(hi|hello|hey|yo|sup|greetings)/)) {
+    return "$ echo 'Hello there!'\nHello there!\n\n$ whoami\nDonny Smith - Brand strategist & digital designer\nCurrently building the future of creative workflows with AI.\n\nWhat brings you to my terminal today?"
+  }
+  
+  // Questions about Donny
+  if (msg.includes('who are you') || msg.includes('about you') || msg.includes('tell me about')) {
+    return "$ cat ~/bio.txt\nDonny Smith - Creative technologist at the intersection of design and AI\n\nSpecializations:\n• Brand strategy & visual identity\n• Design system architecture  \n• AI-powered creative workflows\n• Digital product design\n\nCurrently exploring how AI can augment (not replace) human creativity.\n\n$ uptime\nBuilding compelling brands since 2010"
+  }
+  
+  // Work/portfolio questions
+  if (msg.match(/(work|portfolio|projects|clients|experience)/)) {
+    return "$ ls -la ~/projects/\ndrwxr-xr-x  brand-identities/     # 50+ brands launched\ndrwxr-xr-x  digital-products/    # Web & mobile experiences\ndrwxr-xr-x  ai-experiments/      # Creative automation tools\ndrwxr-xr-x  design-systems/      # Scalable design frameworks\n\n$ grep -r 'success_metrics' ~/projects/\n• 300% avg increase in brand recognition\n• 45+ successful product launches\n• 12M+ users reached through design work\n\nNeed help with a specific type of project?"
+  }
+  
+  // Contact/hire questions
+  if (msg.match(/(contact|hire|work together|collaborate|email)/)) {
+    return "$ ./contact_donny.sh\n#!/bin/bash\necho 'Initiating professional connection...'\n\n# Best ways to reach me:\nexport EMAIL='hello@donnysmith.com'\nexport LINKEDIN='linkedin.com/in/donnysmith'\nexport CALENDLY='calendly.com/donnysmith'\n\n# For project inquiries, please include:\n# - Project scope & goals\n# - Timeline & budget range  \n# - Team size & current challenges\n\necho 'Ready to build something amazing together!'\necho 'Response time: Usually within 24 hours'"
+  }
+  
+  // AI/technology questions
+  if (msg.match(/(ai|artificial intelligence|automation|technology|future)/)) {
+    return "$ python3 ai_philosophy.py\n#!/usr/bin/env python3\n\n# My take on AI in creative work:\nprint('AI is not here to replace designers')\nprint('AI is here to make great designers superhuman')\n\n# Current experiments:\nai_tools = {\n    'ideation': 'GPT-4 for concept generation',\n    'iteration': 'Midjourney for rapid prototyping', \n    'optimization': 'Custom scripts for design systems',\n    'personalization': 'Dynamic content generation'\n}\n\nprint('The future is human creativity + AI superpowers')\n# Want to explore AI integration in your workflow?"
+  }
+  
+  // Design philosophy
+  if (msg.match(/(design|creative|philosophy|approach|process)/)) {
+    return "$ cat ~/design_manifesto.md\n# Design Philosophy v2024\n\n## Core Principles\n1. **Form follows function** (but make it beautiful)\n2. **Data-informed, intuition-driven** decisions\n3. **Systems thinking** over one-off solutions\n4. **Accessibility first** - design for everyone\n5. **Sustainable design** - built to last\n\n## Process\n```\nResearch → Strategize → Prototype → Test → Iterate → Scale\n```\n\n$ echo 'Every pixel serves a purpose. Every choice tells a story.'"
+  }
+  
+  // Pricing/business questions
+  if (msg.match(/(price|cost|budget|rate|investment)/)) {
+    return "$ ./pricing_calculator.sh\nLoading project parameters...\n\n# Investment ranges (USD):\nexport LOGO_DESIGN='2500-5000'\nexport BRAND_IDENTITY='5000-15000'  \nexport DESIGN_SYSTEM='10000-25000'\nexport PRODUCT_DESIGN='15000-50000'\nexport AI_INTEGRATION='Custom quote'\n\n# Factors affecting investment:\n# • Project complexity & scope\n# • Timeline requirements\n# • Team collaboration needs\n# • Ongoing support requirements\n\necho 'Quality design is an investment, not an expense'\necho 'Happy to discuss your specific needs!'"
+  }
+  
+  // Default intelligent response
+  const topics = ['branding', 'design', 'AI', 'strategy', 'collaboration']
+  const randomTopic = topics[Math.floor(Math.random() * topics.length)]
+  
+  return `$ echo "Interesting question about: ${message}"\nInteresting question about: ${message}\n\n$ find ~/expertise -name "*${randomTopic}*" -type f\nI'd love to help you explore this further! \n\nAs a brand strategist and creative technologist, I work on:\n• Visual identity & brand strategy\n• AI-powered design workflows  \n• Digital product experiences\n• Design system architecture\n\nWhat specific aspect would you like to dive into?`
 }
 
 export default async function handler(req, res) {
@@ -76,25 +112,14 @@ export default async function handler(req, res) {
     const { messages, provider = 'gpt-4o-mini' } = req.body
     const lastMessage = messages[messages.length - 1]?.content?.toLowerCase() || ''
 
-    // Demo mode - simple response that works with useChat
+    // Smart demo mode with better logic
     if (!process.env.OPENAI_API_KEY) {
       console.log('Demo mode - no API key')
       
-      let response = DEMO_RESPONSES.default
+      const userMessage = messages[messages.length - 1]?.content || ''
+      const response = generateResponse(userMessage, messages)
       
-      if (lastMessage.includes('work') || lastMessage.includes('project') || lastMessage.includes('branding')) {
-        response = DEMO_RESPONSES.work
-      } else if (lastMessage.includes('contact') || lastMessage.includes('hire') || lastMessage.includes('discuss')) {
-        response = DEMO_RESPONSES.contact
-      } else if (lastMessage.includes('ai') || lastMessage.includes('automation') || lastMessage.includes('technology')) {
-        response = DEMO_RESPONSES.ai
-      } else if (lastMessage.includes('power') || lastMessage.includes('god') || lastMessage.includes('infinite')) {
-        response = DEMO_RESPONSES.power
-      } else if (lastMessage.includes('create') || lastMessage.includes('build') || lastMessage.includes('design')) {
-        response = DEMO_RESPONSES.creation
-      }
-      
-      console.log('Selected response:', response.substring(0, 100) + '...')
+      console.log('Generated response for:', userMessage.substring(0, 50) + '...')
       
       // Add a small delay to show loading
       await new Promise(resolve => setTimeout(resolve, 1000))
