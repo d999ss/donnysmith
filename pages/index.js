@@ -78,6 +78,13 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
         <meta name="description" content="Donny Smith - Terminal interface for AI assistant" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <style>{`
+          @font-face {
+            font-family: 'Triakis';
+            src: url('/TriakisFont-Regular.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+          }
           body {
             margin: 0;
             padding: 0;
@@ -115,7 +122,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
         minHeight: '100vh',
         background: '#000000',
         color: '#D4D4D4',
-        fontFamily: "'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace",
+        fontFamily: "'Triakis', 'SF Mono', 'Monaco', monospace",
         fontSize: '11px',
         lineHeight: '1.4',
         padding: 0,
