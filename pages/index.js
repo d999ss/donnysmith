@@ -200,6 +200,15 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
           paddingBottom: '100px',
           background: '#000000'
         }}>
+          {/* Login message */}
+          <div style={{ 
+            color: '#00FF00', 
+            fontSize: '12px', 
+            marginBottom: '12px',
+            lineHeight: '1.2'
+          }}>
+            Last login: {new Date().toDateString()} {new Date().toTimeString().split(' ')[0]}
+          </div>
           {messages.map((msg, i) => (
             <div key={msg.id || i} style={{ marginBottom: '12px' }}>
               <div style={{ 
