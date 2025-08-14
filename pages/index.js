@@ -21,20 +21,20 @@ export default function Home() {
         id: 'welcome',
         role: 'assistant',
         content: `donnysmith@terminal ~ $ whoami
-Donny Smith - Brand strategist, digital designer, AI enthusiast
+Donny Smith - Chief Creative Officer at Bttr
 
-donnysmith@terminal ~ $ cat ~/about.txt
-Building compelling visual identities and strategic brands.
-Currently exploring the intersection of AI and creative workflows.
-Available for brand strategy, design systems, and automation projects.
+donnysmith@terminal ~ $ cat ~/company.txt
+Bttr. A Brand & Digital Experience Company
+Helping ambitious teams design a better future.
+www.makebttr.com
 
 donnysmith@terminal ~ $ ls -la services/
 drwxr-xr-x  brand-strategy/
-drwxr-xr-x  visual-identity/  
-drwxr-xr-x  digital-marketing/
-drwxr-xr-x  ai-automation/
+drwxr-xr-x  digital-experiences/
+drwxr-xr-x  creative-direction/
+drwxr-xr-x  team-consulting/
 
-donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
+donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build for you?"`
       }
     ],
     body: {

@@ -21,15 +21,20 @@ export default async function handler(req, res) {
 ${userMessage}
 
 $ whoami
-Donny Smith - Brand strategist & digital designer
+Donny Smith - Chief Creative Officer at Bttr
 
-$ cat ~/status.txt
-Available for projects! Specializing in:
-• Brand strategy & visual identity
-• AI-powered design workflows
-• Digital product experiences
+$ cat ~/company.txt
+Bttr. A Brand & Digital Experience Company
+Helping ambitious teams design a better future.
+www.makebttr.com
 
-What can I help you build?`
+$ ls -la services/
+drwxr-xr-x  brand-strategy/
+drwxr-xr-x  digital-experiences/  
+drwxr-xr-x  creative-direction/
+drwxr-xr-x  team-consulting/
+
+What ambitious project can we help you build?`
 
     // Stream the response
     res.write(response)
