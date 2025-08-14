@@ -96,29 +96,21 @@ export default async function handler(req, res) {
       
       console.log('Selected response:', response.substring(0, 100) + '...')
       
-      // Create a mock streamText result for demo mode
-      const mockResult = {
-        toDataStreamResponse: () => {
-          const encoder = new TextEncoder()
-          const stream = new ReadableStream({
-            start(controller) {
-              // Send the response as data stream
-              const chunk = `0:"${response.replace(/"/g, '\\"')}"\n`
-              controller.enqueue(encoder.encode(chunk))
-              controller.enqueue(encoder.encode('d:""\n'))
-              controller.close()
-            }
+      // Use actual streamText with a mock provider for demo mode
+      const result = await streamText({
+        model: {
+          provider: 'demo',
+          modelId: 'demo-model',
+          doGenerate: async () => ({
+            text: response,
+            finishReason: 'stop',
+            usage: { promptTokens: 0, completionTokens: response.split(' ').length }
           })
-          
-          return new Response(stream, {
-            headers: {
-              'Content-Type': 'text/plain; charset=utf-8'
-            }
-          })
-        }
-      }
-      
-      return mockResult.toDataStreamResponse()
+        },
+        prompt: lastMessage
+      })
+
+      return result.toDataStreamResponse()
     }
 
     // AI SDK v5 streaming
