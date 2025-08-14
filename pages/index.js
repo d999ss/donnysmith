@@ -259,55 +259,6 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
             Last login: {new Date().toDateString()} {new Date().toTimeString().split(' ')[0]}
           </div>
           
-          {/* Command shortcuts */}
-          <div style={{
-            marginBottom: '16px',
-            padding: '12px',
-            background: '#0a0a0a',
-            border: '1px solid #1a1a1a',
-            borderRadius: '4px'
-          }}>
-            <div style={{ 
-              color: '#808080', 
-              fontSize: '12px',
-              marginBottom: '8px'
-            }}>
-              Quick commands:
-            </div>
-            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-              {['/portfolio', '/contact', '/philosophy', '/clients'].map(cmd => (
-                <button
-                  key={cmd}
-                  onClick={() => handleCommand(cmd)}
-                  style={{
-                    background: '#1a1a1a',
-                    border: '1px solid #404040',
-                    color: '#28FE14',
-                    padding: '6px 12px',
-                    borderRadius: '4px',
-                    fontSize: '12px',
-                    fontFamily: 'inherit',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s',
-                    ':hover': {
-                      background: '#2a2a2a',
-                      borderColor: '#4EC9B0'
-                    }
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.background = '#2a2a2a'
-                    e.target.style.borderColor = '#4EC9B0'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = '#1a1a1a'
-                    e.target.style.borderColor = '#404040'
-                  }}
-                >
-                  {cmd}
-                </button>
-              ))}
-            </div>
-          </div>
           {messages.map((msg, i) => (
             <div key={msg.id || i} style={{ marginBottom: '8px' }}>
               <div style={{ 
