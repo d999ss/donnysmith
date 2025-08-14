@@ -1,5 +1,4 @@
-import { streamText } from 'ai'
-
+// Simple working chat API without AI SDK dependencies
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
@@ -9,13 +8,7 @@ export default async function handler(req, res) {
     const { messages } = req.body
     const userMessage = messages?.[messages.length - 1]?.content || 'Hello'
     
-    // Create a simple streaming response using streamText with a mock provider
-    const result = await streamText({
-      model: {
-        provider: 'demo',
-        modelId: 'demo-terminal',
-        doGenerate: async () => {
-          const response = `$ echo "Message received: ${userMessage}"
+    const response = `$ echo "Message received: ${userMessage}"
 Message received: ${userMessage}
 
 $ whoami  
@@ -29,19 +22,27 @@ Available for projects! Specializing in:
 
 What can I help you build?`
 
-          return {
-            text: response,
-            finishReason: 'stop',
-            usage: { promptTokens: 0, completionTokens: response.length }
-          }
-        }
-      },
-      prompt: userMessage
+    // Return a Server-Sent Events stream that useChat can handle
+    res.writeHead(200, {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
     })
 
-    return result.toDataStreamResponse()
+    // Send the response as chunks
+    const words = response.split(' ')
+    for (let i = 0; i < words.length; i++) {
+      const word = i === 0 ? words[i] : ' ' + words[i]
+      res.write(`0:"${word.replace(/"/g, '\\"')}"\n`)
+      await new Promise(resolve => setTimeout(resolve, 50))
+    }
+    
+    // Signal completion
+    res.write('d:""\n')
+    res.end()
+
   } catch (error) {
     console.error('Chat API error:', error)
-    return res.status(500).json({ error: 'Internal server error' })
+    res.status(500).json({ error: 'Internal server error' })
   }
 }
