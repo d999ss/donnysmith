@@ -7,13 +7,11 @@ export default async function handler(req, res) {
     const { messages } = req.body || {}
     const userMessage = messages?.[messages.length - 1]?.content || 'test'
     
-    // Set headers for Server-Sent Events
+    // Set headers for streaming
     res.writeHead(200, {
       'Content-Type': 'text/plain; charset=utf-8',
       'Cache-Control': 'no-cache',
       'Connection': 'keep-alive',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': 'Content-Type',
     })
 
     // Add small delay to show thinking
@@ -38,13 +36,21 @@ drwxr-xr-x  team-consulting/
 
 What ambitious project can we help you build?`
 
-    // Write the response in chunks to simulate streaming
-    const chunks = response.split('\n')
-    for (const chunk of chunks) {
-      res.write(chunk + '\n')
-      await new Promise(resolve => setTimeout(resolve, 50))
-    }
-    
+    // Stream with proper format for useChat
+    const encoder = new TextEncoder()
+    const stream = new ReadableStream({
+      start(controller) {
+        // Send the response as chunks
+        const chunks = response.split(' ')
+        chunks.forEach((chunk, index) => {
+          controller.enqueue(encoder.encode(chunk + (index < chunks.length - 1 ? ' ' : '')))
+        })
+        controller.close()
+      }
+    })
+
+    // Simple approach - just write the response
+    res.write(response)
     res.end()
     
   } catch (error) {
