@@ -319,7 +319,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
           {messages.map((msg, i) => (
             <div key={msg.id || i} style={{ marginBottom: '8px' }}>
               <div style={{ 
-                color: msg.role === 'user' ? '#569CD6' : '#6A9955',
+                color: '#00FF41',
                 marginBottom: '1px',
                 fontSize: '13px'
               }}>
