@@ -334,10 +334,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
           left: '10px',
           right: '10px',
           background: '#000000',
-          border: '1px solid #808080',
-          borderRadius: '4px',
           padding: '10px',
-          boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.5)',
           zIndex: 200
         }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -376,20 +373,21 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
               type="submit"
               disabled={isLoading || !input.trim()}
               style={{
-                background: input.trim() ? '#264F78' : 'transparent',
-                border: '1px solid #808080',
-                borderRadius: '4px',
-                color: input.trim() ? '#4EC9B0' : '#808080',
-                fontSize: '12px',
-                fontFamily: "'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace",
+                background: 'transparent',
+                border: 'none',
+                color: input.trim() ? '#28FE14' : '#666666',
+                fontSize: '16px',
                 cursor: input.trim() ? 'pointer' : 'default',
-                padding: '6px 12px',
+                padding: '6px',
                 flexShrink: 0,
                 WebkitTapHighlightColor: 'transparent',
-                touchAction: 'manipulation'
+                touchAction: 'manipulation',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
             >
-              SEND
+              ↑
             </button>
           </form>
         </div>
