@@ -37,10 +37,24 @@ Respond in a terminal/command line style format like you're running commands. Be
 
     const response = completion.choices[0].message.content
 
-    // Return simple text response that useChat can handle
-    res.setHeader('Content-Type', 'text/plain')
-    res.setHeader('Cache-Control', 'no-cache')
-    res.status(200).send(response)
+    // Format for useChat hook streaming
+    const encoder = new TextEncoder()
+    const stream = new ReadableStream({
+      start(controller) {
+        // Send each character as a separate chunk in the format useChat expects
+        for (let i = 0; i < response.length; i++) {
+          controller.enqueue(encoder.encode(`0:"${response[i]}"\n`))
+        }
+        controller.close()
+      }
+    })
+
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-cache',
+      },
+    })
 
   } catch (error) {
     console.error('OpenAI API error:', error)
