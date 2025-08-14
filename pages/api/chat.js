@@ -92,22 +92,25 @@ export default async function handler(req, res) {
         response = DEMO_RESPONSES.creation
       }
       
-      // Create a proper streaming response for AI SDK
-      const encoder = new TextEncoder()
-      const stream = new ReadableStream({
-        start(controller) {
-          // Send the complete response as a single chunk in AI SDK format
-          const chunk = `0:${JSON.stringify(response)}\n`
-          controller.enqueue(encoder.encode(chunk))
-          // Send the done signal
-          controller.enqueue(encoder.encode('d:\n'))
-          controller.close()
-        }
-      })
-
-      return new Response(stream, {
+      // Simple approach - just return JSON response that useChat can handle
+      await new Promise(resolve => setTimeout(resolve, 100)) // Small delay to show loading
+      
+      return new Response(JSON.stringify({
+        id: 'demo-' + Date.now(),
+        object: 'chat.completion',
+        created: Date.now(),
+        model: 'demo',
+        choices: [{
+          index: 0,
+          message: {
+            role: 'assistant',
+            content: response
+          },
+          finish_reason: 'stop'
+        }]
+      }), {
         headers: {
-          'Content-Type': 'text/plain; charset=utf-8'
+          'Content-Type': 'application/json'
         }
       })
     }
