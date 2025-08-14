@@ -167,30 +167,9 @@ export default function Home() {
             margin: '0 auto',
             padding: '20px',
             display: 'flex',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-end',
             alignItems: 'center'
           }}>
-            <div>
-              <h1 style={{
-                fontSize: '24px',
-                fontWeight: '700',
-                margin: '0',
-                background: 'linear-gradient(135deg, #60a5fa, #a78bfa)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}>
-                Donny Smith
-              </h1>
-              <p style={{
-                margin: '2px 0 0 0',
-                color: 'rgba(255, 255, 255, 0.6)',
-                fontSize: '14px',
-                fontWeight: '400'
-              }}>
-                Digital Branding & Creative Technology
-              </p>
-            </div>
             <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
               {/* AI Provider Selector */}
               <div style={{ position: 'relative' }}>
@@ -311,32 +290,6 @@ export default function Home() {
           margin: '0 auto', 
           padding: '40px 20px' 
         }}>
-          {/* Hero Section */}
-          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-            <div style={{
-              fontSize: '48px',
-              fontWeight: '300',
-              marginBottom: '16px',
-              background: 'linear-gradient(135deg, #ffffff, #a78bfa, #60a5fa)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              lineHeight: '1.2'
-            }}>
-              Meet My AI Assistant
-            </div>
-            <p style={{
-              fontSize: '18px',
-              color: 'rgba(255, 255, 255, 0.7)',
-              maxWidth: '600px',
-              margin: '0 auto 32px',
-              lineHeight: '1.6',
-              fontWeight: '400'
-            }}>
-              Chat with my AI to learn about my work in digital branding, creative projects, 
-              and how we might collaborate. It knows my background and can help connect us.
-            </p>
-          </div>
 
           {/* Chat Interface */}
           <div style={{
