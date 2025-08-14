@@ -57,14 +57,14 @@ function createStreamingResponse(text) {
   })
 }
 
-// Demo responses - Professional Assistant Mode
+// Demo responses - Terminal Mode
 const DEMO_RESPONSES = {
-  default: "Thanks for visiting! I'm Donny's AI assistant, here to help you learn about his design work and expertise. Donny is a brand strategist and digital designer who helps businesses create compelling visual identities and marketing solutions. What would you like to know about his work?",
-  work: "Donny specializes in comprehensive brand development - from initial strategy and visual identity design to digital marketing implementation. He's worked with clients across various industries, creating memorable brands that drive business growth. Are you looking for help with a specific type of project?",
-  contact: "I'd be happy to help you connect with Donny! To better understand how he might assist you, could you share some details about your project? What type of branding or design work are you considering, what's your timeline, and do you have a budget range in mind?",
-  ai: "Great question! Donny is passionate about integrating AI and automation into creative workflows. He's been exploring how AI tools can enhance design processes while maintaining the human touch that makes brands authentic. He's always interested in discussing the intersection of technology and creativity.",
-  power: "Donny believes in the power of good design to transform businesses. Through strategic branding and thoughtful visual communication, he helps companies connect more effectively with their audiences and achieve their goals.",
-  creation: "Design is problem-solving at its core. Donny approaches each project by first understanding the challenge, then crafting solutions that are both visually compelling and strategically sound. Every element serves a purpose in telling the brand's story."
+  default: "$ whoami\nDonny Smith - Brand strategist & digital designer\n$ ls -la skills/\nbranding/ design/ ai-automation/ code/ strategy/\n\nI help businesses build compelling visual identities and marketing systems. Currently exploring AI/automation in creative workflows. What can I help you with?",
+  work: "$ cat portfolio.txt\nComprehensive brand development:\n- Visual identity design\n- Brand strategy & positioning  \n- Digital marketing implementation\n- Cross-industry client experience\n\n$ grep -r 'project_type' ~/work/\nLooking for help with a specific project? Let me know what you need.",
+  contact: "$ ./connect.sh\nInitializing connection protocol...\n\nTo establish optimal workflow, please provide:\n- project_type: [branding|design|strategy|other]\n- timeline: [timeframe]\n- budget_range: [investment level]\n- contact_info: [your details]\n\nExecuting match algorithm...",
+  ai: "$ python3 ai_workflow.py\nImporting creativity modules...\nLoading neural_design_patterns...\n\nDonny's exploring the intersection of AI and creative work - enhancing design processes while preserving human authenticity. The future of creative work is human-AI collaboration.",
+  power: "$ sudo design --power-level=maximum\nDesign is systematic problem-solving. Every pixel, color, and typeface serves a strategic purpose. Good design doesn't just look good - it works. It transforms businesses and connects people.",
+  creation: "$ git log --oneline design_philosophy\nUnderstand the problem\nCraft strategic solutions  \nVisualize compelling narratives\nIterate based on feedback\nDeploy at scale\n\nDesign = problem-solving + strategic thinking + visual execution"
 }
 
 export default async function handler(req, res) {
