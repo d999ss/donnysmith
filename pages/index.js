@@ -21,7 +21,15 @@ export default function Home() {
       {
         id: 'welcome',
         role: 'assistant',
-        content: `donnysmith@terminal ~ $ whoami
+        content: `
+██████╗ ████████╗████████╗██████╗ 
+██╔══██╗╚══██╔══╝╚══██╔══╝██╔══██╗
+██████╔╝   ██║      ██║   ██████╔╝
+██╔══██╗   ██║      ██║   ██╔══██╗
+██████╔╝   ██║      ██║   ██║  ██║
+╚═════╝    ╚═╝      ╚═╝   ╚═╝  ╚═╝
+
+donnysmith@terminal ~ $ whoami
 Donny Smith - Executive Creative Director
 Bored Optimism™ | Park City, UT
 @donnysmith on X | Joined February 2008
