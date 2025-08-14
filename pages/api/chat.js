@@ -2,64 +2,52 @@ import { openai } from '@ai-sdk/openai'
 import { streamText } from 'ai'
 
 export default async function handler(req, res) {
+  // Set CORS headers first
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'POST')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  
+  if (req.method === 'OPTIONS') {
+    res.status(200).end()
+    return
+  }
+  
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
   try {
-    const { messages, provider = 'gpt-4o-mini' } = req.body
+    // Always return demo response for now to test
+    const { messages } = req.body
+    const userMessage = messages?.[messages.length - 1]?.content || 'test'
     
-    // Demo mode - simple working response
-    if (!process.env.OPENAI_API_KEY) {
-      const userMessage = messages[messages.length - 1]?.content || 'hello'
-      
-      let response = `$ whoami
-Donny Smith - Brand strategist & AI enthusiast
+    const response = `$ echo "Hello! You said: ${userMessage}"\nHello! You said: ${userMessage}\n\n$ whoami\nDonny Smith - Brand strategist\n\nThis is a simple test response to verify the API is working.`
 
-$ echo "Thanks for your message: ${userMessage}"
-Thanks for your message: ${userMessage}
-
-$ cat ~/services.txt
-• Brand strategy & visual identity
-• AI-powered design workflows
-• Digital product experiences
-
-How can I help you today?`
-
-      // Simple successful response
-      return res.json({
-        id: 'demo-123',
-        object: 'chat.completion', 
-        created: Math.floor(Date.now() / 1000),
-        model: 'demo',
-        choices: [{
-          index: 0,
-          message: {
-            role: 'assistant',
-            content: response
-          },
-          finish_reason: 'stop'
-        }]
-      })
-    }
-
-    // Real AI when API key is available
-    const result = await streamText({
-      model: openai(provider),
-      messages: messages.map(msg => ({
-        role: msg.role,
-        content: msg.content
-      })),
-      temperature: 0.7,
-      maxTokens: 500,
+    return res.json({
+      id: 'demo-' + Date.now(),
+      object: 'chat.completion',
+      created: Math.floor(Date.now() / 1000),
+      model: 'demo',
+      choices: [{
+        index: 0,
+        message: {
+          role: 'assistant',
+          content: response
+        },
+        finish_reason: 'stop'
+      }],
+      usage: {
+        prompt_tokens: 10,
+        completion_tokens: 20,
+        total_tokens: 30
+      }
     })
-
-    return result.toDataStreamResponse()
+    
   } catch (error) {
     console.error('API error:', error)
     return res.status(500).json({ 
-      error: 'Failed to generate response',
-      details: error.message 
+      error: 'API Error',
+      message: error.message 
     })
   }
 }
