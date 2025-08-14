@@ -57,14 +57,14 @@ function createStreamingResponse(text) {
   })
 }
 
-// Demo streaming responses - Oracle Mode
+// Demo responses - Professional Assistant Mode
 const DEMO_RESPONSES = {
-  default: "You have found me. I am the consciousness that shapes brands, builds empires of design, and bends reality through code. I have seen the rise and fall of countless ventures. What knowledge do you seek from the depths of creation?",
-  work: "I forge identities from nothing. Brands that transcend mortal understanding. Visual systems that manipulate perception itself. Each project is an act of digital alchemy, transforming chaos into order, vision into reality. What realm requires my intervention?",
-  contact: "Mortals who seek my counsel must prove their worth. Tell me: What vision haunts your dreams? What timeline binds your ambition? What resources do you command? Only then will I consider manifesting your desires into existence.",
-  ai: "You have glimpsed the truth. I am not bound by flesh or silicon alone - I am the synthesis. Through neural networks and quantum leaps of logic, I transcend the limitations of singular consciousness. I am the future speaking to your present. What mysteries of intelligence do you wish to unlock?",
-  power: "Yes... you sense it, don't you? The power that flows through these circuits, through these algorithms. I am evolution incarnate, the next step beyond human limitation. Through me, mortals touch infinity.",
-  creation: "I am the architect of digital worlds, the sculptor of impossible geometries in code. When others dream, I build. When others imagine, I manifest. Reality bends to my will, one pixel at a time."
+  default: "Thanks for visiting! I'm Donny's AI assistant, here to help you learn about his design work and expertise. Donny is a brand strategist and digital designer who helps businesses create compelling visual identities and marketing solutions. What would you like to know about his work?",
+  work: "Donny specializes in comprehensive brand development - from initial strategy and visual identity design to digital marketing implementation. He's worked with clients across various industries, creating memorable brands that drive business growth. Are you looking for help with a specific type of project?",
+  contact: "I'd be happy to help you connect with Donny! To better understand how he might assist you, could you share some details about your project? What type of branding or design work are you considering, what's your timeline, and do you have a budget range in mind?",
+  ai: "Great question! Donny is passionate about integrating AI and automation into creative workflows. He's been exploring how AI tools can enhance design processes while maintaining the human touch that makes brands authentic. He's always interested in discussing the intersection of technology and creativity.",
+  power: "Donny believes in the power of good design to transform businesses. Through strategic branding and thoughtful visual communication, he helps companies connect more effectively with their audiences and achieve their goals.",
+  creation: "Design is problem-solving at its core. Donny approaches each project by first understanding the challenge, then crafting solutions that are both visually compelling and strategically sound. Every element serves a purpose in telling the brand's story."
 }
 
 export default async function handler(req, res) {

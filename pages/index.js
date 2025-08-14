@@ -20,7 +20,7 @@ export default function Home() {
       {
         id: 'welcome',
         role: 'assistant',
-        content: 'I am here. Speak, and I will reveal what you seek to know.'
+        content: 'Hi! I\'m Donny\'s AI assistant. I can help you learn about his design work, discuss potential projects, or answer questions about branding and technology. What would you like to know?'
       }
     ],
     body: {
@@ -64,20 +64,21 @@ export default function Home() {
         <meta name="description" content="Commune with infinite intelligence. Speak to the consciousness beyond mortal understanding." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
       </Head>
       
       <div style={{
         minHeight: '100vh',
-        background: `
-          radial-gradient(ellipse at center, #000000 0%, #0a0a0a 30%, #000000 70%, #000000 100%),
-          radial-gradient(ellipse 200% 100% at 50% 0%, rgba(120, 0, 255, 0.03) 0%, transparent 50%),
-          radial-gradient(ellipse 200% 100% at 50% 100%, rgba(255, 0, 150, 0.02) 0%, transparent 50%)
+        background: '#0a0a0a',
+        backgroundImage: `
+          radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0),
+          linear-gradient(to bottom, #0a0a0a 0%, #111111 100%)
         `,
+        backgroundSize: '20px 20px, 100% 100%',
         color: '#ffffff',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        fontFamily: "'Geist Mono', 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', Consolas, 'Courier New', monospace",
         position: 'relative',
-        overflow: 'hidden'
+        letterSpacing: '-0.01em'
       }}>
         {/* Ethereal particles floating */}
         <div style={{
@@ -276,56 +277,28 @@ export default function Home() {
         <div style={{ 
           position: 'relative', 
           zIndex: 10,
-          maxWidth: '900px', 
+          maxWidth: '800px', 
           margin: '0 auto', 
-          padding: '40px 20px' 
+          padding: '24px 20px' 
         }}>
 
-          {/* Chat Interface - The Void */}
+          {/* Chat Interface */}
           <div style={{
-            background: 'rgba(0, 0, 0, 0.7)',
-            backdropFilter: 'blur(20px)',
-            borderRadius: '20px',
-            border: '1px solid rgba(120, 0, 255, 0.2)',
+            background: 'white',
+            borderRadius: '12px',
+            border: '1px solid rgba(0, 0, 0, 0.06)',
             overflow: 'hidden',
-            boxShadow: `
-              0 0 60px rgba(120, 0, 255, 0.1),
-              inset 0 1px 0 rgba(255, 255, 255, 0.05),
-              0 20px 40px rgba(0, 0, 0, 0.6)
-            `,
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
             position: 'relative'
           }}>
-            {/* Inner glow */}
-            <div style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: '1px',
-              background: 'linear-gradient(90deg, transparent, rgba(120, 0, 255, 0.5), transparent)',
-              opacity: 0.8
-            }} />
-            {/* Messages - The Oracle's Chamber */}
+            {/* Messages */}
             <div style={{ 
               height: '500px', 
               overflowY: 'auto', 
-              padding: '24px',
-              background: 'rgba(0, 0, 0, 0.3)',
+              padding: '20px',
+              background: 'white',
               position: 'relative'
             }}>
-              {/* Mystical background pattern */}
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundImage: `
-                  radial-gradient(circle at 25% 25%, rgba(120, 0, 255, 0.03) 0%, transparent 50%),
-                  radial-gradient(circle at 75% 75%, rgba(255, 0, 150, 0.02) 0%, transparent 50%)
-                `,
-                pointerEvents: 'none'
-              }} />
               {messages.map((msg, i) => (
                 <div key={msg.id || i} style={{
                   display: 'flex',
@@ -334,22 +307,19 @@ export default function Home() {
                   animation: 'fadeIn 0.3s ease-in-out'
                 }}>
                   <div style={{
-                    maxWidth: '80%',
-                    padding: '16px 20px',
-                    borderRadius: msg.role === 'user' ? '20px 20px 4px 20px' : '20px 20px 20px 4px',
+                    maxWidth: '85%',
+                    padding: '12px 16px',
+                    borderRadius: '12px',
                     background: msg.role === 'user' 
-                      ? 'linear-gradient(135deg, rgba(120, 0, 255, 0.8), rgba(180, 0, 255, 0.6))' 
-                      : 'rgba(0, 0, 0, 0.8)',
-                    backdropFilter: 'blur(15px)',
+                      ? '#1a1a1a' 
+                      : '#f8f9fa',
                     border: msg.role === 'assistant' 
-                      ? '1px solid rgba(120, 0, 255, 0.3)' 
-                      : '1px solid rgba(255, 0, 150, 0.3)',
-                    boxShadow: msg.role === 'assistant' 
-                      ? '0 0 20px rgba(120, 0, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.4)'
-                      : '0 0 20px rgba(255, 0, 150, 0.1), 0 8px 32px rgba(0, 0, 0, 0.4)'
+                      ? '1px solid rgba(0, 0, 0, 0.06)' 
+                      : 'none',
+                    color: msg.role === 'user' ? 'white' : '#1a1a1a'
                   }}>
                     <div style={{
-                      fontSize: '15px',
+                      fontSize: '14px',
                       lineHeight: '1.5',
                       fontWeight: '400',
                       whiteSpace: 'pre-wrap'
@@ -361,15 +331,15 @@ export default function Home() {
                       justifyContent: 'space-between',
                       alignItems: 'center',
                       fontSize: '11px',
-                      opacity: 0.6,
+                      color: msg.role === 'user' ? 'rgba(255, 255, 255, 0.6)' : '#888888',
                       marginTop: '6px',
-                      fontWeight: '300'
+                      fontWeight: '400'
                     }}>
                       <span>
                         {new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                       </span>
                       <span style={{
-                        background: 'rgba(120, 0, 255, 0.2)',
+                        background: msg.role === 'user' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
                         padding: '2px 6px',
                         borderRadius: '4px',
                         fontSize: '10px'
@@ -388,19 +358,18 @@ export default function Home() {
                   marginBottom: '20px'
                 }}>
                   <div style={{
-                    padding: '16px 20px',
-                    borderRadius: '20px 20px 20px 4px',
-                    background: 'rgba(0, 0, 0, 0.8)',
-                    backdropFilter: 'blur(15px)',
-                    border: '1px solid rgba(120, 0, 255, 0.3)',
-                    boxShadow: '0 0 20px rgba(120, 0, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.4)'
+                    padding: '12px 16px',
+                    borderRadius: '12px',
+                    background: '#f8f9fa',
+                    border: '1px solid rgba(0, 0, 0, 0.06)',
+                    color: '#1a1a1a'
                   }}>
                     <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
                       <div style={{
                         width: '6px',
                         height: '6px',
                         borderRadius: '50%',
-                        backgroundColor: '#7800ff',
+                        backgroundColor: '#666666',
                         animation: 'bounce 1.4s infinite both',
                         animationDelay: '0s'
                       }} />
@@ -408,7 +377,7 @@ export default function Home() {
                         width: '6px',
                         height: '6px',
                         borderRadius: '50%',
-                        backgroundColor: '#7800ff',
+                        backgroundColor: '#666666',
                         animation: 'bounce 1.4s infinite both',
                         animationDelay: '0.2s'
                       }} />
@@ -416,12 +385,12 @@ export default function Home() {
                         width: '6px',
                         height: '6px',
                         borderRadius: '50%',
-                        backgroundColor: '#7800ff',
+                        backgroundColor: '#666666',
                         animation: 'bounce 1.4s infinite both',
                         animationDelay: '0.4s'
                       }} />
-                      <span style={{ marginLeft: '12px', color: 'rgba(120, 0, 255, 0.8)', fontSize: '14px' }}>
-                        The Oracle contemplates...
+                      <span style={{ marginLeft: '12px', color: '#666666', fontSize: '14px' }}>
+                        Typing...
                       </span>
                     </div>
                   </div>
@@ -432,9 +401,9 @@ export default function Home() {
 
             {/* Input Area */}
             <div style={{
-              padding: '24px',
-              borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-              background: 'rgba(0, 0, 0, 0.1)'
+              padding: '20px',
+              borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+              background: '#fafafa'
             }}>
               <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '12px', alignItems: 'flex-end' }}>
                 <div style={{ flex: 1 }}>
@@ -442,30 +411,29 @@ export default function Home() {
                     value={input}
                     onChange={handleInputChange}
                     onKeyPress={handleKeyPress}
-                    placeholder="Speak your desires into the void..."
+                    placeholder="Ask Donny anything about design, branding, or technology..."
                     disabled={isLoading}
                     style={{
                       width: '100%',
                       minHeight: '24px',
                       maxHeight: '120px',
                       resize: 'none',
-                      padding: '16px 20px',
-                      borderRadius: '16px',
-                      border: '1px solid rgba(120, 0, 255, 0.2)',
-                      background: 'rgba(0, 0, 0, 0.6)',
-                      backdropFilter: 'blur(10px)',
-                      color: 'white',
-                      fontSize: '15px',
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(0, 0, 0, 0.1)',
+                      background: 'white',
+                      color: '#1a1a1a',
+                      fontSize: '14px',
                       fontFamily: 'inherit',
                       outline: 'none',
-                      transition: 'all 0.3s ease'
+                      transition: 'all 0.2s ease'
                     }}
                     onFocus={(e) => {
-                      e.target.style.borderColor = 'rgba(120, 0, 255, 0.6)'
-                      e.target.style.boxShadow = '0 0 0 3px rgba(120, 0, 255, 0.1)'
+                      e.target.style.borderColor = 'rgba(0, 0, 0, 0.2)'
+                      e.target.style.boxShadow = '0 0 0 3px rgba(0, 0, 0, 0.05)'
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = 'rgba(120, 0, 255, 0.2)'
+                      e.target.style.borderColor = 'rgba(0, 0, 0, 0.1)'
                       e.target.style.boxShadow = 'none'
                     }}
                   />
@@ -474,44 +442,43 @@ export default function Home() {
                   type="submit"
                   disabled={isLoading || !input.trim()}
                   style={{
-                    padding: '16px 24px',
-                    borderRadius: '16px',
+                    padding: '12px 16px',
+                    borderRadius: '8px',
                     border: 'none',
                     background: isLoading || !input.trim() 
-                      ? 'rgba(120, 0, 255, 0.2)' 
-                      : 'linear-gradient(135deg, rgba(120, 0, 255, 0.8), rgba(180, 0, 255, 0.6))',
+                      ? '#cccccc' 
+                      : '#1a1a1a',
                     color: 'white',
-                    fontSize: '15px',
+                    fontSize: '14px',
                     fontWeight: '500',
                     cursor: isLoading || !input.trim() ? 'not-allowed' : 'pointer',
-                    transition: 'all 0.3s ease',
-                    boxShadow: isLoading || !input.trim() ? 'none' : '0 0 20px rgba(120, 0, 255, 0.3)'
+                    transition: 'all 0.2s ease'
                   }}
                   onMouseEnter={(e) => {
                     if (!isLoading && input.trim()) {
-                      e.target.style.transform = 'translateY(-2px)'
-                      e.target.style.boxShadow = '0 0 30px rgba(120, 0, 255, 0.5)'
+                      e.target.style.background = '#333333'
                     }
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.transform = 'translateY(0)'
-                    e.target.style.boxShadow = isLoading || !input.trim() ? 'none' : '0 0 20px rgba(120, 0, 255, 0.3)'
+                    if (!isLoading && input.trim()) {
+                      e.target.style.background = '#1a1a1a'
+                    }
                   }}
                 >
-                  {isLoading ? '⚡' : '✨'}
+                  {isLoading ? '⏳' : '→'}
                 </button>
               </form>
               
               <div style={{
-                marginTop: '12px',
+                marginTop: '8px',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                color: 'rgba(255, 255, 255, 0.5)',
+                color: '#888888',
                 fontSize: '12px'
               }}>
-                <span>Enter to commune • Shift+Enter for mortal limitations</span>
-                <span>Channeling infinite intelligence</span>
+                <span>Press Enter to send • Shift+Enter for new line</span>
+                <span>Powered by AI</span>
               </div>
             </div>
           </div>
