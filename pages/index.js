@@ -107,7 +107,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
             content: '█';
             display: inline-block;
             animation: blink 1s infinite;
-            color: #D4D4D4;
+            color: #38FE27;
             margin-left: 2px;
           }
           body {
