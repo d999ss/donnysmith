@@ -92,17 +92,15 @@ export default async function handler(req, res) {
         response = DEMO_RESPONSES.creation
       }
       
-      // Create streaming response compatible with AI SDK
+      // Create a proper streaming response for AI SDK
       const encoder = new TextEncoder()
       const stream = new ReadableStream({
         start(controller) {
-          // Send chunks in the format expected by AI SDK
-          const lines = response.split('')
-          lines.forEach((char, index) => {
-            const chunk = `0:"${char}"\n`
-            controller.enqueue(encoder.encode(chunk))
-          })
-          controller.enqueue(encoder.encode('d:""\n'))
+          // Send the complete response as a single chunk in AI SDK format
+          const chunk = `0:${JSON.stringify(response)}\n`
+          controller.enqueue(encoder.encode(chunk))
+          // Send the done signal
+          controller.enqueue(encoder.encode('d:\n'))
           controller.close()
         }
       })
