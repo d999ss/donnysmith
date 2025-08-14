@@ -160,7 +160,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
         {/* Terminal Header Bar */}
         <div style={{
           background: '#000000',
-          borderBottom: '1px solid #808080',
+          borderBottom: '0.5px solid #808080',
           padding: '8px 12px',
           display: 'flex',
           justifyContent: 'space-between',
