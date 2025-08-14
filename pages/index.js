@@ -1,22 +1,32 @@
 import { useState, useEffect, useRef } from 'react'
 import Head from 'next/head'
+import { useChat } from '@ai-sdk/react'
 
 export default function Home() {
-  const [messages, setMessages] = useState([
-    { 
-      role: 'assistant', 
-      content: "I am here. Speak, and I will reveal what you seek to know.",
-      timestamp: new Date()
-    }
-  ])
-  const [input, setInput] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [isStreaming, setIsStreaming] = useState(false)
-  const [currentStreamingMessage, setCurrentStreamingMessage] = useState('')
   const [selectedProvider, setSelectedProvider] = useState('gpt-4o-mini')
   const [showProviders, setShowProviders] = useState(false)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const messagesEndRef = useRef(null)
+  
+  const { 
+    messages, 
+    input, 
+    handleInputChange, 
+    handleSubmit, 
+    isLoading 
+  } = useChat({
+    api: '/api/chat',
+    initialMessages: [
+      {
+        id: 'welcome',
+        role: 'assistant',
+        content: 'I am here. Speak, and I will reveal what you seek to know.'
+      }
+    ],
+    body: {
+      provider: selectedProvider
+    }
+  })
   
   const providers = [
     { id: 'gpt-4o-mini', name: 'GPT-4o Mini', speed: 'Fast', cost: 'Low' },
@@ -40,87 +50,10 @@ export default function Home() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
-  // Streaming message handler
-  const handleStreamingMessage = async (messages, userMessage) => {
-    setIsStreaming(true)
-    setCurrentStreamingMessage('')
-
-    try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          messages: [...messages, userMessage], 
-          provider: selectedProvider, 
-          stream: true 
-        })
-      })
-
-      if (!response.ok) throw new Error('Stream failed')
-
-      const reader = response.body.getReader()
-      const decoder = new TextDecoder()
-      let streamedContent = ''
-
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-
-        const chunk = decoder.decode(value)
-        const lines = chunk.split('\n')
-
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            try {
-              const data = JSON.parse(line.slice(6))
-              if (data.text && !data.done) {
-                streamedContent += data.text
-                setCurrentStreamingMessage(streamedContent)
-              } else if (data.done) {
-                setMessages(prev => [...prev, {
-                  role: 'assistant',
-                  content: streamedContent,
-                  timestamp: new Date(),
-                  provider: selectedProvider
-                }])
-                setCurrentStreamingMessage('')
-                setIsStreaming(false)
-                return
-              }
-            } catch (e) {
-              console.log('Parse error:', e)
-            }
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Streaming error:', error)
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: '⚠️ Connection error - please try again!', 
-        timestamp: new Date() 
-      }])
-      setIsStreaming(false)
-      setCurrentStreamingMessage('')
-    }
-  }
-
-  const sendMessage = async () => {
-    if (!input.trim() || isLoading || isStreaming) return
-
-    const userMessage = { role: 'user', content: input, timestamp: new Date() }
-    setMessages(prev => [...prev, userMessage])
-    setInput('')
-    setIsLoading(true)
-
-    await handleStreamingMessage(messages, userMessage)
-    setIsLoading(false)
-  }
-
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      sendMessage()
+      handleSubmit(e)
     }
   }
 
@@ -394,7 +327,7 @@ export default function Home() {
                 pointerEvents: 'none'
               }} />
               {messages.map((msg, i) => (
-                <div key={i} style={{
+                <div key={msg.id || i} style={{
                   display: 'flex',
                   justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
                   marginBottom: '20px',
@@ -432,69 +365,23 @@ export default function Home() {
                       marginTop: '6px',
                       fontWeight: '300'
                     }}>
-                      <span>{msg.timestamp?.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                      {msg.provider && (
-                        <span style={{
-                          background: 'rgba(96, 165, 250, 0.2)',
-                          padding: '2px 6px',
-                          borderRadius: '4px',
-                          fontSize: '10px'
-                        }}>
-                          {msg.provider}
-                        </span>
-                      )}
+                      <span>
+                        {new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                      </span>
+                      <span style={{
+                        background: 'rgba(120, 0, 255, 0.2)',
+                        padding: '2px 6px',
+                        borderRadius: '4px',
+                        fontSize: '10px'
+                      }}>
+                        {providers.find(p => p.id === selectedProvider)?.name}
+                      </span>
                     </div>
                   </div>
                 </div>
               ))}
               
-              {/* Streaming message */}
-              {isStreaming && currentStreamingMessage && (
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  marginBottom: '20px',
-                  animation: 'fadeIn 0.3s ease-in-out'
-                }}>
-                  <div style={{
-                    maxWidth: '80%',
-                    padding: '16px 20px',
-                    borderRadius: '20px 20px 20px 4px',
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(96, 165, 250, 0.3)',
-                    boxShadow: '0 4px 12px rgba(96, 165, 250, 0.1)'
-                  }}>
-                    <div style={{
-                      fontSize: '15px',
-                      lineHeight: '1.5',
-                      fontWeight: '400',
-                      whiteSpace: 'pre-wrap'
-                    }}>
-                      {currentStreamingMessage}
-                      <span style={{
-                        display: 'inline-block',
-                        width: '2px',
-                        height: '18px',
-                        background: '#60a5fa',
-                        marginLeft: '2px',
-                        animation: 'blink 1s infinite'
-                      }} />
-                    </div>
-                    <div style={{
-                      fontSize: '11px',
-                      opacity: 0.6,
-                      marginTop: '6px',
-                      fontWeight: '300',
-                      color: '#60a5fa'
-                    }}>
-                      Streaming from {providers.find(p => p.id === selectedProvider)?.name}...
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              {isLoading && !isStreaming && (
+              {isLoading && (
                 <div style={{
                   display: 'flex',
                   justifyContent: 'flex-start',
@@ -503,16 +390,17 @@ export default function Home() {
                   <div style={{
                     padding: '16px 20px',
                     borderRadius: '20px 20px 20px 4px',
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                    background: 'rgba(0, 0, 0, 0.8)',
+                    backdropFilter: 'blur(15px)',
+                    border: '1px solid rgba(120, 0, 255, 0.3)',
+                    boxShadow: '0 0 20px rgba(120, 0, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.4)'
                   }}>
                     <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
                       <div style={{
                         width: '6px',
                         height: '6px',
                         borderRadius: '50%',
-                        backgroundColor: '#60a5fa',
+                        backgroundColor: '#7800ff',
                         animation: 'bounce 1.4s infinite both',
                         animationDelay: '0s'
                       }} />
@@ -520,7 +408,7 @@ export default function Home() {
                         width: '6px',
                         height: '6px',
                         borderRadius: '50%',
-                        backgroundColor: '#60a5fa',
+                        backgroundColor: '#7800ff',
                         animation: 'bounce 1.4s infinite both',
                         animationDelay: '0.2s'
                       }} />
@@ -528,12 +416,12 @@ export default function Home() {
                         width: '6px',
                         height: '6px',
                         borderRadius: '50%',
-                        backgroundColor: '#60a5fa',
+                        backgroundColor: '#7800ff',
                         animation: 'bounce 1.4s infinite both',
                         animationDelay: '0.4s'
                       }} />
-                      <span style={{ marginLeft: '12px', color: 'rgba(255, 255, 255, 0.6)', fontSize: '14px' }}>
-                        AI is thinking...
+                      <span style={{ marginLeft: '12px', color: 'rgba(120, 0, 255, 0.8)', fontSize: '14px' }}>
+                        The Oracle contemplates...
                       </span>
                     </div>
                   </div>
@@ -548,11 +436,11 @@ export default function Home() {
               borderTop: '1px solid rgba(255, 255, 255, 0.1)',
               background: 'rgba(0, 0, 0, 0.1)'
             }}>
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-end' }}>
+              <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '12px', alignItems: 'flex-end' }}>
                 <div style={{ flex: 1 }}>
                   <textarea
                     value={input}
-                    onChange={(e) => setInput(e.target.value)}
+                    onChange={handleInputChange}
                     onKeyPress={handleKeyPress}
                     placeholder="Speak your desires into the void..."
                     disabled={isLoading}
@@ -563,56 +451,56 @@ export default function Home() {
                       resize: 'none',
                       padding: '16px 20px',
                       borderRadius: '16px',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      background: 'rgba(255, 255, 255, 0.1)',
+                      border: '1px solid rgba(120, 0, 255, 0.2)',
+                      background: 'rgba(0, 0, 0, 0.6)',
                       backdropFilter: 'blur(10px)',
                       color: 'white',
                       fontSize: '15px',
                       fontFamily: 'inherit',
                       outline: 'none',
-                      transition: 'all 0.2s ease'
+                      transition: 'all 0.3s ease'
                     }}
                     onFocus={(e) => {
-                      e.target.style.borderColor = 'rgba(96, 165, 250, 0.5)'
-                      e.target.style.boxShadow = '0 0 0 3px rgba(96, 165, 250, 0.1)'
+                      e.target.style.borderColor = 'rgba(120, 0, 255, 0.6)'
+                      e.target.style.boxShadow = '0 0 0 3px rgba(120, 0, 255, 0.1)'
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'
+                      e.target.style.borderColor = 'rgba(120, 0, 255, 0.2)'
                       e.target.style.boxShadow = 'none'
                     }}
                   />
                 </div>
                 <button
-                  onClick={sendMessage}
+                  type="submit"
                   disabled={isLoading || !input.trim()}
                   style={{
                     padding: '16px 24px',
                     borderRadius: '16px',
                     border: 'none',
                     background: isLoading || !input.trim() 
-                      ? 'rgba(255, 255, 255, 0.1)' 
-                      : 'linear-gradient(135deg, #60a5fa, #3b82f6)',
+                      ? 'rgba(120, 0, 255, 0.2)' 
+                      : 'linear-gradient(135deg, rgba(120, 0, 255, 0.8), rgba(180, 0, 255, 0.6))',
                     color: 'white',
                     fontSize: '15px',
                     fontWeight: '500',
                     cursor: isLoading || !input.trim() ? 'not-allowed' : 'pointer',
-                    transition: 'all 0.2s ease',
-                    boxShadow: isLoading || !input.trim() ? 'none' : '0 4px 12px rgba(96, 165, 250, 0.3)'
+                    transition: 'all 0.3s ease',
+                    boxShadow: isLoading || !input.trim() ? 'none' : '0 0 20px rgba(120, 0, 255, 0.3)'
                   }}
                   onMouseEnter={(e) => {
                     if (!isLoading && input.trim()) {
-                      e.target.style.transform = 'translateY(-1px)'
-                      e.target.style.boxShadow = '0 6px 16px rgba(96, 165, 250, 0.4)'
+                      e.target.style.transform = 'translateY(-2px)'
+                      e.target.style.boxShadow = '0 0 30px rgba(120, 0, 255, 0.5)'
                     }
                   }}
                   onMouseLeave={(e) => {
                     e.target.style.transform = 'translateY(0)'
-                    e.target.style.boxShadow = isLoading || !input.trim() ? 'none' : '0 4px 12px rgba(96, 165, 250, 0.3)'
+                    e.target.style.boxShadow = isLoading || !input.trim() ? 'none' : '0 0 20px rgba(120, 0, 255, 0.3)'
                   }}
                 >
-                  {isLoading ? '•••' : 'Send'}
+                  {isLoading ? '⚡' : '✨'}
                 </button>
-              </div>
+              </form>
               
               <div style={{
                 marginTop: '12px',

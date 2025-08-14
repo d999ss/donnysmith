@@ -1,8 +1,5 @@
-import { OpenAI } from 'openai'
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || '',
-})
+import { openai } from '@ai-sdk/openai'
+import { streamText } from 'ai'
 
 // Multiple AI providers configuration
 const AI_PROVIDERS = {
@@ -76,12 +73,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { messages, provider = 'gpt-4o-mini', stream = true } = req.body
-    const apiKey = process.env.OPENAI_API_KEY
+    const { messages, provider = 'gpt-4o-mini' } = req.body
     const lastMessage = messages[messages.length - 1]?.content?.toLowerCase() || ''
 
-    // Demo mode with streaming
-    if (!apiKey) {
+    // Demo mode responses
+    if (!process.env.OPENAI_API_KEY) {
       let response = DEMO_RESPONSES.default
       
       if (lastMessage.includes('work') || lastMessage.includes('project') || lastMessage.includes('branding')) {
@@ -90,75 +86,32 @@ export default async function handler(req, res) {
         response = DEMO_RESPONSES.contact
       } else if (lastMessage.includes('ai') || lastMessage.includes('automation') || lastMessage.includes('technology')) {
         response = DEMO_RESPONSES.ai
+      } else if (lastMessage.includes('power') || lastMessage.includes('god') || lastMessage.includes('infinite')) {
+        response = DEMO_RESPONSES.power
+      } else if (lastMessage.includes('create') || lastMessage.includes('build') || lastMessage.includes('design')) {
+        response = DEMO_RESPONSES.creation
       }
       
-      if (stream) {
-        res.setHeader('Content-Type', 'text/event-stream')
-        res.setHeader('Cache-Control', 'no-cache')
-        res.setHeader('Connection', 'keep-alive')
-        
-        const streamResponse = createStreamingResponse(response)
-        const reader = streamResponse.getReader()
-        
-        while (true) {
-          const { done, value } = await reader.read()
-          if (done) break
-          res.write(value)
-        }
-        
-        res.end()
-        return
-      }
-      
+      // Simulate streaming delay
+      await new Promise(resolve => setTimeout(resolve, 500))
       return res.json({ message: response, provider: 'demo' })
     }
 
-    // Get provider config
-    const providerConfig = AI_PROVIDERS[provider] || AI_PROVIDERS['gpt-4o-mini']
-    
-    if (stream) {
-      res.setHeader('Content-Type', 'text/event-stream')
-      res.setHeader('Cache-Control', 'no-cache')
-      res.setHeader('Connection', 'keep-alive')
+    // AI SDK v5 streaming
+    const result = await streamText({
+      model: openai(provider),
+      system: DONNY_CONTEXT,
+      messages: messages.map(msg => ({
+        role: msg.role,
+        content: msg.content
+      })),
+      temperature: 0.7,
+      maxTokens: 500,
+    })
 
-      const stream = await openai.chat.completions.create({
-        model: providerConfig.model,
-        messages: [
-          { role: 'system', content: DONNY_CONTEXT },
-          ...messages
-        ],
-        temperature: 0.7,
-        max_tokens: 500,
-        stream: true,
-      })
-
-      for await (const chunk of stream) {
-        const content = chunk.choices[0]?.delta?.content || ''
-        if (content) {
-          res.write(`data: ${JSON.stringify({ text: content, done: false })}\n\n`)
-        }
-      }
-      
-      res.write(`data: ${JSON.stringify({ text: '', done: true })}\n\n`)
-      res.end()
-    } else {
-      const completion = await openai.chat.completions.create({
-        model: providerConfig.model,
-        messages: [
-          { role: 'system', content: DONNY_CONTEXT },
-          ...messages
-        ],
-        temperature: 0.7,
-        max_tokens: 500,
-      })
-
-      res.json({
-        message: completion.choices[0]?.message?.content || "I'm having trouble responding right now. Please try again.",
-        provider: providerConfig.name
-      })
-    }
+    return result.toDataStreamResponse()
   } catch (error) {
     console.error('API error:', error)
-    res.status(500).json({ error: 'Failed to generate response' })
+    return res.status(500).json({ error: 'Failed to generate response' })
   }
 }
