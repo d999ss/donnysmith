@@ -1,14 +1,12 @@
-// Simple working chat API without AI SDK dependencies
-export default async function handler(req, res) {
+export default function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  try {
-    const { messages } = req.body
-    const userMessage = messages?.[messages.length - 1]?.content || 'Hello'
-    
-    const response = `$ echo "Message received: ${userMessage}"
+  const { messages } = req.body || {}
+  const userMessage = messages?.[messages.length - 1]?.content || 'Hello'
+  
+  const response = `$ echo "Message received: ${userMessage}"
 Message received: ${userMessage}
 
 $ whoami  
@@ -22,27 +20,24 @@ Available for projects! Specializing in:
 
 What can I help you build?`
 
-    // Return a Server-Sent Events stream that useChat can handle
-    res.writeHead(200, {
-      'Content-Type': 'text/plain; charset=utf-8',
-      'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
-    })
-
-    // Send the response as chunks
-    const words = response.split(' ')
-    for (let i = 0; i < words.length; i++) {
-      const word = i === 0 ? words[i] : ' ' + words[i]
-      res.write(`0:"${word.replace(/"/g, '\\"')}"\n`)
-      await new Promise(resolve => setTimeout(resolve, 50))
+  // Return OpenAI-compatible response
+  return res.json({
+    id: `chatcmpl-${Date.now()}`,
+    object: 'chat.completion',
+    created: Math.floor(Date.now() / 1000),
+    model: 'terminal-demo',
+    choices: [{
+      index: 0,
+      message: {
+        role: 'assistant',
+        content: response
+      },
+      finish_reason: 'stop'
+    }],
+    usage: {
+      prompt_tokens: userMessage.length,
+      completion_tokens: response.length,
+      total_tokens: userMessage.length + response.length
     }
-    
-    // Signal completion
-    res.write('d:""\n')
-    res.end()
-
-  } catch (error) {
-    console.error('Chat API error:', error)
-    res.status(500).json({ error: 'Internal server error' })
-  }
+  })
 }
