@@ -190,19 +190,6 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
               )}
             </div>
             
-            <a 
-              href="https://github.com/d999ss/donnysmith"
-              style={{ 
-                color: '#00FFFF',
-                textDecoration: 'none',
-                fontSize: '12px',
-                padding: '4px 8px',
-                border: '1px solid #808080',
-                borderRadius: '4px'
-              }}
-            >
-              GitHub
-            </a>
           </div>
         </div>
 
