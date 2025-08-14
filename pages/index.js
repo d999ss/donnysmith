@@ -197,7 +197,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
           height: 'calc(100vh - 100px)',
           overflowY: 'auto',
           padding: '16px',
-          paddingBottom: '100px',
+          paddingBottom: '120px',
           background: '#000000'
         }}>
           {/* Login message */}
@@ -280,12 +280,14 @@ donnysmith@terminal ~ $ echo "Ready to help. What can I build for you?"`
         {/* Terminal Input */}
         <div style={{
           position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
+          bottom: '20px',
+          left: '20px',
+          right: '20px',
           background: '#000000',
-          borderTop: '1px solid #808080',
-          padding: '16px'
+          border: '1px solid #808080',
+          borderRadius: '4px',
+          padding: '12px',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)'
         }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ color: '#FF00FF', fontSize: '12px', flexShrink: 0 }}>
