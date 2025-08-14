@@ -86,7 +86,7 @@ export default function Home() {
         minHeight: '100vh',
         background: '#000000',
         color: '#00FF00',
-        fontFamily: "'SF Mono', Monaco, Inconsolata, 'Roboto Mono', Consolas, 'Courier New', monospace",
+        fontFamily: "'Andale Mono', monospace",
         fontSize: '14px',
         lineHeight: '1.6',
         padding: 0,
