@@ -3,9 +3,6 @@ import Head from 'next/head'
 import { useChat } from '@ai-sdk/react'
 
 export default function Home() {
-  const [selectedProvider, setSelectedProvider] = useState('gpt-4o-mini')
-  const [showProviders, setShowProviders] = useState(false)
-  const [showCommands, setShowCommands] = useState(false)
   const messagesEndRef = useRef(null)
   
   const { 
@@ -24,20 +21,11 @@ export default function Home() {
         content: `donnysmith@bttr ~ $ echo "Creative Director helping ambitious teams design a better future. What can I help you build?"`
       }
     ],
-    body: {
-      provider: selectedProvider
-    },
     onError: (error) => {
       console.error('Chat error:', error)
     }
   })
   
-  const providers = [
-    { id: 'gpt-4o-mini', name: 'Nexus-4 Spinner', speed: 'Spinner Class', cost: 'Low Nuyen' },
-    { id: 'gpt-4o', name: 'Nexus-4', speed: 'Off-World Model', cost: 'High Nuyen' },
-    { id: 'gpt-3.5-turbo', name: 'Nexus-3 Turbo', speed: 'Street Mod', cost: 'Very Low Nuyen' }
-  ]
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
@@ -51,19 +39,6 @@ export default function Home() {
       e.preventDefault()
       handleSubmit(e)
     }
-  }
-
-  const handleCommand = (command) => {
-    // Set the input value to the command
-    handleInputChange({ target: { value: command } })
-    
-    // Submit it after a brief delay so the UI updates
-    setTimeout(() => {
-      const fakeEvent = {
-        preventDefault: () => {},
-      }
-      handleSubmit(fakeEvent)
-    }, 50)
   }
 
   return (
@@ -142,107 +117,15 @@ export default function Home() {
         margin: 0
       }}>
         
-        {/* Terminal Header Bar */}
-        <div style={{
-          background: '#000000',
-          borderBottom: '0.5px solid #808080',
-          padding: '8px 12px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          position: 'sticky',
-          top: 0,
-          zIndex: 100,
-          flexWrap: 'wrap',
-          gap: '8px'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-            <span style={{ color: '#28FE14', fontSize: '12px', whiteSpace: 'nowrap' }}>donnysmith@terminal ~ $</span>
-          </div>
-          
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-            {/* Provider Selector */}
-            <div style={{ position: 'relative' }}>
-              <button
-                onClick={() => setShowProviders(!showProviders)}
-                style={{
-                  background: '#000000',
-                  border: '1px solid #808080',
-                  color: '#28FE14',
-                  padding: '4px 8px',
-                  borderRadius: '4px',
-                  fontSize: '12px',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px'
-                }}
-              >
-                {providers.find(p => p.id === selectedProvider)?.name}
-                <span style={{ fontSize: '14px' }}>▼</span>
-              </button>
-              
-              {showProviders && (
-                <div style={{
-                  position: 'absolute',
-                  top: '100%',
-                  right: 0,
-                  marginTop: '4px',
-                  background: '#000000',
-                  border: '1px solid #808080',
-                  borderRadius: '4px',
-                  minWidth: '160px',
-                  zIndex: 1000
-                }}>
-                  {providers.map(provider => (
-                    <button
-                      key={provider.id}
-                      onClick={() => {
-                        setSelectedProvider(provider.id)
-                        setShowProviders(false)
-                      }}
-                      style={{
-                        width: '100%',
-                        textAlign: 'left',
-                        padding: '8px 12px',
-                        border: 'none',
-                        background: selectedProvider === provider.id ? '#264F78' : 'transparent',
-                        color: '#28FE14',
-                        cursor: 'pointer',
-                        fontSize: '12px'
-                      }}
-                    >
-                      <div>{provider.name}</div>
-                      <div style={{ fontSize: '14px', color: '#C0C0C0' }}>
-                        {provider.speed} • {provider.cost}
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-            
-          </div>
-        </div>
-
         {/* Terminal Content */}
         <div style={{
-          height: 'calc(100vh - 140px)',
+          height: '100vh',
           overflowY: 'auto',
           padding: '12px',
           paddingBottom: '100px',
           background: '#000000',
           WebkitOverflowScrolling: 'touch'
         }}>
-          {/* Login message */}
-          <div style={{ 
-            color: '#28FE14', 
-            fontSize: '12px', 
-            marginBottom: '8px',
-            lineHeight: '1.1'
-          }}>
-            Last login: {new Date().toDateString()} {new Date().toTimeString().split(' ')[0]}
-          </div>
           
           {messages.map((msg, i) => (
             <div key={msg.id || i} style={{ marginBottom: '8px' }}>
