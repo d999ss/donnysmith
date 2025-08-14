@@ -85,6 +85,17 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
             font-style: normal;
             font-display: swap;
           }
+          @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+          }
+          .cursor::after {
+            content: '█';
+            display: inline-block;
+            animation: blink 1s infinite;
+            color: #D4D4D4;
+            margin-left: 2px;
+          }
           body {
             margin: 0;
             padding: 0;
@@ -318,31 +329,34 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
             <span style={{ color: '#569CD6', fontSize: '16px', flexShrink: 0 }}>
               {'>'}
             </span>
-            <input
-              type="text"
-              value={input}
-              onChange={handleInputChange}
-              onKeyPress={handleKeyPress}
-              placeholder="Type your message..."
-              disabled={isLoading}
-              autoComplete="off"
-              autoCorrect="off"
-              autoCapitalize="off"
-              spellCheck="false"
-              style={{
-                flex: 1,
-                background: 'transparent',
-                border: 'none',
-                color: '#D4D4D4',
-                fontSize: '16px',
-                fontFamily: 'inherit',
-                outline: 'none',
-                padding: '6px 0',
-                caretColor: '#D4D4D4',
-                WebkitAppearance: 'none',
-                borderRadius: 0
-              }}
-            />
+            <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
+              <input
+                type="text"
+                value={input}
+                onChange={handleInputChange}
+                onKeyPress={handleKeyPress}
+                placeholder="Type your message..."
+                disabled={isLoading}
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck="false"
+                className={!input ? 'cursor' : ''}
+                style={{
+                  flex: 1,
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#D4D4D4',
+                  fontSize: '16px',
+                  fontFamily: 'inherit',
+                  outline: 'none',
+                  padding: '6px 0',
+                  caretColor: 'transparent',
+                  WebkitAppearance: 'none',
+                  borderRadius: 0
+                }}
+              />
+            </div>
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
