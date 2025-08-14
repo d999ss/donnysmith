@@ -21,26 +21,7 @@ export default function Home() {
       {
         id: 'welcome',
         role: 'assistant',
-        content: `donnysmith@terminal ~ $ whoami
-Donny Smith - Executive Creative Director
-Bored Optimism™ | Park City, UT
-@donnysmith on X | Joined February 2008
-
-donnysmith@terminal ~ $ cat ~/company.txt
-@makebttr - A Brand & Digital Experience Company
-Helping ambitious teams design a better future.
-makebttr.com
-
-donnysmith@terminal ~ $ cat ~/philosophy.txt
-"An object in motion stays in motion."
-
-donnysmith@terminal ~ $ ls -la services/
-drwxr-xr-x  brand-strategy/
-drwxr-xr-x  digital-experiences/
-drwxr-xr-x  creative-direction/
-drwxr-xr-x  team-consulting/
-
-donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build for you?"`
+        content: `donnysmith@bttr ~ $ echo "Creative Director helping ambitious teams design a better future. What can we build?"`
       }
     ],
     body: {
