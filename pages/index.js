@@ -76,6 +76,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
       <Head>
         <title>donnysmith@terminal ~ $</title>
         <meta name="description" content="Donny Smith - Terminal interface for AI assistant" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <style>{`
           body {
             margin: 0;
@@ -102,6 +103,11 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
           input::-moz-placeholder {
             color: #808080;
           }
+          @media (max-width: 768px) {
+            input[type="text"] {
+              font-size: 16px !important;
+            }
+          }
         `}</style>
       </Head>
       
@@ -120,16 +126,18 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
         <div style={{
           background: '#000000',
           borderBottom: '1px solid #808080',
-          padding: '8px 16px',
+          padding: '8px 12px',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           position: 'sticky',
           top: 0,
-          zIndex: 100
+          zIndex: 100,
+          flexWrap: 'wrap',
+          gap: '8px'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ color: '#D4D4D4', fontSize: '11px' }}>donnysmith@terminal ~ $</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+            <span style={{ color: '#D4D4D4', fontSize: '11px', whiteSpace: 'nowrap' }}>donnysmith@terminal ~ $</span>
           </div>
           
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -199,11 +207,12 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
 
         {/* Terminal Content */}
         <div style={{
-          height: 'calc(100vh - 100px)',
+          height: 'calc(100vh - 140px)',
           overflowY: 'auto',
-          padding: '16px',
-          paddingBottom: '120px',
-          background: '#000000'
+          padding: '12px',
+          paddingBottom: '100px',
+          background: '#000000',
+          WebkitOverflowScrolling: 'touch'
         }}>
           {/* Login message */}
           <div style={{ 
@@ -285,16 +294,17 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
         {/* Terminal Input */}
         <div style={{
           position: 'fixed',
-          bottom: '20px',
-          left: '20px',
-          right: '20px',
+          bottom: '10px',
+          left: '10px',
+          right: '10px',
           background: '#000000',
           border: '1px solid #808080',
           borderRadius: '4px',
-          padding: '12px',
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)'
+          padding: '10px',
+          boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.5)',
+          zIndex: 200
         }}>
-          <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ color: '#569CD6', fontSize: '11px', flexShrink: 0 }}>
               {'>'}
             </span>
@@ -305,34 +315,42 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
               onKeyPress={handleKeyPress}
               placeholder="Type your message..."
               disabled={isLoading}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
               style={{
                 flex: 1,
                 background: 'transparent',
                 border: 'none',
                 color: '#D4D4D4',
-                fontSize: '11px',
+                fontSize: '14px',
                 fontFamily: 'inherit',
                 outline: 'none',
-                padding: '4px 0',
-                caretColor: '#D4D4D4'
+                padding: '6px 0',
+                caretColor: '#D4D4D4',
+                WebkitAppearance: 'none',
+                borderRadius: 0
               }}
             />
-            {input.trim() && (
-              <button
-                type="submit"
-                disabled={isLoading}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: '#4EC9B0',
-                  fontSize: '11px',
-                  cursor: 'pointer',
-                  padding: '4px 8px'
-                }}
-              >
-                [SEND]
-              </button>
-            )}
+            <button
+              type="submit"
+              disabled={isLoading || !input.trim()}
+              style={{
+                background: input.trim() ? '#264F78' : 'transparent',
+                border: '1px solid #808080',
+                borderRadius: '4px',
+                color: input.trim() ? '#4EC9B0' : '#808080',
+                fontSize: '12px',
+                cursor: input.trim() ? 'pointer' : 'default',
+                padding: '6px 12px',
+                flexShrink: 0,
+                WebkitTapHighlightColor: 'transparent',
+                touchAction: 'manipulation'
+              }}
+            >
+              SEND
+            </button>
           </form>
         </div>
       </div>
