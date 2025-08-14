@@ -1,6 +1,4 @@
 export default async function handler(req, res) {
-  console.log('Chat API called:', req.method, req.body)
-  
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
@@ -9,26 +7,28 @@ export default async function handler(req, res) {
     const { messages } = req.body || {}
     const userMessage = messages?.[messages.length - 1]?.content || 'test'
     
-    console.log('Processing message:', userMessage)
-    
-    // Simple delay to show it's working
-    await new Promise(resolve => setTimeout(resolve, 500))
-    
     const response = `$ echo "${userMessage}"
 ${userMessage}
 
 $ whoami
-Donny Smith - Brand strategist
+Donny Smith - Brand strategist & digital designer
 
-This is a test response. The chat is working!`
+$ cat ~/status.txt
+Available for projects! Specializing in:
+• Brand strategy & visual identity
+• AI-powered design workflows
+• Digital product experiences
 
-    console.log('Sending response:', response.substring(0, 50) + '...')
+What can I help you build?`
 
-    // Return the simplest possible format
-    return res.status(200).json({
-      role: 'assistant',
-      content: response
-    })
+    // Return proper streaming format that useChat expects
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+    res.setHeader('Cache-Control', 'no-cache')
+    
+    // Send response in AI SDK streaming format
+    res.write(`0:${JSON.stringify(response)}\n`)
+    res.write(`d:\n`)
+    res.end()
     
   } catch (error) {
     console.error('Chat error:', error)
