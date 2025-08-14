@@ -76,7 +76,7 @@ export default async function handler(req, res) {
     const { messages, provider = 'gpt-4o-mini' } = req.body
     const lastMessage = messages[messages.length - 1]?.content?.toLowerCase() || ''
 
-    // Demo mode responses
+    // Demo mode - simple response that works with useChat
     if (!process.env.OPENAI_API_KEY) {
       console.log('Demo mode - no API key')
       
@@ -96,24 +96,32 @@ export default async function handler(req, res) {
       
       console.log('Selected response:', response.substring(0, 100) + '...')
       
-      // Use actual streamText with a mock provider for demo mode
-      const result = await streamText({
-        model: {
-          provider: 'demo',
-          modelId: 'demo-model',
-          doGenerate: async () => ({
-            text: response,
-            finishReason: 'stop',
-            usage: { promptTokens: 0, completionTokens: response.split(' ').length }
-          })
-        },
-        prompt: lastMessage
+      // Add a small delay to show loading
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
+      // Return in OpenAI ChatCompletion format that useChat expects
+      return res.json({
+        id: 'chatcmpl-demo',
+        object: 'chat.completion',
+        created: Math.floor(Date.now() / 1000),
+        model: 'demo',
+        choices: [{
+          index: 0,
+          message: {
+            role: 'assistant',
+            content: response
+          },
+          finish_reason: 'stop'
+        }],
+        usage: {
+          prompt_tokens: lastMessage.length,
+          completion_tokens: response.length,
+          total_tokens: lastMessage.length + response.length
+        }
       })
-
-      return result.toDataStreamResponse()
     }
 
-    // AI SDK v5 streaming
+    // AI SDK v5 streaming (when API key is available)
     const result = await streamText({
       model: openai(provider),
       system: DONNY_CONTEXT,
