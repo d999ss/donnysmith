@@ -338,9 +338,6 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
           zIndex: 200
         }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ color: '#28FE14', fontSize: '12px', flexShrink: 0 }}>
-              {'>'}
-            </span>
             <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
               <input
                 type="text"
@@ -363,7 +360,7 @@ donnysmith@terminal ~ $ echo "Ready to help. What ambitious project can we build
                   fontFamily: 'inherit',
                   outline: 'none',
                   padding: '6px 0',
-                  caretColor: '#38FE27',
+                  caretColor: 'transparent',
                   WebkitAppearance: 'none',
                   borderRadius: 0
                 }}
