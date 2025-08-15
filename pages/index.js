@@ -19,7 +19,7 @@ export default function Home() {
       {
         id: 'welcome',
         role: 'assistant',
-        content: `What can I help you with?`
+        content: `Hello, How can I help you today?`
       }
     ],
     onError: (error) => {
