@@ -133,7 +133,7 @@ export default function Home() {
         {/* Terminal Header Bar */}
         <div style={{
           background: '#000000',
-          borderBottom: '0.5px solid #808080',
+          borderBottom: 'max(1px, 0.5px) solid #808080',
           padding: '8px 12px',
           display: 'flex',
           justifyContent: 'space-between',
@@ -167,20 +167,11 @@ export default function Home() {
           
           {messages.map((msg, i) => (
             <div key={msg.id || i} style={{ marginBottom: '8px' }}>
-              {msg.id !== 'welcome' && msg.role === 'assistant' && (
-                <div style={{ 
-                  color: '#28FE14',
-                  marginBottom: '1px',
-                  fontSize: '12px'
-                }}>
-                  Donny:
-                </div>
-              )}
               <div style={{
                 color: msg.role === 'user' ? 'rgb(123, 123, 123)' : '#28FE14',
                 whiteSpace: 'pre-wrap',
                 wordBreak: 'break-word',
-                paddingLeft: msg.id === 'welcome' || msg.role === 'user' ? '0' : '12px',
+                paddingLeft: '0',
                 fontSize: '12px',
                 lineHeight: '1.4'
               }}>
@@ -191,16 +182,8 @@ export default function Home() {
           
           {isLoading && (
             <div style={{ marginBottom: '8px' }}>
-              <div style={{ 
-                color: '#28FE14',
-                marginBottom: '1px',
-                fontSize: '12px'
-              }}>
-                Donny:
-              </div>
               <div style={{
                 color: '#28FE14',
-                paddingLeft: '12px',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
@@ -242,7 +225,7 @@ export default function Home() {
           left: '10px',
           right: '10px',
           background: '#000000',
-          border: '0.5px solid #808080',
+          border: 'max(1px, 0.5px) solid #808080',
           borderRadius: '4px',
           padding: '10px',
           zIndex: 200
