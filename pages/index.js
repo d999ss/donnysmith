@@ -326,9 +326,8 @@ export default function Home() {
             padding: 8px calc(16px + var(--safe-r))
                      calc(8px + max(0px, var(--safe-b) - var(--kb)))
                      calc(16px + var(--safe-l));
-            background: rgba(0, 0, 0, .85);
+            background: #000000;
             backdrop-filter: saturate(180%) blur(12px);
-            border-top: 1px solid rgba(255,255,255,.06);
           }
 
           .field-wrap {
