@@ -490,7 +490,7 @@ export default function Home() {
           
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <span style={{ color: '#28FE14', fontSize: '12px', whiteSpace: 'nowrap' }}>
-              {new Date().toDateString()} {new Date().toTimeString().split(' ')[0]}
+              {new Date().toDateString().split(' ').slice(0, 3).join(' ')} {new Date().toTimeString().split(' ')[0]}
             </span>
           </div>
         </div>
