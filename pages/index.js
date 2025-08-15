@@ -289,7 +289,18 @@ export default function Home() {
           }
         `}
         {`
-          /* iOS-style input field with auto-sizing textarea */
+          /* Optimized iOS input with proper spacing */
+          :root {
+            --h: 44px;
+            --gap: 8px;
+            --radius: 22px;
+            --border: 2px;
+            --safe-l: env(safe-area-inset-left);
+            --safe-r: env(safe-area-inset-right);
+            --safe-b: env(safe-area-inset-bottom);
+            --kb: 0px;
+          }
+
           .sr-only {
             position: absolute;
             width: 1px;
@@ -302,61 +313,59 @@ export default function Home() {
           .input-bar {
             position: sticky;
             bottom: 0;
-            padding: 8px 16px calc(8px + env(safe-area-inset-bottom));
+            z-index: 10;
+            display: grid;
+            grid-template-columns: 1fr var(--h);
+            align-items: center;
+            gap: var(--gap);
+            padding: 8px calc(16px + var(--safe-r))
+                     calc(8px + max(0px, var(--safe-b) - var(--kb)))
+                     calc(16px + var(--safe-l));
             background: rgba(0, 0, 0, .85);
             backdrop-filter: saturate(180%) blur(12px);
-            display: flex;
-            align-items: center;
-            gap: 8px;
             border-top: 1px solid rgba(255,255,255,.06);
-            z-index: 10;
-          }
-
-          .addon {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            border: 0;
-            color: #28FE14;
-            font-size: 16px;
-            border-radius: 20px;
           }
 
           .field-wrap {
-            flex: 1;
             display: flex;
           }
 
           .input-field {
-            flex: 1;
+            height: var(--h);
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0 14px;
+            font: 16px/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            color: #28FE14;
+            background: #0d0d0d;
+            border: var(--border) solid #28FE14;
+            border-radius: var(--radius);
+            outline: none;
+            display: block;
             resize: none;
             overflow: hidden;
-            font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: #fff;
-            background: #0e0e0f;
-            border: 1px solid #3a3a3c;
-            border-radius: 22px;
-            padding: 12px 16px;
-            outline: none;
+          }
+
+          .input-field::placeholder {
+            color: rgba(40, 254, 20, 0.6);
           }
 
           .input-field:focus {
-            border-color: #28FE14;
-            box-shadow: 0 0 0 2px rgba(40,254,20,.3);
+            box-shadow: 0 0 0 2px rgba(40, 254, 20, .25) inset;
           }
 
           .send-btn {
-            height: 40px;
-            min-width: 40px;
-            padding: 0 14px;
+            width: var(--h);
+            height: var(--h);
+            border-radius: 50%;
             border: 0;
-            border-radius: 22px;
-            color: #000;
             background: #28FE14;
-            font-weight: 600;
+            color: #000;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
           }
 
@@ -478,24 +487,22 @@ export default function Home() {
         {/* iOS-style Input Bar */}
         <div className="input-bar" role="form" aria-label="Chat input">
           <label className="sr-only" htmlFor="chat-input">Message</label>
-          <div className="field-wrap">
-            <textarea 
-              id="chat-input"
-              ref={inputRef}
-              className="input-field"
-              rows="1"
-              placeholder=""
-              value={input}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyPress}
-              disabled={isLoading}
-              autoComplete="off"
-              autoCorrect="on"
-              spellCheck="true"
-              enterKeyHint="send"
-              inputMode="text"
-            />
-          </div>
+          <textarea 
+            id="chat-input"
+            ref={inputRef}
+            className="input-field"
+            rows="1"
+            placeholder=""
+            value={input}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyPress}
+            disabled={isLoading}
+            autoComplete="off"
+            autoCorrect="on"
+            spellCheck="true"
+            enterKeyHint="send"
+            inputMode="text"
+          />
 
           <button 
             className="send-btn" 
@@ -510,6 +517,30 @@ export default function Home() {
             ↑
           </button>
         </div>
+        
+        {/* Keyboard-safe spacing script */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(){
+                if('visualViewport' in window){
+                  const vv = window.visualViewport;
+                  const set = () => {
+                    const overlap = Math.max(0, (window.innerHeight - vv.height - vv.offsetTop));
+                    document.documentElement.style.setProperty('--kb', overlap + 'px');
+                  };
+                  ['resize','scroll'].forEach(e => vv.addEventListener(e, set));
+                  set();
+                } else {
+                  window.addEventListener('focusin', () =>
+                    document.documentElement.style.setProperty('--kb','12px'));
+                  window.addEventListener('focusout', () =>
+                    document.documentElement.style.setProperty('--kb','0px'));
+                }
+              })();
+            `
+          }}
+        />
       </div>
     </>
   )
