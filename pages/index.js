@@ -170,7 +170,9 @@ export default function Home() {
           gap: '8px'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-            <span style={{ color: '#28FE14', fontSize: '12px', whiteSpace: 'nowrap' }}>donnysmith@terminal ~ $</span>
+            <span style={{ color: '#28FE14', fontSize: '12px', whiteSpace: 'nowrap' }}>
+              DonnySmith {new Date().toDateString()} {new Date().toTimeString().split(' ')[0]}
+            </span>
           </div>
           
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -247,15 +249,6 @@ export default function Home() {
           background: '#000000',
           WebkitOverflowScrolling: 'touch'
         }}>
-          {/* Login message */}
-          <div style={{ 
-            color: '#28FE14', 
-            fontSize: '12px', 
-            marginBottom: '8px',
-            lineHeight: '1.1'
-          }}>
-            Last login: {new Date().toDateString()} {new Date().toTimeString().split(' ')[0]}
-          </div>
           
           {messages.map((msg, i) => (
             <div key={msg.id || i} style={{ marginBottom: '8px' }}>
