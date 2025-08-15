@@ -243,8 +243,13 @@ export default function Home() {
             }
             .mobile-fullscreen {
               height: calc(100vh - 80px) !important;
-              padding-top: 12px !important;
-              padding-bottom: 120px !important;
+              padding-top: 20px !important;
+              padding-bottom: 80px !important;
+              display: flex !important;
+              flex-direction: column !important;
+              justify-content: flex-start !important;
+              overflow-y: auto !important;
+              scroll-behavior: smooth !important;
             }
             .mobile-caret {
               font-size: 16px !important;
