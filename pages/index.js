@@ -34,7 +34,13 @@ export default function Home() {
   })
   
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'end',
+        inline: 'nearest'
+      })
+    }
   }
 
   // Load session context from localStorage
@@ -232,8 +238,9 @@ export default function Home() {
               display: none !important;
             }
             .mobile-fullscreen {
-              height: 100vh !important;
+              height: calc(100vh - 80px) !important;
               padding-top: 12px !important;
+              padding-bottom: 120px !important;
             }
             .mobile-caret {
               font-size: 16px !important;
@@ -368,9 +375,11 @@ export default function Home() {
           height: 'calc(100vh - 140px)',
           overflowY: 'auto',
           padding: '12px',
-          paddingBottom: '100px',
+          paddingBottom: '120px',
           background: '#000000',
-          WebkitOverflowScrolling: 'touch'
+          WebkitOverflowScrolling: 'touch',
+          display: 'flex',
+          flexDirection: 'column'
         }}>
           
           {messages.map((msg, i) => (
