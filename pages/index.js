@@ -524,26 +524,26 @@ export default function Home() {
           background: '#000000',
           borderBottom: 'max(1px, 0.5px) solid rgba(128, 128, 128, 0.5)',
           padding: '8px 12px',
-          display: 'flex',
-          justifyContent: 'space-between',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr 1fr',
           alignItems: 'center',
           position: 'sticky',
           top: 0,
           zIndex: 100
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifySelf: 'start' }}>
             <span style={{ color: '#FFFFFF', fontSize: '12px', whiteSpace: 'nowrap' }}>
               Donny Smith
             </span>
           </div>
           
-          <div style={{ display: 'flex', alignItems: 'center', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifySelf: 'center' }}>
             <span style={{ color: '#FFFFFF', fontSize: '12px', whiteSpace: 'nowrap' }}>
               {new Date().toDateString().split(' ').slice(0, 3).join(' ')} {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: false })}
             </span>
           </div>
           
-          <div style={{ width: '120px' }}></div>
+          <div></div>
         </div>
 
         {/* Terminal Content */}
