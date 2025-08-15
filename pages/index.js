@@ -388,7 +388,7 @@ export default function Home() {
             width: 100%;
             box-sizing: border-box;
             padding: 0 14px;
-            font: 12px 'Triakis', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font: 12px ui-monospace, 'SF Mono', Monaco, Menlo, 'Courier New', monospace;
             color: #28FE14;
             background: #1a1a1a;
             border: none;
@@ -446,7 +446,7 @@ export default function Home() {
           minHeight: '100vh',
           background: '#000000',
           color: '#28FE14',
-          fontFamily: "'Triakis', 'Andale Mono', monospace",
+          fontFamily: "ui-monospace, 'SF Mono', Monaco, Menlo, 'Courier New', monospace",
           fontSize: '12px',
           lineHeight: '1.2',
           padding: 0,
