@@ -118,9 +118,13 @@ $ open makebttr.com/work
       '/contact': `**Get in touch:**
 
 Email: donny@makebttr.com
+
 Location: Park City, Utah
+
 Company: Bttr. Digital Product Agency
+
 Website: makebttr.com
+
 X/Twitter: @donnysmith
 
 *Let's build something inevitable together.*`,
