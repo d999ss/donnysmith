@@ -244,6 +244,26 @@ export default function Home() {
             51%, 100% { opacity: 0; }
           }
           
+          @keyframes pulse {
+            0%, 100% {
+              transform: scale(0.8);
+              opacity: 0.5;
+            }
+            50% {
+              transform: scale(1.2);
+              opacity: 1;
+            }
+          }
+          
+          .pulse-dot {
+            width: 12px;
+            height: 12px;
+            background: #28FE14;
+            border-radius: 50%;
+            filter: blur(2px);
+            animation: pulse 1.5s ease-in-out infinite;
+          }
+          
           .cursor::after {
             content: '█';
             position: absolute;
@@ -525,18 +545,7 @@ export default function Home() {
           
           {isLoading && (
             <div style={{ marginBottom: '8px' }}>
-              <div style={{
-                color: '#28FE14',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-                fontSize: '12px'
-              }}>
-                <span style={{ fontSize: '6px' }}>●</span>
-                <span style={{ fontSize: '6px' }}>●</span>
-                <span style={{ fontSize: '6px' }}>●</span>
-                <span style={{ color: '#FFFF00', marginLeft: '4px' }}>thinking...</span>
-              </div>
+              <div className="pulse-dot"></div>
             </div>
           )}
           
