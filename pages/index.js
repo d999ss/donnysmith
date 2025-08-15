@@ -521,13 +521,13 @@ export default function Home() {
                 color: '#28FE14',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
+                gap: '4px',
                 fontSize: '12px'
               }}>
-                <span>●</span>
-                <span>●</span>
-                <span>●</span>
-                <span style={{ color: '#FFFF00' }}>thinking...</span>
+                <span style={{ fontSize: '6px' }}>●</span>
+                <span style={{ fontSize: '6px' }}>●</span>
+                <span style={{ fontSize: '6px' }}>●</span>
+                <span style={{ color: '#FFFF00', marginLeft: '4px' }}>thinking...</span>
               </div>
             </div>
           )}
