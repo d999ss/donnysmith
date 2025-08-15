@@ -111,6 +111,11 @@ export default function Home() {
     updateSessionContext(messages)
   }, [messages])
 
+  // Auto-focus input on mount
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [])
+
   useEffect(() => {
     // Start the inactivity timer when component mounts
     startInactivityTimer()
@@ -564,6 +569,7 @@ export default function Home() {
             spellCheck="true"
             enterKeyHint="send"
             inputMode="text"
+            autoFocus
           />
 
           <button 
