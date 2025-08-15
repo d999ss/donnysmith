@@ -177,7 +177,7 @@ export default function Home() {
                 </div>
               )}
               <div style={{
-                color: msg.role === 'user' ? '#38FE27' : '#28FE14',
+                color: msg.role === 'user' ? 'rgb(123, 123, 123)' : '#28FE14',
                 whiteSpace: 'pre-wrap',
                 wordBreak: 'break-word',
                 paddingLeft: msg.id === 'welcome' || msg.role === 'user' ? '0' : '12px',
