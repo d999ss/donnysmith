@@ -220,6 +220,15 @@ export default function Home() {
         <meta name="supported-color-schemes" content="dark" />
         <style>{`
           @font-face {
+            font-family: 'Neue Montreal';
+            src: url('/NeueMontreal-Regular.woff2') format('woff2'),
+                 url('/NeueMontreal-Regular.woff') format('woff'),
+                 url('/NeueMontreal-Regular.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+          }
+          @font-face {
             font-family: 'Triakis';
             src: url('/TriakisFont-Regular.otf') format('opentype');
             font-weight: normal;
@@ -387,7 +396,7 @@ export default function Home() {
             width: 100%;
             box-sizing: border-box;
             padding: 0 14px;
-            font: 12px ui-monospace, 'SF Mono', Monaco, Menlo, 'Courier New', monospace;
+            font: 12px 'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             color: #FFFFFF;
             background: #1a1a1a;
             border: none;
@@ -446,7 +455,7 @@ export default function Home() {
           minHeight: '100vh',
           background: '#000000',
           color: '#28FE14',
-          fontFamily: "ui-monospace, 'SF Mono', Monaco, Menlo, 'Courier New', monospace",
+          fontFamily: "'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
           fontSize: '12px',
           lineHeight: '1.2',
           padding: 0,
