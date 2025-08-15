@@ -233,7 +233,7 @@ export default function Home() {
             }
             .mobile-fullscreen {
               height: 100vh !important;
-              padding-top: 0 !important;
+              padding-top: 12px !important;
             }
             .mobile-caret {
               font-size: 16px !important;
