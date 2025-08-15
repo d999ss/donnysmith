@@ -100,7 +100,11 @@ export default function Home() {
   useEffect(() => {
     scrollToBottom()
     updateSessionContext(messages)
-  }, [messages])
+    // Refocus input after bot responds
+    if (!isLoading && messages.length > 0) {
+      inputRef.current?.focus()
+    }
+  }, [messages, isLoading])
 
   // Auto-focus input on mount
   useEffect(() => {
