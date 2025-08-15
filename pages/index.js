@@ -213,6 +213,73 @@ export default function Home() {
               line-height: 1.2 !important;
             }
           }
+        `}
+        {`
+          /* iOS-style input field */
+          :root {
+            --pad: 16px;
+            --radius: 22px;
+            --bg-input: #1c1c1e;
+            --fg-input: #fff;
+            --border-input: #3a3a3c;
+          }
+
+          .input-bar {
+            position: sticky;
+            bottom: 0;
+            padding: 8px var(--pad) calc(8px + env(safe-area-inset-bottom));
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: saturate(180%) blur(12px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+          }
+
+          .input-bar button,
+          .input-bar .addon {
+            background: transparent;
+            border: none;
+            color: var(--fg-input);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .input-field {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            font-size: 16px;
+            font-family: system-ui, sans-serif;
+            color: var(--fg-input);
+            background: var(--bg-input);
+            border: 1px solid var(--border-input);
+            border-radius: var(--radius);
+            outline: none;
+          }
+
+          .input-field:focus {
+            border-color: #0a84ff;
+            box-shadow: 0 0 0 2px rgba(10,132,255,0.3);
+          }
+
+          .send-btn {
+            background: #0a84ff;
+            border: none;
+            padding: 0 14px;
+            height: 40px;
+            border-radius: var(--radius);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+          }
+
+          .send-btn:active {
+            background: #0060df;
+          }
         `}</style>
       </Head>
       
@@ -318,70 +385,35 @@ export default function Home() {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Terminal Input */}
-        <div style={{
-          position: 'fixed',
-          bottom: '10px',
-          left: '10px',
-          right: '10px',
-          background: '#000000',
-          border: 'max(1px, 0.5px) solid rgba(128, 128, 128, 0.5)',
-          borderRadius: '50px',
-          padding: '4px 8px',
-          zIndex: 200
-        }}>
-          <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span className="mobile-caret" style={{ 
+        {/* iOS-style Input Bar */}
+        <div className="input-bar">
+          <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%' }}>
+            <span className="addon" style={{ 
               color: '#28FE14', 
-              fontSize: '12px',
-              lineHeight: '1.2',
-              alignSelf: 'center'
+              fontSize: '16px'
             }}>{'>'}</span>
-            <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
-              <input
-                ref={inputRef}
-                type="text"
-                value={input}
-                onChange={handleInputChange}
-                onKeyPress={handleKeyPress}
-                placeholder=""
-                disabled={isLoading}
-                autoComplete="off"
-                autoCorrect="off"
-                autoCapitalize="off"
-                spellCheck="false"
-                style={{
-                  flex: 1,
-                  background: 'transparent',
-                  border: 'none',
-                  color: '#28FE14',
-                  fontSize: '12px',
-                  fontFamily: 'inherit',
-                  outline: 'none',
-                  padding: '0',
-                  caretColor: '#38FE27',
-                  WebkitAppearance: 'none',
-                  borderRadius: 0,
-                  position: 'relative'
-                }}
-              />
-            </div>
+            
+            <input
+              ref={inputRef}
+              className="input-field"
+              type="text"
+              value={input}
+              onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
+              placeholder=""
+              disabled={isLoading}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
+            />
+            
             <button
               type="submit"
+              className="send-btn"
               disabled={isLoading || !input.trim()}
               style={{
-                background: 'transparent',
-                border: 'none',
-                color: input.trim() ? '#28FE14' : '#666666',
-                fontSize: '12px',
-                cursor: input.trim() ? 'pointer' : 'default',
-                padding: '6px',
-                flexShrink: 0,
-                WebkitTapHighlightColor: 'transparent',
-                touchAction: 'manipulation',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
+                opacity: input.trim() ? 1 : 0.5
               }}
             >
               ↑
