@@ -258,7 +258,7 @@ export default function Home() {
               -webkit-user-select: text !important;
               -webkit-touch-callout: none !important;
               -webkit-tap-highlight-color: transparent !important;
-              background-color: #1c1c1e !important;
+              background-color: #0e0e0f !important;
               caret-color: #28FE14 !important;
             }
             
@@ -336,7 +336,7 @@ export default function Home() {
             overflow: hidden;
             font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: #fff;
-            background: #1c1c1e;
+            background: #0e0e0f;
             border: 1px solid #3a3a3c;
             border-radius: 22px;
             padding: 12px 16px;
