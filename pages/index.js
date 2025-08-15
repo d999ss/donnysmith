@@ -290,6 +290,8 @@ export default function Home() {
             html {
               height: 100%;
               -webkit-text-size-adjust: 100%;
+              position: fixed;
+              width: 100%;
             }
             
             body {
@@ -297,6 +299,9 @@ export default function Home() {
               -webkit-font-smoothing: antialiased;
               -moz-osx-font-smoothing: grayscale;
               touch-action: manipulation;
+              position: fixed;
+              width: 100%;
+              overflow: hidden;
             }
           }
         `}
@@ -550,14 +555,20 @@ export default function Home() {
                   const set = () => {
                     const overlap = Math.max(0, (window.innerHeight - vv.height - vv.offsetTop));
                     document.documentElement.style.setProperty('--kb', overlap + 'px');
+                    // Prevent conversation from moving up by maintaining scroll position
+                    document.body.style.transform = 'translateY(0)';
                   };
                   ['resize','scroll'].forEach(e => vv.addEventListener(e, set));
                   set();
                 } else {
-                  window.addEventListener('focusin', () =>
-                    document.documentElement.style.setProperty('--kb','12px'));
-                  window.addEventListener('focusout', () =>
-                    document.documentElement.style.setProperty('--kb','0px'));
+                  window.addEventListener('focusin', () => {
+                    document.documentElement.style.setProperty('--kb','12px');
+                    document.body.style.transform = 'translateY(0)';
+                  });
+                  window.addEventListener('focusout', () => {
+                    document.documentElement.style.setProperty('--kb','0px');
+                    document.body.style.transform = 'translateY(0)';
+                  });
                 }
               })();
             `
