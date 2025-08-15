@@ -504,6 +504,17 @@ export default function Home() {
             }
           }
           
+          @keyframes fadeInUp {
+            0% {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
           /* Large welcome message on desktop */
           @media (min-width: 768px) {
             .welcome-message {
@@ -511,6 +522,7 @@ export default function Home() {
               line-height: 1.1 !important;
               margin-bottom: 24px !important;
               letter-spacing: -0.19px !important;
+              animation: fadeInUp 0.8s ease-out !important;
             }
           }
         `}</style>
