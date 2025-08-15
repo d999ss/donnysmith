@@ -296,9 +296,9 @@ export default function Home() {
         {`
           /* Optimized iOS input with proper spacing */
           :root {
-            --h: 44px;
+            --h: 32px;
             --gap: 8px;
-            --radius: 22px;
+            --radius: 16px;
             --border: 2px;
             --safe-l: env(safe-area-inset-left);
             --safe-r: env(safe-area-inset-right);
