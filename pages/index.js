@@ -266,7 +266,8 @@ export default function Home() {
             }
             
             /* Enhanced mobile keyboard styling */
-            .input-field {
+            .input-field,
+            .input-field:disabled {
               -webkit-appearance: none !important;
               -webkit-text-fill-color: #28FE14 !important;
               -webkit-user-select: text !important;
