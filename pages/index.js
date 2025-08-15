@@ -113,27 +113,36 @@ export default function Home() {
   // Simulate token streaming for welcome message
   useEffect(() => {
     const tokens = ["How", " can", " I", " help", " you", " today", "?"]
-    let currentIndex = 0
+    let tokenIndex = 0
     
-    const streamToken = () => {
-      if (currentIndex < tokens.length) {
-        setWelcomeText(prev => prev + tokens[currentIndex])
-        currentIndex++
+    // Reset state
+    setWelcomeText("")
+    setIsWelcomeComplete(false)
+    
+    const streamNextToken = () => {
+      if (tokenIndex < tokens.length) {
+        const currentToken = tokens[tokenIndex]
+        setWelcomeText(prev => prev + currentToken)
+        tokenIndex++
         
-        // Mimic natural token generation timing - varied intervals
-        const delays = [150, 80, 120, 90, 110, 200, 60] // realistic token timing
-        const nextDelay = delays[currentIndex - 1] || 100
-        
-        if (currentIndex < tokens.length) {
-          setTimeout(streamToken, nextDelay)
+        if (tokenIndex < tokens.length) {
+          // Mimic natural token generation timing - varied intervals
+          const delays = [150, 80, 120, 90, 110, 200, 60]
+          const delay = delays[tokenIndex - 1] || 100
+          setTimeout(streamNextToken, delay)
         } else {
+          // All tokens complete
           setIsWelcomeComplete(true)
         }
       }
     }
     
     // Start streaming after a brief pause
-    setTimeout(streamToken, 200)
+    const startTimer = setTimeout(streamNextToken, 300)
+    
+    return () => {
+      clearTimeout(startTimer)
+    }
   }, [])
 
   // Auto-focus input on mount and ensure welcome message is visible
