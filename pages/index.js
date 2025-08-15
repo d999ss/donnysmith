@@ -308,13 +308,13 @@ export default function Home() {
             border: 0;
             border-radius: 22px;
             color: #fff;
-            background: #0a84ff;
+            background: #28FE14;
             font-weight: 600;
             cursor: pointer;
           }
 
           .send-btn:active {
-            background: #0060df;
+            background: #20CC10;
           }
 
           .send-btn[disabled] {
