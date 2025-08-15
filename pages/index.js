@@ -368,7 +368,7 @@ export default function Home() {
             border-radius: 50%;
             border: 0;
             background: #1a1a1a;
-            color: #000000;
+            color: #28FE14;
             font-size: 18px;
             font-weight: 700;
             display: flex;
