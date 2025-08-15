@@ -297,8 +297,8 @@ export default function Home() {
           }
 
           .input-field:focus {
-            border-color: #0a84ff;
-            box-shadow: 0 0 0 2px rgba(10,132,255,.3);
+            border-color: #28FE14;
+            box-shadow: 0 0 0 2px rgba(40,254,20,.3);
           }
 
           .send-btn {
