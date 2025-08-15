@@ -285,7 +285,7 @@ export default function Home() {
           .pulse-dot {
             width: 12px;
             height: 12px;
-            background: #28FE14;
+            background: #FF4500;
             border-radius: 50%;
             filter: blur(2px);
             animation: pulse 1.5s ease-in-out infinite;
