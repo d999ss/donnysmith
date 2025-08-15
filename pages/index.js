@@ -451,6 +451,7 @@ export default function Home() {
             box-sizing: border-box;
             padding: 0 14px;
             font: 12px 'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            letter-spacing: -0.19px;
             color: #FFFFFF;
             background: #1a1a1a;
             border: none;
@@ -512,6 +513,7 @@ export default function Home() {
           fontFamily: "'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
           fontSize: '12px',
           lineHeight: '1.2',
+          letterSpacing: '-0.19px',
           padding: 0,
           margin: 0,
           cursor: 'text'
@@ -564,7 +566,8 @@ export default function Home() {
                   wordBreak: 'break-word',
                   paddingLeft: '0',
                   fontSize: '12px',
-                  lineHeight: '1.4'
+                  lineHeight: '1.4',
+                  letterSpacing: '-0.19px'
                 }}>
                   {msg.content}
                 </div>
@@ -572,7 +575,8 @@ export default function Home() {
                 <div style={{
                   color: '#28FE14',
                   fontSize: '12px',
-                  lineHeight: '1.4'
+                  lineHeight: '1.4',
+                  letterSpacing: '-0.19px'
                 }}>
                   <ReactMarkdown
                     components={{
