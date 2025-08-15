@@ -1,8 +1,13 @@
 import { createOpenAI } from '@ai-sdk/openai'
 import { streamText } from 'ai'
 import { DONNY_CONTEXT } from '../../lib/donny-context'
+import OpenAI from 'openai'
 
 const openai = createOpenAI({
+  apiKey: process.env.OPENAI_API_KEY || '',
+})
+
+const openaiClient = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || '',
 })
 
@@ -38,8 +43,40 @@ export default async function handler(req) {
     }
   }
   
-  // Check if the last message is a command
+  // Check if user is asking for image generation
   const lastMessage = messages[messages.length - 1]
+  if (lastMessage?.role === 'user' && 
+      (lastMessage.content.toLowerCase().includes('create image') ||
+       lastMessage.content.toLowerCase().includes('generate image') ||
+       lastMessage.content.toLowerCase().includes('make image') ||
+       lastMessage.content.toLowerCase().includes('draw') ||
+       lastMessage.content.toLowerCase().includes('design') ||
+       lastMessage.content.toLowerCase().includes('visualize'))) {
+    
+    try {
+      const imageResponse = await openaiClient.images.generate({
+        model: "dall-e-3",
+        prompt: lastMessage.content,
+        n: 1,
+        size: "1024x1024",
+        quality: "standard",
+      })
+      
+      const imageUrl = imageResponse.data[0].url
+      const imageMarkdown = `![Generated Image](${imageUrl})\n\n*Generated with DALL-E 3*`
+      
+      return new Response(imageMarkdown, {
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+        },
+      })
+    } catch (error) {
+      console.error('Image generation error:', error)
+      // Fall through to regular chat if image generation fails
+    }
+  }
+
+  // Check if the last message is a command
   if (lastMessage?.content?.startsWith('/')) {
     const command = lastMessage.content
     const commandResponses = {
@@ -113,7 +150,8 @@ IMPORTANT INSTRUCTIONS:
 - Balance creative vision with business pragmatism
 - Embody "Bored Optimism™": calm confidence in success, obsession for excellence
 - When discussing work, reference specific projects and clients from the context
-- Always align responses with the tone: decisive, structured, narrative-driven`,
+- Always align responses with the tone: decisive, structured, narrative-driven
+- I can generate images using DALL-E when users ask me to "create", "design", "draw", or "visualize" something`,
     messages,
   })
 
