@@ -259,7 +259,6 @@ export default function Home() {
                 autoCorrect="off"
                 autoCapitalize="off"
                 spellCheck="false"
-                className={!input ? 'cursor' : ''}
                 style={{
                   flex: 1,
                   background: 'transparent',
@@ -275,21 +274,19 @@ export default function Home() {
                   position: 'relative'
                 }}
               />
-              {!input && (
-                <div style={{
-                  position: 'absolute',
-                  left: '0px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  color: '#38FE27',
-                  fontSize: '12px',
-                  animation: 'blink 1s infinite',
-                  pointerEvents: 'none',
-                  fontFamily: 'inherit'
-                }}>
-                  █
-                </div>
-              )}
+              <div style={{
+                position: 'absolute',
+                left: input ? `${input.length * 7.2}px` : '0px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                color: '#38FE27',
+                fontSize: '12px',
+                animation: 'blink 1s infinite',
+                pointerEvents: 'none',
+                fontFamily: 'inherit'
+              }}>
+                █
+              </div>
             </div>
             <button
               type="submit"
