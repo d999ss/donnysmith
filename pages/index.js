@@ -110,6 +110,19 @@ export default function Home() {
   // Auto-focus input on mount
   useEffect(() => {
     inputRef.current?.focus()
+    
+    // Re-focus on visibility change (for mobile app switching)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        setTimeout(() => inputRef.current?.focus(), 100)
+      }
+    }
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
   }, [])
 
   useEffect(() => {
@@ -202,11 +215,11 @@ export default function Home() {
     }
     
     // Don't focus if clicking on interactive elements
-    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') {
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
       return
     }
-    // Focus the input field
-    inputRef.current?.focus()
+    // Focus the input field - especially important for mobile
+    setTimeout(() => inputRef.current?.focus(), 50)
   }
 
   return (
