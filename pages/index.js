@@ -387,8 +387,6 @@ export default function Home() {
             html {
               height: 100%;
               -webkit-text-size-adjust: 100%;
-              position: fixed;
-              width: 100%;
             }
             
             body {
@@ -396,9 +394,6 @@ export default function Home() {
               -webkit-font-smoothing: antialiased;
               -moz-osx-font-smoothing: grayscale;
               touch-action: manipulation;
-              position: fixed;
-              width: 100%;
-              overflow: hidden;
             }
           }
         `}
@@ -501,6 +496,22 @@ export default function Home() {
             opacity: 1;
             cursor: default;
           }
+          
+          /* Desktop width constraint */
+          @media (min-width: 1200px) {
+            .desktop-constrained {
+              max-width: 33.333vw !important;
+            }
+          }
+          
+          /* Large welcome message on desktop */
+          @media (min-width: 768px) {
+            .welcome-message {
+              font-size: 72px !important;
+              line-height: 1.1 !important;
+              margin-bottom: 24px !important;
+            }
+          }
         `}</style>
       </Head>
       
@@ -516,8 +527,18 @@ export default function Home() {
           letterSpacing: '-0.19px',
           padding: 0,
           margin: 0,
-          cursor: 'text'
+          cursor: 'text',
+          display: 'flex',
+          justifyContent: 'center'
         }}>
+        
+        <div style={{
+          width: '100%',
+          maxWidth: '100vw',
+          minHeight: '100vh',
+          position: 'relative'
+        }}
+        className="desktop-constrained">
         
         {/* Terminal Header Bar */}
         <div className="mobile-hide" style={{
@@ -549,8 +570,7 @@ export default function Home() {
                 color: '#FFFFFF', 
                 fontSize: '12px', 
                 whiteSpace: 'nowrap',
-                cursor: 'pointer',
-                textDecoration: 'underline'
+                cursor: 'pointer'
               }}
               onClick={() => {
                 append({
@@ -592,12 +612,14 @@ export default function Home() {
                   {msg.content}
                 </div>
               ) : (
-                <div style={{
-                  color: '#FFFFFF',
-                  fontSize: '12px',
-                  lineHeight: '1.4',
-                  letterSpacing: '-0.19px'
-                }}>
+                <div 
+                  className={msg.id === 'welcome' ? 'welcome-message' : ''}
+                  style={{
+                    color: '#FFFFFF',
+                    fontSize: '12px',
+                    lineHeight: '1.4',
+                    letterSpacing: '-0.19px'
+                  }}>
                   <ReactMarkdown
                     components={{
                       p: ({children}) => <div style={{ marginBottom: '8px' }}>{children}</div>,
@@ -717,6 +739,7 @@ export default function Home() {
             `
           }}
         />
+        </div>
       </div>
     </>
   )
