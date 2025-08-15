@@ -296,7 +296,7 @@ export default function Home() {
                   fontFamily: 'inherit',
                   outline: 'none',
                   padding: '0',
-                  caretColor: 'transparent',
+                  caretColor: '#38FE27',
                   WebkitAppearance: 'none',
                   borderRadius: 0,
                   position: 'relative'
