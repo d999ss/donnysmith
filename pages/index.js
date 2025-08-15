@@ -489,12 +489,12 @@ export default function Home() {
           }
 
           .send-btn:not([disabled]) {
-            background: #28FE14;
+            background: #FFFFFF;
             color: #000;
           }
 
           .send-btn:not([disabled]):active {
-            background: #20CC10;
+            background: #CCCCCC;
           }
 
           .send-btn[disabled] {
