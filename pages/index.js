@@ -303,7 +303,7 @@ export default function Home() {
             .input-field,
             .input-field:disabled {
               -webkit-appearance: none !important;
-              -webkit-text-fill-color: #28FE14 !important;
+              -webkit-text-fill-color: #FFFFFF !important;
               -webkit-user-select: text !important;
               -webkit-touch-callout: none !important;
               -webkit-tap-highlight-color: transparent !important;
@@ -391,7 +391,7 @@ export default function Home() {
             box-sizing: border-box;
             padding: 0 14px;
             font: 12px ui-monospace, 'SF Mono', Monaco, Menlo, 'Courier New', monospace;
-            color: #28FE14;
+            color: #FFFFFF;
             background: #1a1a1a;
             border: none;
             border-radius: var(--radius);
