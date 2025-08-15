@@ -428,10 +428,6 @@ export default function Home() {
 
         {/* iOS-style Input Bar */}
         <div className="input-bar" role="form" aria-label="Chat input">
-          <button className="addon" type="button" aria-label="Terminal prompt">
-            {'>'}
-          </button>
-
           <label className="sr-only" htmlFor="chat-input">Message</label>
           <div className="field-wrap">
             <textarea 
