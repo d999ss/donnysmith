@@ -110,13 +110,18 @@ export default function Home() {
 
   // Auto-focus input on mount and ensure welcome message is visible
   useEffect(() => {
+    // For mobile, don't auto-focus to prevent keyboard popup on load
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    
     // Ensure welcome message is visible first
     setTimeout(() => {
       if (messagesEndRef.current) {
         messagesEndRef.current.scrollIntoView({ behavior: 'instant', block: 'start' })
       }
-      // Then focus input for mobile keyboard
-      inputRef.current?.focus()
+      // Only auto-focus on desktop
+      if (!isMobile) {
+        inputRef.current?.focus()
+      }
     }, 100)
     
     // Re-focus on visibility change (for mobile app switching)
