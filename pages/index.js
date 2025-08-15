@@ -94,16 +94,7 @@ export default function Home() {
       clearTimeout(inactivityTimerRef.current)
     }
     
-    // Set a new timer for 10 seconds
-    inactivityTimerRef.current = setTimeout(() => {
-      // Only show prompt if there's just the welcome message and no user interaction
-      if (messages.length === 1 && messages[0].id === 'welcome') {
-        append({
-          role: 'assistant',
-          content: '$ ping -t 10... Still there?'
-        })
-      }
-    }, 10000)
+    // Removed inactivity prompt - keeping timer structure for potential future use
   }
 
   useEffect(() => {
