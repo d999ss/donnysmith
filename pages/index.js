@@ -239,6 +239,7 @@ export default function Home() {
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0; }
           }
+          
           .cursor::after {
             content: '█';
             position: absolute;
@@ -313,7 +314,7 @@ export default function Home() {
               -webkit-touch-callout: none !important;
               -webkit-tap-highlight-color: transparent !important;
               background-color: #1a1a1a !important;
-              caret-color: #28FE14 !important;
+              caret-color: #FFFFFF !important;
             }
             
             /* iOS keyboard dark mode */
@@ -405,6 +406,7 @@ export default function Home() {
             overflow: hidden;
             line-height: var(--h);
             text-align: left;
+            caret-color: white;
           }
 
           .input-field::placeholder {
