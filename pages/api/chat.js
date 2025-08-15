@@ -153,17 +153,20 @@ $ wc -l ~/clients/fortune500.txt
     }
     
     if (commandResponses[command]) {
-      // Use streamText for proper AI SDK format
-      const result = await streamText({
-        model: openai('gpt-4o-mini'),
-        system: 'You are a terminal. Return the exact command response provided.',
-        messages: [
-          ...messages,
-          {role: 'assistant', content: commandResponses[command]}
-        ],
+      // For snake and other commands, return directly without AI processing
+      const encoder = new TextEncoder()
+      const stream = new ReadableStream({
+        start(controller) {
+          controller.enqueue(encoder.encode(`0:"${commandResponses[command].replace(/\n/g, '\\n').replace(/"/g, '\\"')}"\n`))
+          controller.close()
+        }
       })
       
-      return result.toDataStreamResponse()
+      return new Response(stream, {
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+        },
+      })
     }
   }
 
