@@ -248,6 +248,7 @@ export default function Home() {
           zIndex: 200
         }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ color: '#28FE14', fontSize: '12px' }}>{'>'}</span>
             <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
               <input
                 ref={inputRef}
@@ -269,7 +270,7 @@ export default function Home() {
                   fontSize: '12px',
                   fontFamily: 'inherit',
                   outline: 'none',
-                  padding: '6px 0',
+                  padding: '2px 0',
                   caretColor: 'transparent',
                   WebkitAppearance: 'none',
                   borderRadius: 0,
