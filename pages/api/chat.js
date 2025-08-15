@@ -1,13 +1,8 @@
 import { createOpenAI } from '@ai-sdk/openai'
 import { streamText } from 'ai'
 import { DONNY_CONTEXT } from '../../lib/donny-context'
-import OpenAI from 'openai'
 
 const openai = createOpenAI({
-  apiKey: process.env.OPENAI_API_KEY || '',
-})
-
-const openaiClient = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || '',
 })
 
@@ -54,22 +49,25 @@ export default async function handler(req) {
        lastMessage.content.toLowerCase().includes('visualize'))) {
     
     try {
-      const imageResponse = await openaiClient.images.generate({
-        model: "dall-e-3",
-        prompt: lastMessage.content,
-        n: 1,
-        size: "1024x1024",
-        quality: "standard",
+      const baseUrl = req.url.includes('localhost') ? 'http://localhost:3000' : 'https://www.donnysmith.com'
+      const imageResponse = await fetch(`${baseUrl}/api/generate-image`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt: lastMessage.content
+        })
       })
       
-      const imageUrl = imageResponse.data[0].url
-      const imageMarkdown = `![Generated Image](${imageUrl})\n\n*Generated with DALL-E 3*`
-      
-      return new Response(imageMarkdown, {
-        headers: {
-          'Content-Type': 'text/plain; charset=utf-8',
-        },
-      })
+      if (imageResponse.ok) {
+        const imageData = await imageResponse.json()
+        const imageMarkdown = `![Generated Image](${imageData.imageUrl})\n\n*Generated with DALL-E 3*`
+        
+        return new Response(imageMarkdown, {
+          headers: {
+            'Content-Type': 'text/plain; charset=utf-8',
+          },
+        })
+      }
     } catch (error) {
       console.error('Image generation error:', error)
       // Fall through to regular chat if image generation fails
