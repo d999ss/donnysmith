@@ -7,6 +7,7 @@ export default function Home() {
   const [showProviders, setShowProviders] = useState(false)
   const [showCommands, setShowCommands] = useState(false)
   const messagesEndRef = useRef(null)
+  const inputRef = useRef(null)
   
   const { 
     messages, 
@@ -64,6 +65,15 @@ export default function Home() {
       }
       handleSubmit(fakeEvent)
     }, 50)
+  }
+
+  const handlePageClick = (e) => {
+    // Don't focus if clicking on interactive elements
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') {
+      return
+    }
+    // Focus the input field
+    inputRef.current?.focus()
   }
 
   return (
@@ -131,16 +141,19 @@ export default function Home() {
         `}</style>
       </Head>
       
-      <div style={{
-        minHeight: '100vh',
-        background: '#000000',
-        color: '#28FE14',
-        fontFamily: "'Andale Mono', monospace",
-        fontSize: '12px',
-        lineHeight: '1.2',
-        padding: 0,
-        margin: 0
-      }}>
+      <div 
+        onClick={handlePageClick}
+        style={{
+          minHeight: '100vh',
+          background: '#000000',
+          color: '#28FE14',
+          fontFamily: "'Andale Mono', monospace",
+          fontSize: '12px',
+          lineHeight: '1.2',
+          padding: 0,
+          margin: 0,
+          cursor: 'text'
+        }}>
         
         {/* Terminal Header Bar */}
         <div style={{
@@ -325,6 +338,7 @@ export default function Home() {
           <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
               <input
+                ref={inputRef}
                 type="text"
                 value={input}
                 onChange={handleInputChange}
