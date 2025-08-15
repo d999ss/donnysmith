@@ -548,7 +548,7 @@ export default function Home() {
               font-size: 72px !important;
               line-height: 1.1 !important;
               margin-bottom: 24px !important;
-              letter-spacing: -0.19px !important;
+              letter-spacing: -1.5px !important;
               animation: fadeInUp 0.8s ease-out !important;
             }
           }
