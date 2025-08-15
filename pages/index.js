@@ -23,7 +23,7 @@ export default function Home() {
       {
         id: 'welcome',
         role: 'assistant',
-        content: `Hello, How can I help you today?`
+        content: `How can I help you today?`
       }
     ],
     body: {
