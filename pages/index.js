@@ -242,6 +242,8 @@ export default function Home() {
           left: '10px',
           right: '10px',
           background: '#000000',
+          border: '0.5px solid #808080',
+          borderRadius: '4px',
           padding: '10px',
           zIndex: 200
         }}>
