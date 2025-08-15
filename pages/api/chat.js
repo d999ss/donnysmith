@@ -74,6 +74,42 @@ export default async function handler(req) {
     }
   }
 
+  // Check for Snake game trigger
+  if (lastMessage?.content?.toLowerCase().trim() === 'snake') {
+    const snakeGame = `$ starting snake.exe...
+    
+🐍 SNAKE GAME ACTIVATED 🐍
+
+Controls: Arrow keys or WASD
+Goal: Eat the 🍎 to grow
+Don't hit the walls or yourself!
+
+╔════════════════════════╗
+║                        ║
+║    🐍       🍎         ║
+║                        ║
+║                        ║
+║                        ║
+║                        ║
+║                        ║
+║                        ║
+║                        ║
+║                        ║
+╚════════════════════════╝
+
+Score: 0    High Score: --
+
+Press SPACE to start!
+
+$ Type 'exit' to quit snake and return to terminal`
+
+    return new Response(snakeGame, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+      },
+    })
+  }
+
   // Check if the last message is a command
   if (lastMessage?.content?.startsWith('/')) {
     const command = lastMessage.content

@@ -129,6 +129,38 @@ export default function Home() {
       clearTimeout(inactivityTimerRef.current)
     }
     
+    // Check if Snake game is active
+    const lastMessage = messages[messages.length - 1]
+    const isSnakeActive = lastMessage?.content?.includes('🐍 SNAKE GAME ACTIVATED 🐍')
+    
+    if (isSnakeActive) {
+      // Snake game controls
+      if (e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault()
+        append({
+          role: 'assistant',
+          content: '$ snake.exe running... Use arrow keys to play! (This is a demo - full game coming soon!)'
+        })
+        return
+      }
+      
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd'].includes(e.key.toLowerCase())) {
+        e.preventDefault()
+        const direction = {
+          'ArrowUp': '↑', 'w': '↑',
+          'ArrowDown': '↓', 's': '↓', 
+          'ArrowLeft': '←', 'a': '←',
+          'ArrowRight': '→', 'd': '→'
+        }[e.key.toLowerCase()]
+        
+        append({
+          role: 'assistant',
+          content: `$ snake moving ${direction} ... (Demo mode - full Snake game in development!)`
+        })
+        return
+      }
+    }
+    
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       handleSubmit(e)
