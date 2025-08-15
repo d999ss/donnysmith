@@ -422,16 +422,25 @@ export default function Home() {
           .input-bar {
             position: fixed;
             bottom: 0;
-            left: 0;
-            right: 0;
+            left: 50%;
+            transform: translateX(-50%);
             z-index: 10;
             display: grid;
             grid-template-columns: 1fr var(--h);
             align-items: center;
             gap: var(--gap);
-            padding: calc(16px + var(--safe-b)) calc(16px + var(--safe-r)) calc(16px + var(--safe-b)) calc(16px + var(--safe-l));
+            padding: calc(16px + var(--safe-b)) calc(32px + var(--safe-r)) calc(16px + var(--safe-b)) calc(32px + var(--safe-l));
             background: #000000;
             backdrop-filter: saturate(180%) blur(12px);
+            max-width: 864px;
+            width: 100%;
+            box-sizing: border-box;
+          }
+          
+          @media (min-width: 1400px) {
+            .input-bar {
+              padding: calc(16px + var(--safe-b)) calc(64px + var(--safe-r)) calc(16px + var(--safe-b)) calc(64px + var(--safe-l));
+            }
           }
 
           .field-wrap {
