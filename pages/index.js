@@ -201,6 +201,17 @@ export default function Home() {
             body, div, span, button, input[type="text"] {
               font-size: 16px !important;
             }
+            .mobile-hide {
+              display: none !important;
+            }
+            .mobile-fullscreen {
+              height: 100vh !important;
+              padding-top: 0 !important;
+            }
+            .mobile-caret {
+              font-size: 16px !important;
+              line-height: 1.2 !important;
+            }
           }
         `}</style>
       </Head>
@@ -220,7 +231,7 @@ export default function Home() {
         }}>
         
         {/* Terminal Header Bar */}
-        <div style={{
+        <div className="mobile-hide" style={{
           background: '#000000',
           borderBottom: 'max(1px, 0.5px) solid rgba(128, 128, 128, 0.5)',
           padding: '8px 12px',
@@ -245,7 +256,7 @@ export default function Home() {
         </div>
 
         {/* Terminal Content */}
-        <div style={{
+        <div className="mobile-fullscreen" style={{
           height: 'calc(100vh - 140px)',
           overflowY: 'auto',
           padding: '12px',
@@ -320,7 +331,12 @@ export default function Home() {
           zIndex: 200
         }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ color: '#28FE14', fontSize: '12px' }}>{'>'}</span>
+            <span className="mobile-caret" style={{ 
+              color: '#28FE14', 
+              fontSize: '12px',
+              lineHeight: '1.2',
+              alignSelf: 'center'
+            }}>{'>'}</span>
             <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
               <input
                 ref={inputRef}
