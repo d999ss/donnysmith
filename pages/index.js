@@ -8,6 +8,8 @@ export default function Home() {
   const inputRef = useRef(null)
   const inactivityTimerRef = useRef(null)
   const [sessionContext, setSessionContext] = useState({})
+  const [welcomeText, setWelcomeText] = useState('')
+  const [isWelcomeComplete, setIsWelcomeComplete] = useState(false)
   
   const { 
     messages, 
@@ -108,6 +110,29 @@ export default function Home() {
     }
   }, [messages, isLoading])
 
+  // Simulate token streaming for welcome message
+  useEffect(() => {
+    const fullText = "How can I help you today?"
+    const tokens = ["How", " can", " I", " help", " you", " today", "?"]
+    let currentIndex = 0
+    
+    const streamToken = () => {
+      if (currentIndex < tokens.length) {
+        setWelcomeText(prev => prev + tokens[currentIndex])
+        currentIndex++
+        
+        // Mimic natural token generation timing - varied intervals
+        const delays = [150, 80, 120, 90, 110, 200, 60] // realistic token timing
+        setTimeout(streamToken, delays[currentIndex - 1] || 100)
+      } else {
+        setIsWelcomeComplete(true)
+      }
+    }
+    
+    // Start streaming after a brief pause
+    setTimeout(streamToken, 200)
+  }, [])
+
   // Auto-focus input on mount and ensure welcome message is visible
   useEffect(() => {
     // For mobile, don't auto-focus to prevent keyboard popup on load
@@ -118,8 +143,8 @@ export default function Home() {
       if (messagesEndRef.current) {
         messagesEndRef.current.scrollIntoView({ behavior: 'instant', block: 'start' })
       }
-      // Only auto-focus on desktop
-      if (!isMobile) {
+      // Only auto-focus on desktop after welcome is complete
+      if (!isMobile && isWelcomeComplete) {
         inputRef.current?.focus()
       }
     }, 100)
@@ -136,7 +161,7 @@ export default function Home() {
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
-  }, [])
+  }, [isWelcomeComplete])
 
   useEffect(() => {
     // Start the inactivity timer when component mounts
@@ -549,7 +574,6 @@ export default function Home() {
               line-height: 1.1 !important;
               margin-bottom: 24px !important;
               letter-spacing: -1.5px !important;
-              animation: fadeInUp 0.8s ease-out !important;
             }
           }
         `}</style>
@@ -661,21 +685,33 @@ export default function Home() {
                     lineHeight: '1.4',
                     letterSpacing: '-0.19px'
                   }}>
-                  <ReactMarkdown
-                    components={{
-                      p: ({children}) => <div style={{ marginBottom: '8px' }}>{children}</div>,
-                      strong: ({children}) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
-                      em: ({children}) => <em style={{ fontStyle: 'italic' }}>{children}</em>,
-                      a: ({children, href}) => <a href={href} style={{ color: '#00FFFF', textDecoration: 'underline' }} target="_blank" rel="noopener noreferrer">{children}</a>,
-                      code: ({children}) => <code style={{ background: '#1a1a1a', padding: '2px 4px', borderRadius: '3px' }}>{children}</code>,
-                      pre: ({children}) => <pre style={{ background: '#1a1a1a', padding: '8px', borderRadius: '3px', overflow: 'auto' }}>{children}</pre>,
-                      ul: ({children}) => <ul style={{ marginLeft: '20px', marginBottom: '8px' }}>{children}</ul>,
-                      ol: ({children}) => <ol style={{ marginLeft: '20px', marginBottom: '8px' }}>{children}</ol>,
-                      li: ({children}) => <li style={{ marginBottom: '4px' }}>{children}</li>,
-                    }}
-                  >
-                    {msg.content}
-                  </ReactMarkdown>
+                  {msg.id === 'welcome' ? (
+                    <div style={{ position: 'relative' }}>
+                      {welcomeText}
+                      {!isWelcomeComplete && (
+                        <span style={{ 
+                          animation: 'blink 1s infinite',
+                          marginLeft: '2px'
+                        }}>|</span>
+                      )}
+                    </div>
+                  ) : (
+                    <ReactMarkdown
+                      components={{
+                        p: ({children}) => <div style={{ marginBottom: '8px' }}>{children}</div>,
+                        strong: ({children}) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
+                        em: ({children}) => <em style={{ fontStyle: 'italic' }}>{children}</em>,
+                        a: ({children, href}) => <a href={href} style={{ color: '#00FFFF', textDecoration: 'underline' }} target="_blank" rel="noopener noreferrer">{children}</a>,
+                        code: ({children}) => <code style={{ background: '#1a1a1a', padding: '2px 4px', borderRadius: '3px' }}>{children}</code>,
+                        pre: ({children}) => <pre style={{ background: '#1a1a1a', padding: '8px', borderRadius: '3px', overflow: 'auto' }}>{children}</pre>,
+                        ul: ({children}) => <ul style={{ marginLeft: '20px', marginBottom: '8px' }}>{children}</ul>,
+                        ol: ({children}) => <ol style={{ marginLeft: '20px', marginBottom: '8px' }}>{children}</ol>,
+                        li: ({children}) => <li style={{ marginBottom: '4px' }}>{children}</li>,
+                      }}
+                    >
+                      {msg.content}
+                    </ReactMarkdown>
+                  )}
                 </div>
               )}
             </div>
