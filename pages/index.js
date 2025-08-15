@@ -477,7 +477,7 @@ export default function Home() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ color: '#28FE14', fontSize: '12px', whiteSpace: 'nowrap' }}>
-              DonnySmith
+              Donny Smith
             </span>
           </div>
           
