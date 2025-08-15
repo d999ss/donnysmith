@@ -294,10 +294,13 @@ export default function Home() {
             }
             .mobile-fullscreen {
               height: calc(100vh - 80px) !important;
-              padding-top: 16px !important;
+              padding-top: calc(16px + env(safe-area-inset-top)) !important;
+              padding-top: calc(16px + constant(safe-area-inset-top)) !important; /* iOS < 11.2 */
               padding-bottom: 80px !important;
-              padding-left: 16px !important;
-              padding-right: 16px !important;
+              padding-left: calc(16px + env(safe-area-inset-left)) !important;
+              padding-left: calc(16px + constant(safe-area-inset-left)) !important; /* iOS < 11.2 */
+              padding-right: calc(16px + env(safe-area-inset-right)) !important;
+              padding-right: calc(16px + constant(safe-area-inset-right)) !important; /* iOS < 11.2 */
               display: flex !important;
               flex-direction: column !important;
               justify-content: flex-start !important;
@@ -497,6 +500,7 @@ export default function Home() {
           height: 'calc(100vh - 140px)',
           overflowY: 'auto',
           padding: '12px',
+          paddingTop: 'calc(12px + env(safe-area-inset-top))',
           paddingBottom: '120px',
           background: '#000000',
           WebkitOverflowScrolling: 'touch',
