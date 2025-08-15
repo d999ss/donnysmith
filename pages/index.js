@@ -582,8 +582,16 @@ export default function Home() {
           ))}
           
           {isLoading && (
-            <div style={{ marginBottom: '8px', marginTop: '-8px' }}>
-              <div className="pulse-dot"></div>
+            <div style={{ 
+              marginBottom: '8px',
+              color: '#28FE14',
+              fontSize: '12px',
+              lineHeight: '1.4',
+              display: 'flex',
+              alignItems: 'center',
+              height: '17px'
+            }}>
+              <div className="pulse-dot" style={{ display: 'inline-block' }}></div>
             </div>
           )}
           
