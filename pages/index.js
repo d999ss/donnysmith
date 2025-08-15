@@ -570,7 +570,8 @@ export default function Home() {
                 color: '#FFFFFF', 
                 fontSize: '12px', 
                 whiteSpace: 'nowrap',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                textDecoration: 'none'
               }}
               onClick={() => {
                 append({
