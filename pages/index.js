@@ -284,8 +284,10 @@ export default function Home() {
             }
             .mobile-fullscreen {
               height: calc(100vh - 80px) !important;
-              padding-top: 20px !important;
+              padding-top: 16px !important;
               padding-bottom: 80px !important;
+              padding-left: 16px !important;
+              padding-right: 16px !important;
               display: flex !important;
               flex-direction: column !important;
               justify-content: flex-start !important;
