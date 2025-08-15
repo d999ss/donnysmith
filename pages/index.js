@@ -270,7 +270,7 @@ export default function Home() {
                   fontSize: '12px',
                   fontFamily: 'inherit',
                   outline: 'none',
-                  padding: '2px 0',
+                  padding: '0',
                   caretColor: 'transparent',
                   WebkitAppearance: 'none',
                   borderRadius: 0,
