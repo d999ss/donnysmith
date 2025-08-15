@@ -24,7 +24,8 @@ export default async function handler(req) {
   if (isFirstUserMessage) {
     // Send SMS notification for first user interaction
     try {
-      await fetch(`${req.url.replace('/api/chat', '/api/send-sms')}`, {
+      const baseUrl = req.url.includes('localhost') ? 'http://localhost:3000' : 'https://www.donnysmith.com'
+      await fetch(`${baseUrl}/api/send-sms`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

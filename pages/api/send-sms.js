@@ -1,16 +1,12 @@
 import twilio from 'twilio'
 
-export const config = {
-  runtime: 'edge',
-}
-
-export default async function handler(req) {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return new Response('Method not allowed', { status: 405 })
+    return res.status(405).json({ error: 'Method not allowed' })
   }
 
   try {
-    const { message, userMessage } = await req.json()
+    const { userMessage } = req.body
     
     const client = twilio(
       process.env.TWILIO_ACCOUNT_SID,
@@ -23,21 +19,16 @@ export default async function handler(req) {
       body: `🤖 New chat on donnysmith.com\n\nUser: ${userMessage}\n\nTime: ${new Date().toLocaleString()}`
     })
 
-    return new Response(JSON.stringify({ 
+    return res.status(200).json({ 
       success: true, 
       sid: smsMessage.sid 
-    }), {
-      headers: { 'Content-Type': 'application/json' }
     })
 
   } catch (error) {
     console.error('SMS Error:', error)
-    return new Response(JSON.stringify({ 
+    return res.status(500).json({ 
       success: false, 
       error: error.message 
-    }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
     })
   }
 }
