@@ -323,8 +323,10 @@ export default function Home() {
           }
 
           .input-bar {
-            position: sticky;
+            position: fixed;
             bottom: 0;
+            left: 0;
+            right: 0;
             z-index: 10;
             display: grid;
             grid-template-columns: 1fr var(--h);
