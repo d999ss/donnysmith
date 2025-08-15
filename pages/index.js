@@ -182,10 +182,9 @@ export default function Home() {
                 onClick={() => setShowProviders(!showProviders)}
                 style={{
                   background: '#000000',
-                  border: '1px solid #808080',
+                  border: 'none',
                   color: '#28FE14',
                   padding: '4px 8px',
-                  borderRadius: '4px',
                   fontSize: '12px',
                   cursor: 'pointer',
                   display: 'flex',
