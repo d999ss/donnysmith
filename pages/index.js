@@ -35,7 +35,8 @@ export default function Home() {
   })
   
   const scrollToBottom = () => {
-    if (messagesEndRef.current) {
+    // Only auto-scroll if there are multiple messages
+    if (messagesEndRef.current && messages.length > 1) {
       messagesEndRef.current.scrollIntoView({ 
         behavior: 'smooth',
         block: 'end',
@@ -107,9 +108,16 @@ export default function Home() {
     }
   }, [messages, isLoading])
 
-  // Auto-focus input on mount
+  // Auto-focus input on mount and ensure welcome message is visible
   useEffect(() => {
-    inputRef.current?.focus()
+    // Ensure welcome message is visible first
+    setTimeout(() => {
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({ behavior: 'instant', block: 'start' })
+      }
+      // Then focus input for mobile keyboard
+      inputRef.current?.focus()
+    }, 100)
     
     // Re-focus on visibility change (for mobile app switching)
     const handleVisibilityChange = () => {
