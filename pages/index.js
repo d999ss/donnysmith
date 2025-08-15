@@ -337,9 +337,7 @@ export default function Home() {
             grid-template-columns: 1fr var(--h);
             align-items: center;
             gap: var(--gap);
-            padding: 8px calc(16px + var(--safe-r))
-                     calc(8px + max(0px, var(--safe-b) - var(--kb)))
-                     calc(16px + var(--safe-l));
+            padding: 16px;
             background: #000000;
             backdrop-filter: saturate(180%) blur(12px);
           }
