@@ -148,10 +148,7 @@ export default function Home() {
             color: #808080;
           }
           @media (max-width: 768px) {
-            body, div, span, button {
-              font-size: 13px !important;
-            }
-            input[type="text"] {
+            body, div, span, button, input[type="text"] {
               font-size: 16px !important;
             }
           }
@@ -268,7 +265,7 @@ export default function Home() {
           right: '10px',
           background: '#000000',
           border: 'max(1px, 0.5px) solid rgba(128, 128, 128, 0.5)',
-          borderRadius: '4px',
+          borderRadius: '50px',
           padding: '4px 8px',
           zIndex: 200
         }}>
