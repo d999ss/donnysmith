@@ -175,7 +175,7 @@ export default function Home() {
         {/* Terminal Header Bar */}
         <div style={{
           background: '#000000',
-          borderBottom: 'max(1px, 0.5px) solid #808080',
+          borderBottom: 'max(1px, 0.5px) solid rgba(128, 128, 128, 0.5)',
           padding: '8px 12px',
           display: 'flex',
           justifyContent: 'space-between',
@@ -267,7 +267,7 @@ export default function Home() {
           left: '10px',
           right: '10px',
           background: '#000000',
-          border: 'max(1px, 0.5px) solid #808080',
+          border: 'max(1px, 0.5px) solid rgba(128, 128, 128, 0.5)',
           borderRadius: '4px',
           padding: '6px 10px',
           zIndex: 200
