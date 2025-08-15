@@ -259,11 +259,11 @@ export default function Home() {
             /* Enhanced mobile keyboard styling */
             .input-field {
               -webkit-appearance: none !important;
-              -webkit-text-fill-color: #fff !important;
+              -webkit-text-fill-color: #28FE14 !important;
               -webkit-user-select: text !important;
               -webkit-touch-callout: none !important;
               -webkit-tap-highlight-color: transparent !important;
-              background-color: #0e0e0f !important;
+              background-color: #1a1a1a !important;
               caret-color: #28FE14 !important;
             }
             
