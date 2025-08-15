@@ -6,6 +6,7 @@ export default function Home() {
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
   const inactivityTimerRef = useRef(null)
+  const [sessionContext, setSessionContext] = useState({})
   
   const { 
     messages, 
@@ -24,6 +25,9 @@ export default function Home() {
         content: `Hello, How can I help you today?`
       }
     ],
+    body: {
+      sessionContext: sessionContext
+    },
     onError: (error) => {
       console.error('Chat error:', error)
     }
@@ -31,6 +35,51 @@ export default function Home() {
   
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  // Load session context from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('donny-session-context')
+    if (saved) {
+      try {
+        setSessionContext(JSON.parse(saved))
+      } catch (e) {
+        console.error('Failed to parse session context:', e)
+      }
+    }
+  }, [])
+
+  // Update session context based on conversation
+  const updateSessionContext = (newMessages) => {
+    const userMessages = newMessages.filter(msg => msg.role === 'user')
+    const context = { ...sessionContext }
+    
+    // Track topics mentioned
+    const topics = {
+      design: /design|visual|ui|ux|interface|branding|identity/i,
+      strategy: /strategy|business|growth|market|positioning/i,
+      technology: /tech|development|code|api|platform|system/i,
+      projects: /ikon|ge|pepsi|allergan|air company|portfolio/i,
+      contact: /contact|email|hire|work together|collaborate/i,
+      pricing: /cost|price|budget|rate|fee/i
+    }
+    
+    userMessages.forEach(msg => {
+      Object.entries(topics).forEach(([topic, regex]) => {
+        if (regex.test(msg.content)) {
+          context[`interested_in_${topic}`] = true
+          context[`${topic}_mentions`] = (context[`${topic}_mentions`] || 0) + 1
+        }
+      })
+    })
+    
+    // Track session stats
+    context.total_messages = userMessages.length
+    context.last_active = new Date().toISOString()
+    context.session_start = context.session_start || new Date().toISOString()
+    
+    setSessionContext(context)
+    localStorage.setItem('donny-session-context', JSON.stringify(context))
   }
 
   const startInactivityTimer = () => {
@@ -53,6 +102,7 @@ export default function Home() {
 
   useEffect(() => {
     scrollToBottom()
+    updateSessionContext(messages)
   }, [messages])
 
   useEffect(() => {

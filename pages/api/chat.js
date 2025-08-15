@@ -15,7 +15,7 @@ export default async function handler(req) {
     return new Response('Method not allowed', { status: 405 })
   }
 
-  const { messages } = await req.json()
+  const { messages, sessionContext } = await req.json()
   
   // Check if this is the user's first real message (not the welcome message)
   const userMessages = messages.filter(msg => msg.role === 'user')
@@ -135,9 +135,8 @@ $ wc -l ~/clients/fortune500.txt
     }
   }
 
-  const result = await streamText({
-    model: openai('gpt-4o-mini'),
-    system: `${DONNY_CONTEXT}
+  // Build contextual system prompt
+  let contextualPrompt = `${DONNY_CONTEXT}
 
 IMPORTANT INSTRUCTIONS:
 - You are Donny Smith's AI representative on his personal website
@@ -150,7 +149,49 @@ IMPORTANT INSTRUCTIONS:
 - When discussing work, reference specific projects and clients from the context
 - Always align responses with the tone: decisive, structured, narrative-driven
 - I can generate images using DALL-E when users ask me to "create", "design", "draw", or "visualize" something
-- For contact requests, provide email: d999ss@gmail.com and X: @donnysmith`,
+- For contact requests, provide email: d999ss@gmail.com and X: @donnysmith`
+
+  // Add session context insights
+  if (sessionContext && Object.keys(sessionContext).length > 0) {
+    contextualPrompt += `
+
+SESSION CONTEXT:
+- This visitor has been engaged for ${sessionContext.total_messages || 0} messages`
+    
+    if (sessionContext.interested_in_design) {
+      contextualPrompt += `
+- They've shown interest in design work - emphasize visual projects like Ikon Pass, Air Company branding`
+    }
+    
+    if (sessionContext.interested_in_strategy) {
+      contextualPrompt += `
+- They're interested in business strategy - highlight market positioning work and growth outcomes`
+    }
+    
+    if (sessionContext.interested_in_technology) {
+      contextualPrompt += `
+- They have technical interests - mention system architecture, AI tools, and technical implementation`
+    }
+    
+    if (sessionContext.interested_in_projects) {
+      contextualPrompt += `
+- They've asked about specific projects - provide deeper insights and case study details`
+    }
+    
+    if (sessionContext.interested_in_contact) {
+      contextualPrompt += `
+- They're interested in working together - be more direct about next steps and collaboration`
+    }
+    
+    if (sessionContext.total_messages > 3) {
+      contextualPrompt += `
+- This is a deeper conversation - you can be more specific and skip basic introductions`
+    }
+  }
+
+  const result = await streamText({
+    model: openai('gpt-4o-mini'),
+    system: contextualPrompt,
     messages,
   })
 
