@@ -297,7 +297,7 @@ export default function Home() {
                 background: 'transparent',
                 border: 'none',
                 color: input.trim() ? '#28FE14' : '#666666',
-                fontSize: '16px',
+                fontSize: '12px',
                 cursor: input.trim() ? 'pointer' : 'default',
                 padding: '6px',
                 flexShrink: 0,
