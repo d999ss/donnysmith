@@ -74,9 +74,12 @@ export default async function handler(req) {
     }
   }
 
-  // Check for Snake game trigger
-  if (lastMessage?.content?.toLowerCase().trim() === 'snake') {
-    const snakeGame = `$ starting snake.exe...
+
+  // Check if the last message is a command or special trigger
+  if (lastMessage?.content?.startsWith('/') || lastMessage?.content?.toLowerCase().trim() === 'snake') {
+    const command = lastMessage.content.startsWith('/') ? lastMessage.content : 'snake'
+    const commandResponses = {
+      'snake': `$ starting snake.exe...
     
 🐍 SNAKE GAME ACTIVATED 🐍
 
@@ -101,19 +104,7 @@ Score: 0    High Score: --
 
 Press SPACE to start!
 
-$ Type 'exit' to quit snake and return to terminal`
-
-    return new Response(snakeGame, {
-      headers: {
-        'Content-Type': 'text/plain; charset=utf-8',
-      },
-    })
-  }
-
-  // Check if the last message is a command
-  if (lastMessage?.content?.startsWith('/')) {
-    const command = lastMessage.content
-    const commandResponses = {
+$ Type 'exit' to quit snake and return to terminal`,
       '/portfolio': `$ ls -la ~/portfolio/
 drwxr-xr-x  Ikon Pass App - Complete redesign serving millions of skiers
 drwxr-xr-x  GE Vernova GridOS - AI-powered energy grid modernization
