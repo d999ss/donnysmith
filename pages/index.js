@@ -537,11 +537,13 @@ export default function Home() {
             </span>
           </div>
           
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
             <span style={{ color: '#FFFFFF', fontSize: '12px', whiteSpace: 'nowrap' }}>
               {new Date().toDateString().split(' ').slice(0, 3).join(' ')} {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: false })}
             </span>
           </div>
+          
+          <div style={{ width: '120px' }}></div>
         </div>
 
         {/* Terminal Content */}
