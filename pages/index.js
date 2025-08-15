@@ -337,6 +337,8 @@ export default function Home() {
 
           .input-field {
             height: var(--h);
+            min-height: var(--h);
+            max-height: var(--h);
             width: 100%;
             box-sizing: border-box;
             padding: 0 14px;
@@ -349,6 +351,8 @@ export default function Home() {
             display: block;
             resize: none;
             overflow: hidden;
+            line-height: calc(var(--h) - 4px);
+            vertical-align: middle;
           }
 
           .input-field::placeholder {
