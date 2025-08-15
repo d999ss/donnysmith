@@ -183,9 +183,11 @@ export default function Home() {
         <meta name="description" content="Donny Smith - Terminal interface for AI assistant" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#000000" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="color-scheme" content="dark" />
         <style>{`
           @font-face {
             font-family: 'Triakis';
@@ -213,6 +215,11 @@ export default function Home() {
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            color-scheme: dark;
+          }
+          
+          html {
+            color-scheme: dark;
           }
           * {
             box-sizing: border-box;
