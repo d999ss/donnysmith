@@ -307,7 +307,7 @@ export default function Home() {
             padding: 0 14px;
             border: 0;
             border-radius: 22px;
-            color: #fff;
+            color: #000;
             background: #28FE14;
             font-weight: 600;
             cursor: pointer;
