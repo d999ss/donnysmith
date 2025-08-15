@@ -5,6 +5,7 @@ import { useChat } from '@ai-sdk/react'
 export default function Home() {
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
+  const inactivityTimerRef = useRef(null)
   
   const { 
     messages, 
@@ -12,7 +13,8 @@ export default function Home() {
     handleInputChange, 
     handleSubmit, 
     isLoading,
-    error
+    error,
+    append
   } = useChat({
     api: '/api/chat',
     initialMessages: [
@@ -31,11 +33,46 @@ export default function Home() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  const startInactivityTimer = () => {
+    // Clear any existing timer
+    if (inactivityTimerRef.current) {
+      clearTimeout(inactivityTimerRef.current)
+    }
+    
+    // Set a new timer for 10 seconds
+    inactivityTimerRef.current = setTimeout(() => {
+      // Only show prompt if there's just the welcome message and no user interaction
+      if (messages.length === 1 && messages[0].id === 'welcome') {
+        append({
+          role: 'assistant',
+          content: '$ ping -t 10... Still there?'
+        })
+      }
+    }, 10000)
+  }
+
   useEffect(() => {
     scrollToBottom()
   }, [messages])
 
+  useEffect(() => {
+    // Start the inactivity timer when component mounts
+    startInactivityTimer()
+    
+    // Cleanup on unmount
+    return () => {
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current)
+      }
+    }
+  }, [])
+
   const handleKeyPress = (e) => {
+    // Clear inactivity timer on any key press
+    if (inactivityTimerRef.current) {
+      clearTimeout(inactivityTimerRef.current)
+    }
+    
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       handleSubmit(e)
@@ -43,6 +80,11 @@ export default function Home() {
   }
 
   const handlePageClick = (e) => {
+    // Clear inactivity timer on any click
+    if (inactivityTimerRef.current) {
+      clearTimeout(inactivityTimerRef.current)
+    }
+    
     // Don't focus if clicking on interactive elements
     if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') {
       return
