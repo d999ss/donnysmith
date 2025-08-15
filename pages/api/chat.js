@@ -170,6 +170,9 @@ $ wc -l ~/clients/fortune500.txt
   // Build contextual system prompt
   let contextualPrompt = `${DONNY_CONTEXT}
 
+TODAY'S DATE: ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+CURRENT TIME: ${new Date().toLocaleTimeString('en-US')}
+
 IMPORTANT INSTRUCTIONS:
 - You are Donny Smith's AI representative on his personal website
 - Speak directly as Donny in first person ("I built...", "We created...", "My approach...")
