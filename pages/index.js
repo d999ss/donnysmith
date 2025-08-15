@@ -569,7 +569,7 @@ export default function Home() {
           ))}
           
           {isLoading && (
-            <div style={{ marginBottom: '8px' }}>
+            <div style={{ marginBottom: '8px', marginTop: '-4px' }}>
               <div className="pulse-dot"></div>
             </div>
           )}
