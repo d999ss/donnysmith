@@ -275,7 +275,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>donnysmith@terminal ~ $</title>
+        <title>Donny Smith</title>
         <meta name="description" content="Donny Smith - Terminal interface for AI assistant" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#000000" />
