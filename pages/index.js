@@ -167,20 +167,20 @@ export default function Home() {
           
           {messages.map((msg, i) => (
             <div key={msg.id || i} style={{ marginBottom: '8px' }}>
-              {msg.id !== 'welcome' && (
+              {msg.id !== 'welcome' && msg.role === 'assistant' && (
                 <div style={{ 
                   color: '#28FE14',
                   marginBottom: '1px',
                   fontSize: '12px'
                 }}>
-                  {msg.role === 'user' ? '>' : 'Donny:'}
+                  Donny:
                 </div>
               )}
               <div style={{
-                color: '#28FE14',
+                color: msg.role === 'user' ? '#38FE27' : '#28FE14',
                 whiteSpace: 'pre-wrap',
                 wordBreak: 'break-word',
-                paddingLeft: msg.id === 'welcome' ? '0' : '12px',
+                paddingLeft: msg.id === 'welcome' || msg.role === 'user' ? '0' : '12px',
                 fontSize: '12px',
                 lineHeight: '1.4'
               }}>
