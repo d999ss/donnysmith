@@ -360,7 +360,7 @@ export default function Home() {
           }
 
           .input-field:focus {
-            box-shadow: 0 0 0 2px rgba(40, 254, 20, .25) inset;
+            box-shadow: none;
           }
 
           .send-btn {
