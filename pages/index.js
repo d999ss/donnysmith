@@ -698,7 +698,7 @@ export default function Home() {
                         }}>|</span>
                       )}
                     </div>
-                  ) : (
+                  ) : msg.content ? (
                     <ReactMarkdown
                       components={{
                         p: ({children}) => <div style={{ marginBottom: '8px' }}>{children}</div>,
@@ -714,7 +714,7 @@ export default function Home() {
                     >
                       {msg.content}
                     </ReactMarkdown>
-                  )}
+                  ) : null}
                 </div>
               )}
             </div>
