@@ -153,12 +153,17 @@ $ wc -l ~/clients/fortune500.txt
     }
     
     if (commandResponses[command]) {
-      // Return the command response directly
-      return new Response(commandResponses[command], {
-        headers: {
-          'Content-Type': 'text/plain; charset=utf-8',
-        },
+      // Use streamText for proper AI SDK format
+      const result = await streamText({
+        model: openai('gpt-4o-mini'),
+        system: 'You are a terminal. Return the exact command response provided.',
+        messages: [
+          ...messages,
+          {role: 'assistant', content: commandResponses[command]}
+        ],
       })
+      
+      return result.toDataStreamResponse()
     }
   }
 
