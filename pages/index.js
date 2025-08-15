@@ -543,7 +543,25 @@ export default function Home() {
             </span>
           </div>
           
-          <div></div>
+          <div style={{ display: 'flex', alignItems: 'center', justifySelf: 'end' }}>
+            <span 
+              style={{ 
+                color: '#FFFFFF', 
+                fontSize: '12px', 
+                whiteSpace: 'nowrap',
+                cursor: 'pointer',
+                textDecoration: 'underline'
+              }}
+              onClick={() => {
+                append({
+                  role: 'user',
+                  content: '/contact'
+                })
+              }}
+            >
+              Inquiries
+            </span>
+          </div>
         </div>
 
         {/* Terminal Content */}
