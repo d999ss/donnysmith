@@ -348,10 +348,11 @@ export default function Home() {
             border: var(--border) solid #28FE14;
             border-radius: var(--radius);
             outline: none;
-            display: block;
+            display: flex;
+            align-items: center;
             resize: none;
             overflow: hidden;
-            line-height: calc(var(--h) - 4px);
+            line-height: 1.35;
             vertical-align: middle;
           }
 
