@@ -112,7 +112,6 @@ export default function Home() {
 
   // Simulate token streaming for welcome message
   useEffect(() => {
-    const fullText = "How can I help you today?"
     const tokens = ["How", " can", " I", " help", " you", " today", "?"]
     let currentIndex = 0
     
@@ -123,9 +122,13 @@ export default function Home() {
         
         // Mimic natural token generation timing - varied intervals
         const delays = [150, 80, 120, 90, 110, 200, 60] // realistic token timing
-        setTimeout(streamToken, delays[currentIndex - 1] || 100)
-      } else {
-        setIsWelcomeComplete(true)
+        const nextDelay = delays[currentIndex - 1] || 100
+        
+        if (currentIndex < tokens.length) {
+          setTimeout(streamToken, nextDelay)
+        } else {
+          setIsWelcomeComplete(true)
+        }
       }
     }
     
