@@ -561,7 +561,7 @@ export default function Home() {
             <div key={msg.id || i} style={{ marginBottom: '8px' }}>
               {msg.role === 'user' ? (
                 <div style={{
-                  color: '#FFFFFF',
+                  color: 'rgb(123, 123, 123)',
                   whiteSpace: 'pre-wrap',
                   wordBreak: 'break-word',
                   paddingLeft: '0',
