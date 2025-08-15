@@ -129,6 +129,33 @@ export default function Home() {
     }
   }
 
+  // Auto-sizing textarea functionality
+  useEffect(() => {
+    const textarea = inputRef.current
+    if (!textarea) return
+
+    const autosize = () => {
+      textarea.style.height = 'auto'
+      textarea.style.height = Math.min(textarea.scrollHeight, 180) + 'px'
+    }
+
+    // Auto-size on input and change
+    const handleInput = () => {
+      autosize()
+    }
+
+    textarea.addEventListener('input', handleInput)
+    textarea.addEventListener('change', handleInput)
+    
+    // Initial sizing
+    autosize()
+
+    return () => {
+      textarea.removeEventListener('input', handleInput)
+      textarea.removeEventListener('change', handleInput)
+    }
+  }, [])
+
   const handlePageClick = (e) => {
     // Clear inactivity timer on any click
     if (inactivityTimerRef.current) {
@@ -215,70 +242,84 @@ export default function Home() {
           }
         `}
         {`
-          /* iOS-style input field */
-          :root {
-            --pad: 16px;
-            --radius: 22px;
-            --bg-input: #1c1c1e;
-            --fg-input: #fff;
-            --border-input: #3a3a3c;
+          /* iOS-style input field with auto-sizing textarea */
+          .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            clip: rect(0 0 0 0);
+            overflow: hidden;
+            white-space: nowrap;
           }
 
           .input-bar {
             position: sticky;
             bottom: 0;
-            padding: 8px var(--pad) calc(8px + env(safe-area-inset-bottom));
-            background: rgba(0, 0, 0, 0.85);
+            padding: 8px 16px calc(8px + env(safe-area-inset-bottom));
+            background: rgba(0, 0, 0, .85);
             backdrop-filter: saturate(180%) blur(12px);
             display: flex;
             align-items: center;
             gap: 8px;
-            border-top: 1px solid rgba(255,255,255,0.06);
+            border-top: 1px solid rgba(255,255,255,.06);
+            z-index: 10;
           }
 
-          .input-bar button,
-          .input-bar .addon {
-            background: transparent;
-            border: none;
-            color: var(--fg-input);
-            font-size: 20px;
+          .addon {
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: transparent;
+            border: 0;
+            color: #28FE14;
+            font-size: 16px;
+            border-radius: 20px;
+          }
+
+          .field-wrap {
+            flex: 1;
+            display: flex;
           }
 
           .input-field {
             flex: 1;
-            display: flex;
-            align-items: center;
+            resize: none;
+            overflow: hidden;
+            font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #fff;
+            background: #1c1c1e;
+            border: 1px solid #3a3a3c;
+            border-radius: 22px;
             padding: 10px 14px;
-            font-size: 16px;
-            font-family: system-ui, sans-serif;
-            color: var(--fg-input);
-            background: var(--bg-input);
-            border: 1px solid var(--border-input);
-            border-radius: var(--radius);
             outline: none;
           }
 
           .input-field:focus {
             border-color: #0a84ff;
-            box-shadow: 0 0 0 2px rgba(10,132,255,0.3);
+            box-shadow: 0 0 0 2px rgba(10,132,255,.3);
           }
 
           .send-btn {
-            background: #0a84ff;
-            border: none;
-            padding: 0 14px;
             height: 40px;
-            border-radius: var(--radius);
-            color: white;
-            font-weight: 500;
+            min-width: 40px;
+            padding: 0 14px;
+            border: 0;
+            border-radius: 22px;
+            color: #fff;
+            background: #0a84ff;
+            font-weight: 600;
             cursor: pointer;
           }
 
           .send-btn:active {
             background: #0060df;
+          }
+
+          .send-btn[disabled] {
+            opacity: .5;
+            cursor: default;
           }
         `}</style>
       </Head>
@@ -386,39 +427,41 @@ export default function Home() {
         </div>
 
         {/* iOS-style Input Bar */}
-        <div className="input-bar">
-          <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%' }}>
-            <span className="addon" style={{ 
-              color: '#28FE14', 
-              fontSize: '16px'
-            }}>{'>'}</span>
-            
-            <input
+        <div className="input-bar" role="form" aria-label="Chat input">
+          <button className="addon" type="button" aria-label="Terminal prompt">
+            {'>'}
+          </button>
+
+          <label className="sr-only" htmlFor="chat-input">Message</label>
+          <div className="field-wrap">
+            <textarea 
+              id="chat-input"
               ref={inputRef}
               className="input-field"
-              type="text"
+              rows="1"
+              placeholder=""
               value={input}
               onChange={handleInputChange}
-              onKeyPress={handleKeyPress}
-              placeholder=""
+              onKeyDown={handleKeyPress}
               disabled={isLoading}
               autoComplete="off"
-              autoCorrect="off"
-              autoCapitalize="off"
-              spellCheck="false"
+              autoCorrect="on"
+              spellCheck="true"
             />
-            
-            <button
-              type="submit"
-              className="send-btn"
-              disabled={isLoading || !input.trim()}
-              style={{
-                opacity: input.trim() ? 1 : 0.5
-              }}
-            >
-              ↑
-            </button>
-          </form>
+          </div>
+
+          <button 
+            className="send-btn" 
+            type="button" 
+            aria-label="Send"
+            disabled={isLoading || !input.trim()}
+            onClick={(e) => {
+              e.preventDefault()
+              handleSubmit(e)
+            }}
+          >
+            ↑
+          </button>
         </div>
       </div>
     </>
