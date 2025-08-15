@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Head from 'next/head'
 import { useChat } from '@ai-sdk/react'
+import ReactMarkdown from 'react-markdown'
 
 export default function Home() {
   const messagesEndRef = useRef(null)
@@ -530,16 +531,40 @@ export default function Home() {
           
           {messages.map((msg, i) => (
             <div key={msg.id || i} style={{ marginBottom: '8px' }}>
-              <div style={{
-                color: msg.role === 'user' ? 'rgb(123, 123, 123)' : '#28FE14',
-                whiteSpace: 'pre-wrap',
-                wordBreak: 'break-word',
-                paddingLeft: '0',
-                fontSize: '12px',
-                lineHeight: '1.4'
-              }}>
-                {msg.content}
-              </div>
+              {msg.role === 'user' ? (
+                <div style={{
+                  color: 'rgb(123, 123, 123)',
+                  whiteSpace: 'pre-wrap',
+                  wordBreak: 'break-word',
+                  paddingLeft: '0',
+                  fontSize: '12px',
+                  lineHeight: '1.4'
+                }}>
+                  {msg.content}
+                </div>
+              ) : (
+                <div style={{
+                  color: '#28FE14',
+                  fontSize: '12px',
+                  lineHeight: '1.4'
+                }}>
+                  <ReactMarkdown
+                    components={{
+                      p: ({children}) => <div style={{ marginBottom: '8px' }}>{children}</div>,
+                      strong: ({children}) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
+                      em: ({children}) => <em style={{ fontStyle: 'italic' }}>{children}</em>,
+                      a: ({children, href}) => <a href={href} style={{ color: '#00FFFF', textDecoration: 'underline' }} target="_blank" rel="noopener noreferrer">{children}</a>,
+                      code: ({children}) => <code style={{ background: '#1a1a1a', padding: '2px 4px', borderRadius: '3px' }}>{children}</code>,
+                      pre: ({children}) => <pre style={{ background: '#1a1a1a', padding: '8px', borderRadius: '3px', overflow: 'auto' }}>{children}</pre>,
+                      ul: ({children}) => <ul style={{ marginLeft: '20px', marginBottom: '8px' }}>{children}</ul>,
+                      ol: ({children}) => <ol style={{ marginLeft: '20px', marginBottom: '8px' }}>{children}</ol>,
+                      li: ({children}) => <li style={{ marginBottom: '4px' }}>{children}</li>,
+                    }}
+                  >
+                    {msg.content}
+                  </ReactMarkdown>
+                </div>
+              )}
             </div>
           ))}
           
