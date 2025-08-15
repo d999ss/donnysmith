@@ -342,18 +342,16 @@ export default function Home() {
             width: 100%;
             box-sizing: border-box;
             padding: 0 14px;
-            font: 16px/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font: 16px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
             color: #28FE14;
             background: #1a1a1a;
             border: none;
             border-radius: var(--radius);
             outline: none;
-            display: flex;
-            align-items: center;
             resize: none;
             overflow: hidden;
-            line-height: 1.35;
-            vertical-align: middle;
+            line-height: var(--h);
+            text-align: left;
           }
 
           .input-field::placeholder {
