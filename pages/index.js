@@ -511,7 +511,7 @@ export default function Home() {
           
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <span style={{ color: '#28FE14', fontSize: '12px', whiteSpace: 'nowrap' }}>
-              {new Date().toDateString().split(' ').slice(0, 3).join(' ')} {new Date().toTimeString().split(' ')[0]}
+              {new Date().toDateString().split(' ').slice(0, 3).join(' ')} {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: false })}
             </span>
           </div>
         </div>
