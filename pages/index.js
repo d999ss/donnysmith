@@ -339,7 +339,7 @@ export default function Home() {
             background: #1c1c1e;
             border: 1px solid #3a3a3c;
             border-radius: 22px;
-            padding: 10px 14px;
+            padding: 12px 16px;
             outline: none;
           }
 
