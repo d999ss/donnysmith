@@ -173,7 +173,7 @@ export default function Home() {
                   marginBottom: '1px',
                   fontSize: '12px'
                 }}>
-                  {msg.role === 'user' ? 'user@terminal ~ $' : 'assistant@donnysmith ~ $'}
+                  {msg.role === 'user' ? '>' : 'Donny:'}
                 </div>
               )}
               <div style={{
@@ -196,7 +196,7 @@ export default function Home() {
                 marginBottom: '1px',
                 fontSize: '12px'
               }}>
-                assistant@donnysmith ~ $
+                Donny:
               </div>
               <div style={{
                 color: '#28FE14',
@@ -221,7 +221,7 @@ export default function Home() {
                 marginBottom: '1px',
                 fontSize: '12px'
               }}>
-                error@donnysmith ~ $
+                Error:
               </div>
               <div style={{
                 color: '#F44747',
