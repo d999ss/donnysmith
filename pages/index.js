@@ -344,7 +344,7 @@ export default function Home() {
             padding: 0 14px;
             font: 16px/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
             color: #28FE14;
-            background: #0d0d0d;
+            background: #1a1a1a;
             border: none;
             border-radius: var(--radius);
             outline: none;
@@ -369,7 +369,7 @@ export default function Home() {
             height: var(--h);
             border-radius: 50%;
             border: 0;
-            background: #333333;
+            background: #1a1a1a;
             color: #666666;
             font-size: 18px;
             font-weight: 700;
