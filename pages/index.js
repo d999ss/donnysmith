@@ -22,7 +22,7 @@ export default function Home() {
       {
         id: 'welcome',
         role: 'assistant',
-        content: `donnysmith@bttr ~ $ echo "Creative Director helping ambitious teams design a better future. What can I help you build?"`
+        content: `What can I help you with?`
       }
     ],
     body: {
@@ -252,18 +252,20 @@ export default function Home() {
           
           {messages.map((msg, i) => (
             <div key={msg.id || i} style={{ marginBottom: '8px' }}>
-              <div style={{ 
-                color: '#28FE14',
-                marginBottom: '1px',
-                fontSize: '12px'
-              }}>
-                {msg.role === 'user' ? 'user@terminal ~ $' : 'assistant@donnysmith ~ $'}
-              </div>
+              {msg.id !== 'welcome' && (
+                <div style={{ 
+                  color: '#28FE14',
+                  marginBottom: '1px',
+                  fontSize: '12px'
+                }}>
+                  {msg.role === 'user' ? 'user@terminal ~ $' : 'assistant@donnysmith ~ $'}
+                </div>
+              )}
               <div style={{
                 color: '#28FE14',
                 whiteSpace: 'pre-wrap',
                 wordBreak: 'break-word',
-                paddingLeft: '12px',
+                paddingLeft: msg.id === 'welcome' ? '0' : '12px',
                 fontSize: '12px',
                 lineHeight: '1.4'
               }}>
