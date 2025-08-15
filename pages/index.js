@@ -181,7 +181,11 @@ export default function Home() {
       <Head>
         <title>donnysmith@terminal ~ $</title>
         <meta name="description" content="Donny Smith - Terminal interface for AI assistant" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <style>{`
           @font-face {
             font-family: 'Triakis';
@@ -231,7 +235,7 @@ export default function Home() {
             color: #808080;
           }
           @media (max-width: 768px) {
-            body, div, span, button, input[type="text"] {
+            body, div, span, button, input[type="text"], textarea {
               font-size: 16px !important;
             }
             .mobile-hide {
@@ -245,6 +249,42 @@ export default function Home() {
             .mobile-caret {
               font-size: 16px !important;
               line-height: 1.2 !important;
+            }
+            
+            /* Enhanced mobile keyboard styling */
+            .input-field {
+              -webkit-appearance: none !important;
+              -webkit-text-fill-color: #fff !important;
+              -webkit-user-select: text !important;
+              -webkit-touch-callout: none !important;
+              -webkit-tap-highlight-color: transparent !important;
+              background-color: #1c1c1e !important;
+              caret-color: #28FE14 !important;
+            }
+            
+            /* iOS keyboard dark mode */
+            @supports (-webkit-touch-callout: none) {
+              .input-field {
+                color-scheme: dark !important;
+              }
+            }
+            
+            /* Prevent zoom on focus */
+            .input-field:focus {
+              font-size: 16px !important;
+            }
+            
+            /* Better mobile viewport handling */
+            html {
+              height: 100%;
+              -webkit-text-size-adjust: 100%;
+            }
+            
+            body {
+              height: 100%;
+              -webkit-font-smoothing: antialiased;
+              -moz-osx-font-smoothing: grayscale;
+              touch-action: manipulation;
             }
           }
         `}
@@ -452,6 +492,8 @@ export default function Home() {
               autoComplete="off"
               autoCorrect="on"
               spellCheck="true"
+              enterKeyHint="send"
+              inputMode="text"
             />
           </div>
 
