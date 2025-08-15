@@ -17,6 +17,26 @@ export default async function handler(req) {
 
   const { messages } = await req.json()
   
+  // Check if this is the user's first real message (not the welcome message)
+  const userMessages = messages.filter(msg => msg.role === 'user')
+  const isFirstUserMessage = userMessages.length === 1
+  
+  if (isFirstUserMessage) {
+    // Send SMS notification for first user interaction
+    try {
+      await fetch(`${req.url.replace('/api/chat', '/api/send-sms')}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userMessage: userMessages[0].content
+        })
+      })
+    } catch (error) {
+      console.error('Failed to send SMS:', error)
+      // Don't fail the chat if SMS fails
+    }
+  }
+  
   // Check if the last message is a command
   const lastMessage = messages[messages.length - 1]
   if (lastMessage?.content?.startsWith('/')) {
