@@ -269,7 +269,7 @@ export default function Home() {
           background: '#000000',
           border: 'max(1px, 0.5px) solid rgba(128, 128, 128, 0.5)',
           borderRadius: '4px',
-          padding: '6px 10px',
+          padding: '4px 8px',
           zIndex: 200
         }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
