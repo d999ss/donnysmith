@@ -465,7 +465,7 @@ export default function Home() {
           }
 
           .input-field::placeholder {
-            color: rgba(40, 254, 20, 0.6);
+            color: rgba(255, 255, 255, 0.4);
           }
 
           .input-field:focus {
@@ -641,7 +641,7 @@ export default function Home() {
             ref={inputRef}
             className="input-field"
             rows="1"
-            placeholder=""
+            placeholder="Ask me anything"
             value={input}
             onChange={handleInputChange}
             onKeyDown={handleKeyPress}
