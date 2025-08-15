@@ -345,7 +345,7 @@ export default function Home() {
             font: 16px/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
             color: #28FE14;
             background: #0d0d0d;
-            border: var(--border) solid #28FE14;
+            border: none;
             border-radius: var(--radius);
             outline: none;
             display: flex;
