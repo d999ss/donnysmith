@@ -497,10 +497,20 @@ export default function Home() {
             cursor: default;
           }
           
-          /* Desktop width constraint */
-          @media (min-width: 1200px) {
+          /* Desktop chat container - modern chat UI standards */
+          @media (min-width: 768px) {
             .desktop-constrained {
-              max-width: 33.333vw !important;
+              max-width: 864px !important;
+              margin: 0 auto !important;
+              padding-left: 32px !important;
+              padding-right: 32px !important;
+            }
+          }
+          
+          @media (min-width: 1400px) {
+            .desktop-constrained {
+              padding-left: 64px !important;
+              padding-right: 64px !important;
             }
           }
           
@@ -612,7 +622,7 @@ export default function Home() {
         }}>
           
           {messages.map((msg, i) => (
-            <div key={msg.id || i} style={{ marginBottom: '8px' }}>
+            <div key={msg.id || i} style={{ marginBottom: '12px' }}>
               {msg.role === 'user' ? (
                 <div style={{
                   color: 'rgb(123, 123, 123)',
