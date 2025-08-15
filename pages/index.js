@@ -509,7 +509,7 @@ export default function Home() {
         style={{
           minHeight: '100vh',
           background: '#000000',
-          color: '#28FE14',
+          color: '#FFFFFF',
           fontFamily: "'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
           fontSize: '12px',
           lineHeight: '1.2',
@@ -532,13 +532,13 @@ export default function Home() {
           zIndex: 100
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ color: '#28FE14', fontSize: '12px', whiteSpace: 'nowrap' }}>
+            <span style={{ color: '#FFFFFF', fontSize: '12px', whiteSpace: 'nowrap' }}>
               Donny Smith
             </span>
           </div>
           
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ color: '#28FE14', fontSize: '12px', whiteSpace: 'nowrap' }}>
+            <span style={{ color: '#FFFFFF', fontSize: '12px', whiteSpace: 'nowrap' }}>
               {new Date().toDateString().split(' ').slice(0, 3).join(' ')} {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: false })}
             </span>
           </div>
@@ -561,7 +561,7 @@ export default function Home() {
             <div key={msg.id || i} style={{ marginBottom: '8px' }}>
               {msg.role === 'user' ? (
                 <div style={{
-                  color: 'rgb(123, 123, 123)',
+                  color: '#FFFFFF',
                   whiteSpace: 'pre-wrap',
                   wordBreak: 'break-word',
                   paddingLeft: '0',
@@ -573,7 +573,7 @@ export default function Home() {
                 </div>
               ) : (
                 <div style={{
-                  color: '#28FE14',
+                  color: '#FFFFFF',
                   fontSize: '12px',
                   lineHeight: '1.4',
                   letterSpacing: '-0.19px'
@@ -601,7 +601,7 @@ export default function Home() {
           {isLoading && (
             <div style={{ 
               marginBottom: '8px',
-              color: '#28FE14',
+              color: '#FFFFFF',
               fontSize: '12px',
               lineHeight: '1.4',
               display: 'flex',
