@@ -115,19 +115,15 @@ drwxr-xr-x  Allergan Aesthetics - Medical practice experiences
 $ open makebttr.com/work
 → View full portfolio at makebttr.com`,
 
-      '/contact': `**Get in touch:**
+      '/contact': `**Let's build**
 
-Email: [donny@makebttr.com](mailto:donny@makebttr.com)
+I work with leaders and teams to turn ambitious ideas into exceptional digital products. From defining the vision to designing the experience to launching at scale — every step is intentional, fast, and built for impact.
 
-Location: Park City, Utah
+[donny@makebttr.com](mailto:donny@makebttr.com)
 
-Company: Bttr. Digital Product Agency
+[makebttr.com](https://makebttr.com)
 
-Website: [makebttr.com](https://makebttr.com)
-
-X: [@donnysmith](https://x.com/donnysmith)
-
-*Let's build something inevitable together.*`,
+[@donnysmith](https://x.com/donnysmith)`,
 
       '/philosophy': `$ cat ~/philosophy.md
 # Design Philosophy
