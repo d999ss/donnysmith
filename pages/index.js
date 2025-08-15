@@ -369,22 +369,28 @@ export default function Home() {
             height: var(--h);
             border-radius: 50%;
             border: 0;
-            background: #28FE14;
-            color: #000;
+            background: #333333;
+            color: #666666;
             font-size: 18px;
             font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            transition: all 0.2s ease;
           }
 
-          .send-btn:active {
+          .send-btn:not([disabled]) {
+            background: #28FE14;
+            color: #000;
+          }
+
+          .send-btn:not([disabled]):active {
             background: #20CC10;
           }
 
           .send-btn[disabled] {
-            opacity: .5;
+            opacity: 1;
             cursor: default;
           }
         `}</style>
