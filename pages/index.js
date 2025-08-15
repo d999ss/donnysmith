@@ -239,54 +239,6 @@ export default function Home() {
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0; }
           }
-          
-          @keyframes rainbow-glow {
-            0%, 100% {
-              background: linear-gradient(90deg, 
-                #ff0080, #ff8c00, #ffd700, #00ff00, 
-                #00ffff, #0080ff, #8000ff, #ff0080
-              );
-            }
-            50% {
-              background: linear-gradient(270deg, 
-                #8000ff, #0080ff, #00ffff, #00ff00,
-                #ffd700, #ff8c00, #ff0080, #8000ff
-              );
-            }
-          }
-          
-          .glow-wrapper {
-            position: relative;
-            border-radius: var(--radius);
-            padding: 1px;
-            background: linear-gradient(90deg, 
-              #ff0080, #ff8c00, #ffd700, #00ff00, 
-              #00ffff, #0080ff, #8000ff, #ff0080
-            );
-            background-size: 200% 200%;
-            animation: rainbow-glow 3s ease-in-out infinite;
-            display: flex;
-            align-items: center;
-          }
-          
-          .glow-wrapper::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: var(--radius);
-            padding: 2px;
-            background: linear-gradient(90deg, 
-              #ff0080, #ff8c00, #ffd700, #00ff00, 
-              #00ffff, #0080ff, #8000ff, #ff0080
-            );
-            background-size: 200% 200%;
-            animation: rainbow-glow 3s ease-in-out infinite reverse;
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: exclude;
-            mask-composite: exclude;
-            opacity: 0.5;
-            filter: blur(4px);
-          }
           .cursor::after {
             content: '█';
             position: absolute;
@@ -602,7 +554,6 @@ export default function Home() {
         {/* iOS-style Input Bar */}
         <div className="input-bar" role="form" aria-label="Chat input">
           <label className="sr-only" htmlFor="chat-input">Message</label>
-          <div className="glow-wrapper">
           <textarea 
             id="chat-input"
             ref={inputRef}
@@ -620,7 +571,6 @@ export default function Home() {
             inputMode="text"
             autoFocus
           />
-          </div>
 
           <button 
             className="send-btn" 
