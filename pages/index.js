@@ -614,8 +614,8 @@ export default function Home() {
             height: var(--btn-size);
             border-radius: 50%;
             border: 0;
-            background: #1a1a1a;
-            color: #1a1a1a;
+            background: transparent;
+            color: transparent;
             font-size: 15px;
             font-weight: 700;
             display: flex;
