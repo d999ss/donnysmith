@@ -482,16 +482,17 @@ export default function Home() {
             .input-bar {
               left: 50%;
               transform: translateX(-50%);
-              max-width: 864px;
-              padding: calc(16px + var(--safe-b)) calc(32px + var(--safe-r)) calc(16px + var(--safe-b)) calc(32px + var(--safe-l));
+              max-width: 1200px;
+              padding: 20px;
+            }
+            
+            .input-field {
+              font-size: 16px !important;
+              line-height: 1.6 !important;
+              letter-spacing: 0.5px !important;
             }
           }
           
-          @media (min-width: 1400px) {
-            .input-bar {
-              padding: calc(16px + var(--safe-b)) calc(64px + var(--safe-r)) calc(16px + var(--safe-b)) calc(64px + var(--safe-l));
-            }
-          }
           
           /* Hide input on mobile until user taps */
           @media (max-width: 767px) {
@@ -567,22 +568,15 @@ export default function Home() {
             cursor: default;
           }
           
-          /* Desktop chat container - modern chat UI standards */
+          /* Desktop chat container - ChatGPT-style specs */
           @media (min-width: 768px) {
             .desktop-constrained {
-              max-width: 864px !important;
+              max-width: 1200px !important;
               margin: 0 auto !important;
-              padding-left: 32px !important;
-              padding-right: 32px !important;
+              padding: 20px !important;
             }
           }
           
-          @media (min-width: 1400px) {
-            .desktop-constrained {
-              padding-left: 64px !important;
-              padding-right: 64px !important;
-            }
-          }
           
           @keyframes fadeInUp {
             0% {
@@ -595,13 +589,28 @@ export default function Home() {
             }
           }
           
-          /* Large welcome message on desktop */
+          /* Desktop typography following ChatGPT specs */
           @media (min-width: 768px) {
             .welcome-message {
-              font-size: 72px !important;
-              line-height: 1.1 !important;
-              margin-bottom: 24px !important;
-              letter-spacing: -1.5px !important;
+              font-size: 40px !important;
+              line-height: 1.2 !important;
+              margin: 0 0 20px 0 !important;
+              letter-spacing: normal !important;
+              font-weight: 600 !important;
+            }
+            
+            .chat-message {
+              font-size: 16px !important;
+              line-height: 1.6 !important;
+              letter-spacing: 0.5px !important;
+              font-weight: 400 !important;
+            }
+            
+            .user-message {
+              font-size: 16px !important;
+              line-height: 1.6 !important;
+              letter-spacing: 0.5px !important;
+              font-weight: 400 !important;
             }
           }
         `}</style>
@@ -613,7 +622,7 @@ export default function Home() {
           minHeight: '100vh',
           background: '#000000',
           color: '#FFFFFF',
-          fontFamily: "'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
           fontSize: '12px',
           lineHeight: '1.2',
           letterSpacing: '-0.19px',
@@ -744,21 +753,24 @@ export default function Home() {
           )}
           
           {messages.map((msg, i) => (
-            <div key={msg.id || i} style={{ marginBottom: '12px' }}>
+            <div key={msg.id || i} style={{ marginBottom: '15px' }}>
               {msg.role === 'user' ? (
-                <div style={{
-                  color: 'rgb(123, 123, 123)',
-                  whiteSpace: 'pre-wrap',
-                  wordBreak: 'break-word',
-                  paddingLeft: '0',
-                  fontSize: '12px',
-                  lineHeight: '1.4',
-                  letterSpacing: '-0.19px'
-                }}>
+                <div 
+                  className="user-message"
+                  style={{
+                    color: 'rgb(123, 123, 123)',
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-word',
+                    paddingLeft: '0',
+                    fontSize: '12px',
+                    lineHeight: '1.4',
+                    letterSpacing: '-0.19px'
+                  }}>
                   {msg.content}
                 </div>
               ) : (
                 <div 
+                  className="chat-message"
                   style={{
                     color: '#FFFFFF',
                     fontSize: '12px',
