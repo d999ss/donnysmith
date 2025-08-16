@@ -19,6 +19,7 @@ export default function Home() {
   const [chatStarted, setChatStarted] = useState(false)
   const [placeholderText, setPlaceholderText] = useState('')
   const [placeholderIndex, setPlaceholderIndex] = useState(0)
+  const [currentTime, setCurrentTime] = useState('')
   
   // Rotating placeholder messages
   const placeholderMessages = [
@@ -262,6 +263,26 @@ export default function Home() {
         clearTimeout(inactivityTimerRef.current)
       }
     }
+  }, [])
+
+  // Update clock every second to avoid hydration mismatch
+  useEffect(() => {
+    const updateTime = () => {
+      setCurrentTime(new Date().toLocaleTimeString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit', 
+        second: '2-digit', 
+        hour12: false 
+      }))
+    }
+    
+    // Set initial time
+    updateTime()
+    
+    // Update every second
+    const interval = setInterval(updateTime, 1000)
+    
+    return () => clearInterval(interval)
   }, [])
 
   // Typewriter effect for placeholder text
@@ -1095,7 +1116,7 @@ export default function Home() {
             
             <div style={{ display: 'flex', alignItems: 'center', justifySelf: 'center' }}>
               <span style={{ color: '#FFFFFF', fontSize: '12px', whiteSpace: 'nowrap' }}>
-                {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: false })}
+                {currentTime}
               </span>
             </div>
             
