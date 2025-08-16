@@ -179,7 +179,7 @@ export default function Home() {
   // Simple fade-in for welcome message
   useEffect(() => {
     // Set text immediately
-    setWelcomeText("How can I help you today?")
+    setWelcomeText("Creative Director building bold, meticulously designed products that blend culture, code, and strategy.")
     setIsWelcomeComplete(false)
     
     // Trigger fade-in after brief delay
@@ -723,10 +723,13 @@ export default function Home() {
             
             .mobile-welcome .welcome-message {
               font-family: 'SuisseBPIntl', 'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-              font-size: 28px !important;
-              line-height: 1.25 !important;
-              letter-spacing: -0.6px !important;
+              font-size: 24px !important;
+              line-height: 1.3 !important;
+              letter-spacing: -0.4px !important;
               font-weight: 500 !important;
+              white-space: normal !important;
+              max-width: 90% !important;
+              margin: 0 auto !important;
               max-width: 320px !important;
             }
             
@@ -906,11 +909,13 @@ export default function Home() {
             .welcome-message {
               font-family: 'SuisseBPIntl', 'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
               font-weight: 500 !important;
-              font-size: 56px !important;
-              line-height: 1.15 !important;
+              font-size: 42px !important;
+              line-height: 1.2 !important;
               margin-bottom: 0 !important;
-              letter-spacing: -1.2px !important;
-              white-space: nowrap !important;
+              letter-spacing: -0.8px !important;
+              white-space: normal !important;
+              max-width: 900px !important;
+              margin: 0 auto !important;
             }
             
             /* Center content vertically when only welcome message is shown */
