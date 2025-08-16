@@ -17,20 +17,6 @@ export default function Home() {
   const [isMobileInputVisible, setIsMobileInputVisible] = useState(true) // Default to true, will be set properly in useEffect
   const [showPortfolio, setShowPortfolio] = useState(false)
   const [chatStarted, setChatStarted] = useState(false)
-  const [placeholderText, setPlaceholderText] = useState('')
-  const [placeholderIndex, setPlaceholderIndex] = useState(0)
-  const [currentTime, setCurrentTime] = useState('')
-  
-  // Rotating placeholder messages
-  const placeholderMessages = [
-    "Ask if I am available for new projects",
-    "Ask if I am taking on new clients",
-    "Ask if I am available for consulting work",
-    "Ask if I can help with your next project",
-    "Ask about Bttr and our services",
-    "Ask about my design process",
-    "Ask about our product strategy approach"
-  ]
   
   const { 
     messages, 
@@ -55,13 +41,10 @@ export default function Home() {
   const scrollToBottom = () => {
     // Only auto-scroll if there are multiple messages and portfolio is not showing
     if (messagesEndRef.current && messages.length > 1 && !showPortfolio) {
-      // Use requestAnimationFrame to ensure input field positioning is stable
-      requestAnimationFrame(() => {
-        messagesEndRef.current.scrollIntoView({ 
-          behavior: 'smooth',
-          block: 'end',
-          inline: 'nearest'
-        })
+      messagesEndRef.current.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'end',
+        inline: 'nearest'
       })
     }
   }
@@ -70,13 +53,10 @@ export default function Home() {
     // Track portfolio interaction
     trackEngagement('project_click', project.name)
     
-    // Mark chat as started for analytics (layout is now independent)
-    setChatStarted(true)
-    
-    // Close portfolio and start chat
+    // Close portfolio first to prevent jump
     setShowPortfolio(false)
     
-    // Send a message to chat about the selected project
+    // Send a message to chat about the selected project after a brief delay
     setTimeout(() => {
       append({
         role: 'user',
@@ -86,7 +66,7 @@ export default function Home() {
   }
   
   const handleNameClick = () => {
-    // Mark chat as started for analytics (layout is now independent)
+    // Mark chat as started FIRST to prevent layout shifts
     setChatStarted(true)
     
     // Then clear the chat and hide portfolio
@@ -265,88 +245,6 @@ export default function Home() {
     }
   }, [])
 
-  // Update clock every second to avoid hydration mismatch
-  useEffect(() => {
-    const updateTime = () => {
-      setCurrentTime(new Date().toLocaleTimeString('en-US', { 
-        hour: 'numeric', 
-        minute: '2-digit', 
-        second: '2-digit', 
-        hour12: false 
-      }))
-    }
-    
-    // Set initial time
-    updateTime()
-    
-    // Update every second
-    const interval = setInterval(updateTime, 1000)
-    
-    return () => clearInterval(interval)
-  }, [])
-
-  // Smooth typewriter that only deletes back to "Ask"
-  useEffect(() => {
-    if (input.length > 0) {
-      setPlaceholderText('')
-      return
-    }
-
-    const messages = [
-      "Ask if I am available for new projects",
-      "Ask if I am taking on new clients", 
-      "Ask about Bttr and our services",
-      "Ask about my design process"
-    ]
-
-    let currentIndex = 0
-    let currentText = 'Ask'
-    let isDeleting = false
-    let timeoutId
-
-    const animate = () => {
-      const fullMessage = messages[currentIndex]
-      
-      if (!isDeleting) {
-        // Typing forward from "Ask"
-        if (currentText.length < fullMessage.length) {
-          currentText = fullMessage.substring(0, currentText.length + 1)
-          setPlaceholderText(currentText)
-          timeoutId = setTimeout(animate, 100)
-        } else {
-          // Finished typing - pause then start deleting
-          timeoutId = setTimeout(() => {
-            isDeleting = true
-            animate()
-          }, 2000)
-        }
-      } else {
-        // Deleting backward - but only delete back to "Ask"
-        if (currentText.length > 3) {
-          currentText = currentText.substring(0, currentText.length - 1)
-          setPlaceholderText(currentText)
-          timeoutId = setTimeout(animate, 50)
-        } else {
-          // Reached "Ask" - switch to next message
-          isDeleting = false
-          currentIndex = (currentIndex + 1) % messages.length
-          currentText = 'Ask'
-          timeoutId = setTimeout(animate, 500)
-        }
-      }
-    }
-
-    // Start with "Ask" visible, then begin animation
-    setPlaceholderText('Ask')
-    timeoutId = setTimeout(animate, 1000)
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-      }
-    }
-  }, [input.length])
-
   const handleKeyPress = (e) => {
     // Clear inactivity timer on any key press
     if (inactivityTimerRef.current) {
@@ -515,14 +413,6 @@ export default function Home() {
         <meta name="color-scheme" content="dark only" />
         <meta name="supported-color-schemes" content="dark" />
         <style>{`
-          /* 
-            FLOATING OVERLAY ARCHITECTURE:
-            - Navigation header: Fixed overlay at top (z-index: 9998)
-            - Input field: Fixed overlay at bottom (z-index: 9999)  
-            - Main content: Flows underneath with fixed padding to account for overlays
-            - All overlays are completely independent of content state/changes
-          */
-          
           @font-face {
             font-family: 'Neue Montreal';
             src: url('/NeueMontreal-Regular.woff2') format('woff2'),
@@ -713,16 +603,16 @@ export default function Home() {
             bottom: 0 !important;
             left: 0 !important;
             right: 0 !important;
-            z-index: 9999 !important;
+            z-index: 1000 !important;
             padding: 16px;
             background: transparent;
             width: 100% !important;
             box-sizing: border-box;
             pointer-events: auto;
             min-height: 64px;
-            /* Complete isolation from content flow */
-            margin: 0 !important;
-            top: auto !important;
+            transform: none !important;
+            will-change: auto !important;
+            backface-visibility: hidden !important;
           }
           
           @media (min-width: 768px) {
@@ -730,9 +620,10 @@ export default function Home() {
               left: 50% !important;
               transform: translateX(-50%) !important;
               max-width: 864px;
-              width: 864px;
+              width: 100% !important;
               padding: 16px 32px;
-              box-sizing: border-box;
+              bottom: 0 !important;
+              position: fixed !important;
             }
           }
           
@@ -742,21 +633,10 @@ export default function Home() {
             }
           }
           
-          /* Nav content container width matching */
-          .nav-content-container {
-            width: 100%;
-            max-width: 864px;
-            padding: 8px 32px;
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            align-items: center;
-            box-sizing: border-box;
-          }
-          
-          @media (min-width: 1400px) {
-            .nav-content-container {
-              padding: 8px 64px;
-            }
+          /* Prevent any layout shifts from affecting input */
+          .input-bar {
+            contain: layout style !important;
+            isolation: isolate !important;
           }
           
           /* Prevent layout shifts on header buttons */
@@ -768,7 +648,6 @@ export default function Home() {
           .input-bar, .input-field, main {
             transition: none !important;
           }
-          
           
           /* Mobile-first redesign */
           @media (max-width: 767px) {
@@ -806,17 +685,16 @@ export default function Home() {
               max-width: 320px !important;
             }
             
-            /* Mobile-only input animations */
-            @media (max-width: 767px) {
-              .input-bar.mobile-hidden {
-                transform: translateY(100%) !important;
-                transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1) !important;
-              }
-              
-              .input-bar.mobile-visible {
-                transform: translateY(0) !important;
-                transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1) !important;
-              }
+            /* Mobile input - hidden initially */
+            .input-bar.mobile-hidden {
+              transform: translateY(100%) !important;
+              transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1) !important;
+            }
+            
+            /* Mobile input - visible state */
+            .input-bar.mobile-visible {
+              transform: translateY(0) !important;
+              transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1) !important;
             }
             
             /* Mobile chat area */
@@ -1049,7 +927,7 @@ export default function Home() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'rgba(0, 0, 0, 0.5)',
+          background: 'rgba(0, 0, 0, 0.8)',
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)',
           zIndex: 1
@@ -1065,26 +943,21 @@ export default function Home() {
         }}
         className="desktop-constrained">
         
-        {/* Floating Navigation Header - Independent overlay */}
+        {/* Terminal Header Bar */}
         <header className="mobile-hide" role="banner" style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          width: '100%',
-          zIndex: 9998,
           background: 'rgba(0, 0, 0, 0.1)',
           backdropFilter: 'blur(20px) saturate(150%)',
           WebkitBackdropFilter: 'blur(20px) saturate(150%)',
           borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-          padding: 0,
-          display: 'flex',
-          justifyContent: 'center',
-          boxSizing: 'border-box'
+          padding: '8px 12px',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr 1fr',
+          alignItems: 'center',
+          position: 'sticky',
+          top: 0,
+          zIndex: 100
         }}>
-          {/* Nav content container - matches conversation/input width */}
-          <div className="nav-content-container">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifySelf: 'start' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifySelf: 'start' }}>
             <h1 
               onClick={handleNameClick}
               style={{ 
@@ -1101,15 +974,15 @@ export default function Home() {
             >
               Donny Smith
             </h1>
-            </div>
-            
-            <div style={{ display: 'flex', alignItems: 'center', justifySelf: 'center' }}>
-              <span style={{ color: '#FFFFFF', fontSize: '12px', whiteSpace: 'nowrap' }}>
-                {currentTime}
-              </span>
-            </div>
-            
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifySelf: 'end' }}>
+          </div>
+          
+          <div style={{ display: 'flex', alignItems: 'center', justifySelf: 'center' }}>
+            <span style={{ color: '#FFFFFF', fontSize: '12px', whiteSpace: 'nowrap' }}>
+              {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: false })}
+            </span>
+          </div>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifySelf: 'end' }}>
             <button 
               style={{ 
                 color: '#FFFFFF', 
@@ -1123,7 +996,8 @@ export default function Home() {
                 fontFamily: 'inherit'
               }}
               onClick={() => {
-                // Toggle portfolio (layout is now independent of state)
+                // Always set chatStarted to maintain consistent layout
+                setChatStarted(true)
                 setShowPortfolio(!showPortfolio)
                 trackEngagement('portfolio_toggle', showPortfolio ? 'close' : 'open')
               }}
@@ -1144,7 +1018,9 @@ export default function Home() {
                 fontFamily: 'inherit'
               }}
               onClick={() => {
-                // Hide portfolio if showing and start contact chat
+                // Always set chatStarted to maintain consistent layout before any action
+                setChatStarted(true)
+                // Hide portfolio if showing to prevent conflicts
                 setShowPortfolio(false)
                 trackEngagement('contact_click', 'header')
                 append({
@@ -1156,28 +1032,26 @@ export default function Home() {
             >
               Inquiries
             </button>
-            </div>
           </div>
         </header>
 
-        {/* Terminal Content - Flows underneath floating overlays */}
+        {/* Terminal Content - Mobile optimized */}
         <main className="mobile-content mobile-fullscreen" role="region" aria-label="Chat messages" style={{
           height: '100vh',
           overflowY: 'auto',
-          /* Fixed padding that accounts for floating overlays - never changes */
-          paddingTop: '80px',
-          paddingBottom: '100px', 
-          paddingLeft: '12px',
-          paddingRight: '12px',
+          padding: '12px',
+          paddingTop: chatStarted ? '80px' : 'calc(12px + env(safe-area-inset-top))',
+          paddingBottom: '0px',
           background: 'transparent',
           WebkitOverflowScrolling: 'touch',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: (messages.length === 0 && !showPortfolio) ? 'center' : 'flex-start'
+          justifyContent: (messages.length === 0 && !showPortfolio && !chatStarted) ? 'center' : 'flex-start',
+          transition: 'none'
         }}>
           
           {/* Welcome Message */}
-          {messages.length === 0 && !showPortfolio && (
+          {messages.length === 0 && !showPortfolio && !chatStarted && (
             <div className="mobile-welcome message-container">
               <div 
                 className="welcome-message"
@@ -1300,7 +1174,9 @@ export default function Home() {
               lineHeight: '1.4',
               display: 'flex',
               alignItems: 'center',
-              height: '17px'
+              height: '17px',
+              zIndex: 1,
+              position: 'relative'
             }}>
               <div className="pulse-dot" style={{ display: 'inline-block' }}></div>
               <span className="sr-only">Loading response...</span>
@@ -1328,7 +1204,8 @@ export default function Home() {
           <div ref={messagesEndRef} />
         </main>
 
-        {/* iOS-style Input Bar */}
+        
+        {/* iOS-style Input Bar - Outside scrolling container */}
         <div 
           className={`input-bar ${!isMobileInputVisible ? 'mobile-hidden' : 'mobile-visible'}`} 
           role="form" 
@@ -1341,7 +1218,7 @@ export default function Home() {
               ref={inputRef}
               className="input-field"
               rows="1"
-              placeholder={placeholderText || "Ask me anything"}
+              placeholder="Ask me anything"
               value={input}
               onChange={handleInputChange}
               onKeyDown={handleKeyPress}
