@@ -176,38 +176,19 @@ export default function Home() {
     }
   }, [messages, isLoading])
 
-  // Simulate token streaming for welcome message
+  // Simple fade-in for welcome message
   useEffect(() => {
-    const tokens = ["How", " can", " I", " help", " you", " today", "?"]
-    let tokenIndex = 0
-    
-    // Reset state
-    setWelcomeText("")
+    // Set text immediately
+    setWelcomeText("How can I help you today?")
     setIsWelcomeComplete(false)
     
-    const streamNextToken = () => {
-      if (tokenIndex < tokens.length) {
-        const currentToken = tokens[tokenIndex]
-        setWelcomeText(prev => prev + currentToken)
-        tokenIndex++
-        
-        if (tokenIndex < tokens.length) {
-          // Mimic natural token generation timing - varied intervals
-          const delays = [150, 80, 120, 90, 110, 200, 60]
-          const delay = delays[tokenIndex - 1] || 100
-          setTimeout(streamNextToken, delay)
-        } else {
-          // All tokens complete
-          setIsWelcomeComplete(true)
-        }
-      }
-    }
-    
-    // Start streaming after a brief pause
-    const startTimer = setTimeout(streamNextToken, 300)
+    // Trigger fade-in after brief delay
+    const fadeTimer = setTimeout(() => {
+      setIsWelcomeComplete(true)
+    }, 300)
     
     return () => {
-      clearTimeout(startTimer)
+      clearTimeout(fadeTimer)
     }
   }, [])
 
@@ -285,67 +266,10 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
-  // Smooth typewriter that only deletes back to "Ask"
+  // Remove typewriter animation - just show static placeholder
   useEffect(() => {
-    if (input.length > 0) {
-      setPlaceholderText('')
-      return
-    }
-
-    const messages = [
-      "Ask if I am available for new projects",
-      "Ask if I am taking on new clients", 
-      "Ask about Bttr and our services",
-      "Ask about my design process"
-    ]
-
-    let currentIndex = 0
-    let currentText = 'Ask'
-    let isDeleting = false
-    let timeoutId
-
-    const animate = () => {
-      const fullMessage = messages[currentIndex]
-      
-      if (!isDeleting) {
-        // Typing forward from "Ask"
-        if (currentText.length < fullMessage.length) {
-          currentText = fullMessage.substring(0, currentText.length + 1)
-          setPlaceholderText(currentText)
-          timeoutId = setTimeout(animate, 100)
-        } else {
-          // Finished typing - pause then start deleting
-          timeoutId = setTimeout(() => {
-            isDeleting = true
-            animate()
-          }, 2000)
-        }
-      } else {
-        // Deleting backward - but only delete back to "Ask"
-        if (currentText.length > 3) {
-          currentText = currentText.substring(0, currentText.length - 1)
-          setPlaceholderText(currentText)
-          timeoutId = setTimeout(animate, 50)
-        } else {
-          // Reached "Ask" - switch to next message
-          isDeleting = false
-          currentIndex = (currentIndex + 1) % messages.length
-          currentText = 'Ask'
-          timeoutId = setTimeout(animate, 500)
-        }
-      }
-    }
-
-    // Start with "Ask" visible, then begin animation
-    setPlaceholderText('Ask')
-    timeoutId = setTimeout(animate, 1000)
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-      }
-    }
-  }, [input.length])
+    setPlaceholderText('Ask me anything')
+  }, [])
 
   const handleKeyPress = (e) => {
     // Clear inactivity timer on any key press
@@ -1190,14 +1114,12 @@ export default function Home() {
                   lineHeight: '1.4',
                   letterSpacing: '-0.19px'
                 }}>
-                <div style={{ position: 'relative' }}>
+                <div style={{ 
+                  position: 'relative',
+                  opacity: isWelcomeComplete ? 1 : 0,
+                  transition: 'opacity 1.2s ease-out'
+                }}>
                   {welcomeText}
-                  {!isWelcomeComplete && (
-                    <span aria-hidden="true" style={{ 
-                      animation: 'blink 1s infinite',
-                      marginLeft: '2px'
-                    }}>|</span>
-                  )}
                 </div>
               </div>
             </div>
