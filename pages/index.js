@@ -477,10 +477,10 @@ export default function Home() {
           
           @media (min-width: 768px) {
             .input-bar {
-              left: 0;
-              transform: none;
-              max-width: 100%;
-              width: 50%; /* Only take up left half */
+              left: 50%;
+              transform: translateX(-50%);
+              max-width: 864px;
+              width: 100%;
               padding: calc(16px + var(--safe-b)) calc(32px + var(--safe-r)) calc(16px + var(--safe-b)) calc(32px + var(--safe-l));
             }
           }
@@ -570,20 +570,28 @@ export default function Home() {
             cursor: default;
           }
           
-          /* Desktop chat container - left half only */
+          /* Desktop chat container - full width */
           @media (min-width: 768px) {
             .desktop-constrained {
-              max-width: 100% !important;
-              margin: 0 !important;
+              max-width: 864px !important;
+              margin: 0 auto !important;
               padding-left: 32px !important;
-              padding-right: 50% !important; /* This creates the invisible center line */
+              padding-right: 32px !important;
             }
           }
           
           @media (min-width: 1400px) {
             .desktop-constrained {
               padding-left: 64px !important;
-              padding-right: 50% !important; /* Maintains the center line on large screens */
+              padding-right: 64px !important;
+            }
+          }
+          
+          /* Messages only - left half constraint */
+          @media (min-width: 768px) {
+            .message-container {
+              max-width: 50% !important;
+              margin-right: auto !important;
             }
           }
           
@@ -701,7 +709,7 @@ export default function Home() {
           
           {/* Welcome Message */}
           {messages.length === 0 && (
-            <div style={{ marginBottom: '12px' }}>
+            <div className="message-container" style={{ marginBottom: '12px' }}>
               <div 
                 className="welcome-message"
                 style={{
@@ -753,7 +761,7 @@ export default function Home() {
           )}
           
           {messages.map((msg, i) => (
-            <div key={msg.id || i} style={{ marginBottom: '12px' }}>
+            <div key={msg.id || i} className="message-container" style={{ marginBottom: '12px' }}>
               {msg.role === 'user' ? (
                 <div style={{
                   color: 'rgb(123, 123, 123)',
