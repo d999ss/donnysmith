@@ -48,6 +48,9 @@ export default function Home() {
   }
   
   const handleProjectClick = (project) => {
+    // Track portfolio interaction
+    trackEngagement('project_click', project.name)
+    
     // Send a message to chat about the selected project
     append({
       role: 'user',
@@ -156,6 +159,13 @@ export default function Home() {
 
   // Auto-focus input on mount and ensure welcome message is visible
   useEffect(() => {
+    // Track page load
+    trackEvent('page_load', {
+      user_agent: navigator.userAgent,
+      viewport_width: window.innerWidth,
+      viewport_height: window.innerHeight
+    })
+    
     // For mobile, don't auto-focus to prevent keyboard popup on load
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
     
@@ -383,6 +393,16 @@ export default function Home() {
             font-display: swap;
             unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
           }
+          @font-face {
+            font-family: 'SuisseBPIntl';
+            src: url('/SuisseBPIntl-Medium.woff2') format('woff2'),
+                 url('/SuisseBPIntl-Medium.woff') format('woff'),
+                 url('/SuisseBPIntl-Medium.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+          }
           @keyframes blink {
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0; }
@@ -597,6 +617,7 @@ export default function Home() {
             }
             
             .mobile-welcome .welcome-message {
+              font-family: 'SuisseBPIntl', 'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
               font-size: 28px !important;
               line-height: 1.25 !important;
               letter-spacing: -0.6px !important;
@@ -756,9 +777,26 @@ export default function Home() {
             }
           }
           
+          @keyframes fadeInDown {
+            0% {
+              opacity: 0;
+              transform: translateY(-20px);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          .portfolio-enter {
+            animation: fadeInUp 0.4s ease-out;
+          }
+          
           /* Large welcome message on desktop */
           @media (min-width: 768px) {
             .welcome-message {
+              font-family: 'SuisseBPIntl', 'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+              font-weight: 500 !important;
               font-size: 56px !important;
               line-height: 1.15 !important;
               margin-bottom: 0 !important;
@@ -863,7 +901,10 @@ export default function Home() {
                 padding: 0,
                 fontFamily: 'inherit'
               }}
-              onClick={() => setShowPortfolio(!showPortfolio)}
+              onClick={() => {
+                setShowPortfolio(!showPortfolio)
+                trackEngagement('portfolio_toggle', showPortfolio ? 'close' : 'open')
+              }}
               aria-label="View portfolio"
             >
               Work
@@ -881,6 +922,7 @@ export default function Home() {
                 fontFamily: 'inherit'
               }}
               onClick={() => {
+                trackEngagement('contact_click', 'header')
                 append({
                   role: 'user',
                   content: '/contact'
@@ -936,7 +978,7 @@ export default function Home() {
           
           {/* Portfolio Section */}
           {showPortfolio && (
-            <div className="message-container" style={{ marginTop: '24px' }}>
+            <div className="message-container portfolio-enter" style={{ marginTop: '24px' }}>
               <Portfolio onProjectClick={handleProjectClick} />
             </div>
           )}
