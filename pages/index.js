@@ -295,11 +295,11 @@ export default function Home() {
 
     let timeoutId
     let charIndex = 0
-    let isDeleting = false
-    let phase = 'typing' // 'typing', 'pausing', 'deleting', 'transitioning'
+    let phase = 'typing' // 'typing', 'pausing', 'deleting'
     
     const currentMessage = placeholderMessages[placeholderIndex]
-    const nextMessage = placeholderMessages[(placeholderIndex + 1) % placeholderMessages.length]
+    const nextIndex = (placeholderIndex + 1) % placeholderMessages.length
+    const nextMessage = placeholderMessages[nextIndex]
     
     // Find common prefix between current and next message
     const findCommonPrefix = (str1, str2) => {
@@ -312,44 +312,45 @@ export default function Home() {
     
     const commonPrefixLength = findCommonPrefix(currentMessage, nextMessage)
     
-    const type = () => {
+    const animate = () => {
       if (phase === 'typing') {
         // Typing the current message
-        setPlaceholderText(currentMessage.substring(0, charIndex))
-        charIndex++
-        
-        if (charIndex > currentMessage.length) {
-          // Finished typing - pause
-          phase = 'pausing'
-          timeoutId = setTimeout(() => {
-            phase = 'deleting'
-            type()
-          }, 2000)
-        } else {
-          timeoutId = setTimeout(type, 80)
+        if (charIndex <= currentMessage.length) {
+          setPlaceholderText(currentMessage.substring(0, charIndex))
+          charIndex++
+          
+          if (charIndex > currentMessage.length) {
+            // Finished typing - pause before deleting
+            phase = 'pausing'
+            timeoutId = setTimeout(() => {
+              phase = 'deleting'
+              charIndex = currentMessage.length
+              animate()
+            }, 2000)
+          } else {
+            timeoutId = setTimeout(animate, 100)
+          }
         }
       } else if (phase === 'deleting') {
         // Delete back to common prefix
-        setPlaceholderText(currentMessage.substring(0, charIndex))
-        charIndex--
-        
-        if (charIndex <= commonPrefixLength) {
-          // Reached common prefix - transition to next message
-          phase = 'transitioning'
-          setPlaceholderIndex((prev) => (prev + 1) % placeholderMessages.length)
-          timeoutId = setTimeout(() => {
-            phase = 'typing'
-            charIndex = commonPrefixLength
-            type()
-          }, 300)
+        if (charIndex > commonPrefixLength) {
+          setPlaceholderText(currentMessage.substring(0, charIndex))
+          charIndex--
+          timeoutId = setTimeout(animate, 50)
         } else {
-          timeoutId = setTimeout(type, 40)
+          // Switch to next message and start typing from common prefix
+          setPlaceholderIndex(nextIndex)
+          charIndex = commonPrefixLength
+          phase = 'typing'
+          timeoutId = setTimeout(animate, 500)
         }
       }
     }
 
-    // Start typing after initial delay
-    timeoutId = setTimeout(type, 1000)
+    // Initial setup - start typing the current message
+    charIndex = 0
+    phase = 'typing'
+    timeoutId = setTimeout(animate, 1000)
 
     return () => {
       if (timeoutId) {
@@ -1352,7 +1353,7 @@ export default function Home() {
               ref={inputRef}
               className="input-field"
               rows="1"
-              placeholder={input.length === 0 ? placeholderText : ""}
+              placeholder={placeholderText || "Ask me anything"}
               value={input}
               onChange={handleInputChange}
               onKeyDown={handleKeyPress}
