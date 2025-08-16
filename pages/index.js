@@ -270,8 +270,15 @@ export default function Home() {
     // Check if mobile
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
     
-    // Only handle desktop focus here, mobile is handled by the button
-    if (!isMobile) {
+    if (isMobile && !isMobileInputVisible && messages.length === 0) {
+      // On mobile, tapping the welcome screen should show input
+      setIsMobileInputVisible(true)
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus()
+        }
+      }, 300) // Wait for animation
+    } else if (!isMobile) {
       // Focus the input field immediately on desktop
       setTimeout(() => inputRef.current?.focus(), 50)
     }
@@ -491,14 +498,67 @@ export default function Home() {
             }
           }
           
-          /* Hide input on mobile until user taps */
+          /* Mobile-first redesign */
           @media (max-width: 767px) {
+            /* Hide desktop header on mobile */
+            .mobile-hide {
+              display: none !important;
+            }
+            
+            /* Mobile content takes full viewport */
+            .mobile-content {
+              height: 100vh !important;
+              height: 100dvh !important; /* Dynamic viewport height */
+              padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left) !important;
+              display: flex !important;
+              flex-direction: column !important;
+              overflow: hidden !important;
+            }
+            
+            /* Welcome message mobile styling */
+            .mobile-welcome {
+              flex: 1 !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              padding: 20px !important;
+              text-align: center !important;
+            }
+            
+            .mobile-welcome .welcome-message {
+              font-size: 24px !important;
+              line-height: 1.3 !important;
+              letter-spacing: -0.5px !important;
+              font-weight: 500 !important;
+              max-width: 280px !important;
+            }
+            
+            /* Mobile input - hidden initially */
             .input-bar.mobile-hidden {
               transform: translateY(100%) !important;
-              transition: transform 0.3s ease !important;
+              transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1) !important;
             }
-            .input-bar:not(.mobile-hidden) {
+            
+            /* Mobile input - visible state */
+            .input-bar.mobile-visible {
               transform: translateY(0) !important;
+              transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1) !important;
+            }
+            
+            /* Mobile chat area */
+            .mobile-chat {
+              flex: 1 !important;
+              overflow-y: auto !important;
+              padding: 16px !important;
+              padding-bottom: 100px !important; /* Space for input */
+            }
+            
+            /* Mobile message styling */
+            .mobile-message {
+              margin-bottom: 16px !important;
+              font-size: 16px !important;
+              line-height: 1.5 !important;
+              letter-spacing: 0.1px !important;
             }
           }
 
@@ -693,8 +753,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Terminal Content */}
-        <div className="mobile-fullscreen" style={{
+        {/* Terminal Content - Mobile optimized */}
+        <div className="mobile-content mobile-fullscreen" style={{
           height: 'calc(100vh - 140px)',
           overflowY: 'auto',
           padding: '12px',
@@ -709,7 +769,7 @@ export default function Home() {
           
           {/* Welcome Message */}
           {messages.length === 0 && (
-            <div className="message-container" style={{ marginBottom: '12px' }}>
+            <div className="mobile-welcome message-container">
               <div 
                 className="welcome-message"
                 style={{
@@ -731,37 +791,47 @@ export default function Home() {
             </div>
           )}
           
-          {/* Mobile tap target for keyboard activation */}
-          {!isMobileInputVisible && typeof window !== 'undefined' && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) && (
-            <button
-              onClick={() => {
-                setIsMobileInputVisible(true)
-                setTimeout(() => {
-                  if (inputRef.current) {
-                    inputRef.current.focus()
-                  }
-                }, 100)
-              }}
-              style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                width: '100%',
-                height: '100%',
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                zIndex: 5,
-                WebkitTapHighlightColor: 'transparent'
-              }}
-              aria-label="Tap to start typing"
-            />
+          {/* Chat Messages */}
+          {messages.length > 0 && (
+            <div className="mobile-chat">
+              {messages.map((msg, i) => (
+                <div key={msg.id || i} className="mobile-message message-container">
+                  {msg.role === 'user' ? (
+                    <div style={{
+                      color: 'rgb(123, 123, 123)',
+                      whiteSpace: 'pre-wrap',
+                      wordBreak: 'break-word'
+                    }}>
+                      {msg.content}
+                    </div>
+                  ) : (
+                    <div style={{ color: '#FFFFFF' }}>
+                      <ReactMarkdown
+                        components={{
+                          p: ({children}) => <div style={{ marginBottom: '8px' }}>{children}</div>,
+                          strong: ({children}) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
+                          em: ({children}) => <em style={{ fontStyle: 'italic' }}>{children}</em>,
+                          a: ({children, href}) => <a href={href} style={{ color: '#00FFFF', textDecoration: 'underline' }} target="_blank" rel="noopener noreferrer">{children}</a>,
+                          code: ({children}) => <code style={{ background: '#1a1a1a', padding: '2px 4px', borderRadius: '3px' }}>{children}</code>,
+                          pre: ({children}) => <pre style={{ background: '#1a1a1a', padding: '8px', borderRadius: '3px', overflow: 'auto' }}>{children}</pre>,
+                          ul: ({children}) => <ul style={{ marginLeft: '20px', marginBottom: '8px' }}>{children}</ul>,
+                          ol: ({children}) => <ol style={{ marginLeft: '20px', marginBottom: '8px' }}>{children}</ol>,
+                          li: ({children}) => <li style={{ marginBottom: '4px' }}>{children}</li>,
+                        }}
+                      >
+                        {msg.content}
+                      </ReactMarkdown>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           )}
           
-          {messages.map((msg, i) => (
-            <div key={msg.id || i} className="message-container" style={{ marginBottom: '12px' }}>
+          {/* Desktop messages - hidden on mobile */}
+          <div className="mobile-hide">
+            {messages.map((msg, i) => (
+              <div key={msg.id || i} className="message-container" style={{ marginBottom: '12px' }}>
               {msg.role === 'user' ? (
                 <div style={{
                   color: 'rgb(123, 123, 123)',
@@ -839,7 +909,7 @@ export default function Home() {
 
         {/* iOS-style Input Bar */}
         <div 
-          className={`input-bar ${!isMobileInputVisible ? 'mobile-hidden' : ''}`} 
+          className={`input-bar ${!isMobileInputVisible ? 'mobile-hidden' : 'mobile-visible'}`} 
           role="form" 
           aria-label="Chat input"
         >
