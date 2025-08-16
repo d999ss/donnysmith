@@ -625,7 +625,6 @@ export default function Home() {
             pointer-events: auto;
             min-height: 64px;
             /* Complete isolation from content flow */
-            transform: none !important;
             margin: 0 !important;
             top: auto !important;
           }
@@ -635,10 +634,8 @@ export default function Home() {
               left: 50% !important;
               transform: translateX(-50%) !important;
               max-width: 864px;
-              width: 100% !important;
+              width: auto !important;
               padding: 16px 32px;
-              bottom: 0 !important;
-              position: fixed !important;
             }
           }
           
@@ -658,15 +655,6 @@ export default function Home() {
             transition: none !important;
           }
           
-          /* Force input bar to stay at bottom regardless of content changes */
-          .input-bar {
-            position: fixed !important;
-            bottom: 0 !important;
-            margin: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            z-index: 9999 !important;
-          }
           
           /* Mobile-first redesign */
           @media (max-width: 767px) {
@@ -704,16 +692,17 @@ export default function Home() {
               max-width: 320px !important;
             }
             
-            /* Mobile input - hidden initially */
-            .input-bar.mobile-hidden {
-              transform: translateY(100%) !important;
-              transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1) !important;
-            }
-            
-            /* Mobile input - visible state */
-            .input-bar.mobile-visible {
-              transform: translateY(0) !important;
-              transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1) !important;
+            /* Mobile-only input animations */
+            @media (max-width: 767px) {
+              .input-bar.mobile-hidden {
+                transform: translateY(100%) !important;
+                transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1) !important;
+              }
+              
+              .input-bar.mobile-visible {
+                transform: translateY(0) !important;
+                transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1) !important;
+              }
             }
             
             /* Mobile chat area */
