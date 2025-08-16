@@ -39,12 +39,15 @@ export default function Home() {
   })
   
   const scrollToBottom = () => {
-    // Only auto-scroll if there are multiple messages
-    if (messagesEndRef.current && messages.length > 1) {
-      messagesEndRef.current.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'end',
-        inline: 'nearest'
+    // Only auto-scroll if there are multiple messages and portfolio is not showing
+    if (messagesEndRef.current && messages.length > 1 && !showPortfolio) {
+      // Use requestAnimationFrame to ensure input field positioning is stable
+      requestAnimationFrame(() => {
+        messagesEndRef.current.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'end',
+          inline: 'nearest'
+        })
       })
     }
   }
@@ -52,6 +55,9 @@ export default function Home() {
   const handleProjectClick = (project) => {
     // Track portfolio interaction
     trackEngagement('project_click', project.name)
+    
+    // Mark chat as started FIRST to prevent layout shifts and input displacement
+    setChatStarted(true)
     
     // Close portfolio first to prevent jump
     setShowPortfolio(false)
@@ -645,6 +651,16 @@ export default function Home() {
             transition: none !important;
           }
           
+          /* Force input bar to stay at bottom regardless of content changes */
+          .input-bar {
+            position: fixed !important;
+            bottom: 0 !important;
+            margin: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            z-index: 9999 !important;
+          }
+          
           /* Mobile-first redesign */
           @media (max-width: 767px) {
             /* Hide desktop header on mobile */
@@ -1037,7 +1053,7 @@ export default function Home() {
           overflowY: 'auto',
           padding: '12px',
           paddingTop: chatStarted ? '80px' : 'calc(12px + env(safe-area-inset-top))',
-          paddingBottom: '0px',
+          paddingBottom: '100px',
           background: 'transparent',
           WebkitOverflowScrolling: 'touch',
           display: 'flex',
