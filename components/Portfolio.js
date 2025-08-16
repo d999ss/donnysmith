@@ -3,43 +3,147 @@ import { useState } from 'react'
 const projects = [
   {
     id: 1,
+    name: 'JUVÉDERM',
+    role: 'Product Design Lead',
+    description: 'Enhancing engagement for a leading aesthetic brand',
+    tags: ['Healthcare', 'Product Design', 'Brand Strategy'],
+    year: '2024'
+  },
+  {
+    id: 2,
+    name: 'BOTOX Cosmetic',
+    role: 'UX Strategy',
+    description: 'Strengthening product recognition and loyalty across a market leader',
+    tags: ['Healthcare', 'Consumer Experience', 'Digital Strategy'],
+    year: '2024'
+  },
+  {
+    id: 3,
+    name: 'AMI',
+    role: 'Product Strategy',
+    description: 'Improving the user experience and product strategy for a learning platform',
+    tags: ['EdTech', 'UX Design', 'Platform Strategy'],
+    year: '2023'
+  },
+  {
+    id: 4,
+    name: 'Revaire',
+    role: 'Brand Design',
+    description: 'A modern, luxurious identity',
+    tags: ['Branding', 'Luxury', 'Visual Identity'],
+    year: '2023'
+  },
+  {
+    id: 5,
+    name: 'Air Company',
+    role: 'Creative Director',
+    description: 'Shaping a startup around groundbreaking carbon technology',
+    tags: ['Sustainability', 'Brand Strategy', 'Startup'],
+    year: '2022'
+  },
+  {
+    id: 6,
+    name: 'FleetPulse',
+    role: 'Product Design',
+    description: 'Smart-Trailer innovation, designed for a more efficient future',
+    tags: ['IoT', 'Transportation', 'Product Innovation'],
+    year: '2022'
+  },
+  {
+    id: 7,
+    name: 'Allē For Business',
+    role: 'Platform Architecture',
+    description: 'Empowering healthcare practices to manage, grow, and scale',
+    tags: ['Healthcare', 'B2B Platform', 'SaaS'],
+    year: '2021'
+  },
+  {
+    id: 8,
+    name: 'Allē For Consumers',
+    role: 'Consumer Experience Lead',
+    description: 'A simple, modern, and engaging consumer loyalty program',
+    tags: ['Consumer App', 'Loyalty Program', 'Mobile Design'],
+    year: '2021'
+  },
+  {
+    id: 9,
+    name: 'Ciitizen',
+    role: 'Product Design',
+    description: 'Turning one brother\'s dream into a reality',
+    tags: ['Healthcare', 'Data Platform', 'Social Impact'],
+    year: '2020'
+  },
+  {
+    id: 10,
+    name: 'Helix',
+    role: 'Brand Architecture',
+    description: 'One brand three sectors – Securities, Carbon Assets, and Real Estate',
+    tags: ['FinTech', 'Multi-sector', 'Brand System'],
+    year: '2020'
+  },
+  {
+    id: 11,
     name: 'IKON Pass',
     role: 'Lead Product Designer',
     description: 'Redesigned the digital experience for millions of skiers worldwide',
     tags: ['Product Design', 'Mobile App', 'Web Platform'],
-    year: '2023'
+    year: '2019'
   },
   {
-    id: 2,
-    name: 'GE Healthcare AI',
+    id: 12,
+    name: 'GE Healthcare',
     role: 'Design System Lead',
     description: 'Built a comprehensive design system for medical AI applications',
     tags: ['Design Systems', 'Healthcare', 'AI/ML'],
-    year: '2022'
-  },
-  {
-    id: 3,
-    name: 'Pepsi Refresh',
-    role: 'Creative Technologist',
-    description: 'Interactive campaign reaching 50M+ users globally',
-    tags: ['Creative Tech', 'Campaign', 'Social Impact'],
-    year: '2021'
-  },
-  {
-    id: 4,
-    name: 'Allergan Aesthetics',
-    role: 'UX Architect',
-    description: 'Digital transformation for medical aesthetics platform',
-    tags: ['Enterprise UX', 'Healthcare', 'Platform Design'],
-    year: '2020'
-  },
-  {
-    id: 5,
-    name: 'Air Company Carbon Tech',
-    role: 'Brand & Product Design',
-    description: 'Visual identity and product design for carbon-negative spirits',
-    tags: ['Branding', 'Sustainability', 'Product Design'],
     year: '2019'
+  },
+  {
+    id: 13,
+    name: 'Dollar Shave Club',
+    role: 'Product Design',
+    description: 'Enhanced e-commerce experience for millions of subscribers',
+    tags: ['E-commerce', 'Subscription', 'Consumer Product'],
+    year: '2018'
+  },
+  {
+    id: 14,
+    name: 'PepsiCo',
+    role: 'Digital Strategy',
+    description: 'Global campaign and digital transformation initiatives',
+    tags: ['FMCG', 'Campaign', 'Digital Strategy'],
+    year: '2018'
+  },
+  {
+    id: 15,
+    name: 'GE Brilliant You',
+    role: 'Creative Direction',
+    description: 'Innovative employee engagement platform',
+    tags: ['Enterprise', 'HR Tech', 'Platform Design'],
+    year: '2017'
+  },
+  {
+    id: 16,
+    name: 'Adidas',
+    role: 'Interactive Design',
+    description: 'Digital retail experiences and product launches',
+    tags: ['Retail', 'Sports', 'Interactive'],
+    year: '2017'
+  },
+  {
+    id: 17,
+    name: 'Nissan Motor Co.',
+    role: 'Digital Design',
+    description: 'Automotive digital showroom and configurator',
+    tags: ['Automotive', 'Digital Retail', '3D'],
+    year: '2016'
+  },
+  {
+    id: 18,
+    name: 'Visa',
+    role: 'UX Design',
+    description: 'Payment platform interfaces and merchant tools',
+    tags: ['FinTech', 'Payments', 'B2B'],
+    year: '2016'
   }
 ]
 
