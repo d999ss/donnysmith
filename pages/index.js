@@ -443,6 +443,7 @@ export default function Home() {
           /* Optimized iOS input with proper spacing */
           :root {
             --h: 32px;
+            --btn-size: 27px; /* 15% smaller than 32px */
             --gap: 8px;
             --radius: 16px;
             --border: 2px;
@@ -467,10 +468,6 @@ export default function Home() {
             left: 0;
             right: 0;
             z-index: 10;
-            display: grid;
-            grid-template-columns: 1fr var(--h);
-            align-items: center;
-            gap: var(--gap);
             padding: calc(16px + var(--safe-b)) calc(16px + var(--safe-r)) calc(16px + var(--safe-b)) calc(16px + var(--safe-l));
             background: #000000;
             backdrop-filter: saturate(180%) blur(12px);
@@ -506,7 +503,8 @@ export default function Home() {
           }
 
           .field-wrap {
-            display: flex;
+            position: relative;
+            width: 100%;
           }
 
           .input-field {
@@ -515,7 +513,7 @@ export default function Home() {
             max-height: var(--h);
             width: 100%;
             box-sizing: border-box;
-            padding: 0 14px;
+            padding: 0 45px 0 14px; /* Add right padding for button space */
             font: 12px 'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             letter-spacing: -0.19px;
             color: #FFFFFF;
@@ -539,13 +537,17 @@ export default function Home() {
           }
 
           .send-btn {
-            width: var(--h);
-            height: var(--h);
+            position: absolute;
+            right: 3px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: var(--btn-size);
+            height: var(--btn-size);
             border-radius: 50%;
             border: 0;
             background: #1a1a1a;
-            color: #000000;
-            font-size: 18px;
+            color: #666666;
+            font-size: 15px;
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -834,36 +836,38 @@ export default function Home() {
           aria-label="Chat input"
         >
           <label className="sr-only" htmlFor="chat-input">Message</label>
-          <textarea 
-            id="chat-input"
-            ref={inputRef}
-            className="input-field"
-            rows="1"
-            placeholder="Ask me anything"
-            value={input}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyPress}
-            disabled={isLoading}
-            autoComplete="off"
-            autoCorrect="on"
-            spellCheck="true"
-            enterKeyHint="send"
-            inputMode="text"
-            autoFocus
-          />
+          <div className="field-wrap">
+            <textarea 
+              id="chat-input"
+              ref={inputRef}
+              className="input-field"
+              rows="1"
+              placeholder="Ask me anything"
+              value={input}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyPress}
+              disabled={isLoading}
+              autoComplete="off"
+              autoCorrect="on"
+              spellCheck="true"
+              enterKeyHint="send"
+              inputMode="text"
+              autoFocus
+            />
 
-          <button 
-            className="send-btn" 
-            type="button" 
-            aria-label="Send"
-            disabled={isLoading || !input.trim()}
-            onClick={(e) => {
-              e.preventDefault()
-              handleSubmit(e)
-            }}
-          >
-            ↑
-          </button>
+            <button 
+              className="send-btn" 
+              type="button" 
+              aria-label="Send"
+              disabled={isLoading || !input.trim()}
+              onClick={(e) => {
+                e.preventDefault()
+                handleSubmit(e)
+              }}
+            >
+              ↑
+            </button>
+          </div>
         </div>
         
         {/* Keyboard-safe spacing script */}
