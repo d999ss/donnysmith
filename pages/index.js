@@ -289,9 +289,30 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Donny Smith</title>
-        <meta name="description" content="Donny Smith - Terminal interface for AI assistant" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+        <title>Donny Smith - Product Designer & Creative Technologist</title>
+        <meta name="description" content="Donny Smith is a product designer and creative technologist building innovative digital experiences. Specializing in AI, design systems, and user interfaces." />
+        <meta name="keywords" content="Donny Smith, product design, UI/UX, creative technology, AI, design systems, web development" />
+        <meta name="author" content="Donny Smith" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.donnysmith.com/" />
+        <meta property="og:title" content="Donny Smith - Product Designer & Creative Technologist" />
+        <meta property="og:description" content="Building innovative digital experiences at the intersection of design and technology." />
+        <meta property="og:image" content="https://www.donnysmith.com/og-image.jpg" />
+        
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://www.donnysmith.com/" />
+        <meta property="twitter:title" content="Donny Smith - Product Designer & Creative Technologist" />
+        <meta property="twitter:description" content="Building innovative digital experiences at the intersection of design and technology." />
+        <meta property="twitter:image" content="https://www.donnysmith.com/og-image.jpg" />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://www.donnysmith.com/" />
+        
+        {/* Viewport and Mobile */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
         <meta name="theme-color" content="#000000" />
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#000000" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
@@ -309,6 +330,7 @@ export default function Home() {
             font-weight: 400;
             font-style: normal;
             font-display: swap;
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
           }
           @font-face {
             font-family: 'Triakis';
@@ -316,6 +338,7 @@ export default function Home() {
             font-weight: normal;
             font-style: normal;
             font-display: swap;
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
           }
           @keyframes blink {
             0%, 50% { opacity: 1; }
@@ -683,7 +706,7 @@ export default function Home() {
               line-height: 1.15 !important;
               margin-bottom: 0 !important;
               letter-spacing: -1.2px !important;
-              max-width: 200px !important;
+              white-space: nowrap !important;
             }
             
             /* Center content vertically when only welcome message is shown */
@@ -696,6 +719,8 @@ export default function Home() {
       
       <div 
         onClick={handlePageClick}
+        role="main"
+        aria-label="Chat interface"
         style={{
           minHeight: '100vh',
           background: '#000000',
@@ -720,7 +745,7 @@ export default function Home() {
         className="desktop-constrained">
         
         {/* Terminal Header Bar */}
-        <div className="mobile-hide" style={{
+        <header className="mobile-hide" role="banner" style={{
           background: '#000000',
           borderBottom: 'max(1px, 0.5px) solid rgba(128, 128, 128, 0.5)',
           padding: '8px 12px',
@@ -732,9 +757,9 @@ export default function Home() {
           zIndex: 100
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifySelf: 'start' }}>
-            <span style={{ color: '#FFFFFF', fontSize: '12px', whiteSpace: 'nowrap' }}>
+            <h1 style={{ color: '#FFFFFF', fontSize: '12px', whiteSpace: 'nowrap', margin: 0, fontWeight: 'normal' }}>
               Donny Smith
-            </span>
+            </h1>
           </div>
           
           <div style={{ display: 'flex', alignItems: 'center', justifySelf: 'center' }}>
@@ -744,13 +769,17 @@ export default function Home() {
           </div>
           
           <div style={{ display: 'flex', alignItems: 'center', justifySelf: 'end' }}>
-            <span 
+            <button 
               style={{ 
                 color: '#FFFFFF', 
                 fontSize: '12px', 
                 whiteSpace: 'nowrap',
                 cursor: 'pointer',
-                textDecoration: 'none'
+                textDecoration: 'none',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                fontFamily: 'inherit'
               }}
               onClick={() => {
                 append({
@@ -758,14 +787,15 @@ export default function Home() {
                   content: '/contact'
                 })
               }}
+              aria-label="Contact for inquiries"
             >
               Inquiries
-            </span>
+            </button>
           </div>
-        </div>
+        </header>
 
         {/* Terminal Content - Mobile optimized */}
-        <div className="mobile-content mobile-fullscreen" style={{
+        <main className="mobile-content mobile-fullscreen" role="region" aria-label="Chat messages" style={{
           height: 'calc(100vh - 140px)',
           overflowY: 'auto',
           padding: '12px',
@@ -783,6 +813,9 @@ export default function Home() {
             <div className="mobile-welcome message-container">
               <div 
                 className="welcome-message"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
                 style={{
                   color: '#FFFFFF',
                   fontSize: '12px',
@@ -792,7 +825,7 @@ export default function Home() {
                 <div style={{ position: 'relative' }}>
                   {welcomeText}
                   {!isWelcomeComplete && (
-                    <span style={{ 
+                    <span aria-hidden="true" style={{ 
                       animation: 'blink 1s infinite',
                       marginLeft: '2px'
                     }}>|</span>
@@ -804,7 +837,7 @@ export default function Home() {
           
           {/* Chat Messages */}
           {messages.length > 0 && (
-            <div className="mobile-chat">
+            <div className="mobile-chat" role="log" aria-label="Conversation history" aria-live="polite">
               {messages.map((msg, i) => (
                 <div key={msg.id || i} className="mobile-message message-container">
                   {msg.role === 'user' ? (
@@ -885,7 +918,7 @@ export default function Home() {
           </div>
           
           {isLoading && (
-            <div style={{ 
+            <div role="status" aria-live="polite" aria-label="AI is thinking" style={{ 
               marginBottom: '8px',
               color: '#FFFFFF',
               fontSize: '12px',
@@ -895,11 +928,12 @@ export default function Home() {
               height: '17px'
             }}>
               <div className="pulse-dot" style={{ display: 'inline-block' }}></div>
+              <span className="sr-only">Loading response...</span>
             </div>
           )}
           
           {error && (
-            <div style={{ marginBottom: '8px' }}>
+            <div role="alert" aria-live="assertive" style={{ marginBottom: '8px' }}>
               <div style={{ 
                 color: '#F44747',
                 marginBottom: '1px',
@@ -912,12 +946,12 @@ export default function Home() {
                 paddingLeft: '12px',
                 fontSize: '12px'
               }}>
-                {error.message || 'Something went wrong'}
+                {error.message || 'Something went wrong. Please try again.'}
               </div>
             </div>
           )}
           <div ref={messagesEndRef} />
-        </div>
+        </main>
 
         {/* iOS-style Input Bar */}
         <div 
