@@ -146,7 +146,9 @@ export default function Home() {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
     
     // Set initial visibility based on device type
-    setIsMobileInputVisible(!isMobile) // Hide on mobile, show on desktop
+    if (typeof window !== 'undefined') {
+      setIsMobileInputVisible(!isMobile) // Hide on mobile, show on desktop
+    }
     
     // Ensure welcome message is visible first
     setTimeout(() => {
@@ -559,6 +561,13 @@ export default function Home() {
               font-size: 16px !important;
               line-height: 1.5 !important;
               letter-spacing: 0.1px !important;
+            }
+            
+            /* Override desktop message positioning on mobile */
+            .message-container {
+              max-width: 100% !important;
+              margin-left: 0 !important;
+              margin-right: 0 !important;
             }
           }
 
