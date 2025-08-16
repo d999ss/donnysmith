@@ -279,7 +279,13 @@ export default function Home() {
     if (isMobile && !isMobileInputVisible) {
       // Show input field and focus on mobile after first tap
       setIsMobileInputVisible(true)
-      setTimeout(() => inputRef.current?.focus(), 100)
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus()
+          // Force the keyboard to open on iOS
+          inputRef.current.click()
+        }
+      }, 50)
     } else if (!isMobile) {
       // Focus the input field immediately on desktop
       setTimeout(() => inputRef.current?.focus(), 50)
@@ -761,19 +767,6 @@ export default function Home() {
               height: '17px'
             }}>
               <div className="pulse-dot" style={{ display: 'inline-block' }}></div>
-            </div>
-          )}
-          
-          {!isMobileInputVisible && (
-            <div style={{
-              marginTop: '20px',
-              padding: '12px',
-              color: 'rgba(255, 255, 255, 0.5)',
-              fontSize: '12px',
-              textAlign: 'center',
-              fontStyle: 'italic'
-            }}>
-              Tap anywhere to start chatting
             </div>
           )}
           
