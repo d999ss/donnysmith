@@ -275,36 +275,54 @@ export default function Home() {
     let timeoutId
     let charIndex = 0
     let isDeleting = false
+    let phase = 'typing' // 'typing', 'pausing', 'deleting', 'transitioning'
+    
     const currentMessage = placeholderMessages[placeholderIndex]
+    const nextMessage = placeholderMessages[(placeholderIndex + 1) % placeholderMessages.length]
+    
+    // Find common prefix between current and next message
+    const findCommonPrefix = (str1, str2) => {
+      let i = 0
+      while (i < str1.length && i < str2.length && str1[i] === str2[i]) {
+        i++
+      }
+      return i
+    }
+    
+    const commonPrefixLength = findCommonPrefix(currentMessage, nextMessage)
     
     const type = () => {
-      if (!isDeleting && charIndex <= currentMessage.length) {
-        // Typing phase
+      if (phase === 'typing') {
+        // Typing the current message
         setPlaceholderText(currentMessage.substring(0, charIndex))
         charIndex++
         
         if (charIndex > currentMessage.length) {
-          // Finished typing - pause before deleting
+          // Finished typing - pause
+          phase = 'pausing'
           timeoutId = setTimeout(() => {
-            isDeleting = true
+            phase = 'deleting'
             type()
-          }, 2000) // Pause at end
+          }, 2000)
         } else {
-          timeoutId = setTimeout(type, 100) // Typing speed
+          timeoutId = setTimeout(type, 80)
         }
-      } else if (isDeleting && charIndex >= 0) {
-        // Deleting phase
+      } else if (phase === 'deleting') {
+        // Delete back to common prefix
         setPlaceholderText(currentMessage.substring(0, charIndex))
         charIndex--
         
-        if (charIndex < 0) {
-          // Finished deleting - move to next message
-          isDeleting = false
-          charIndex = 0
+        if (charIndex <= commonPrefixLength) {
+          // Reached common prefix - transition to next message
+          phase = 'transitioning'
           setPlaceholderIndex((prev) => (prev + 1) % placeholderMessages.length)
-          timeoutId = setTimeout(type, 500) // Brief pause before next message
+          timeoutId = setTimeout(() => {
+            phase = 'typing'
+            charIndex = commonPrefixLength
+            type()
+          }, 300)
         } else {
-          timeoutId = setTimeout(type, 50) // Deleting speed
+          timeoutId = setTimeout(type, 40)
         }
       }
     }
