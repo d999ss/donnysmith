@@ -56,13 +56,13 @@ export default function Home() {
     // Track portfolio interaction
     trackEngagement('project_click', project.name)
     
-    // Mark chat as started FIRST to prevent layout shifts and input displacement
+    // Mark chat as started for analytics (layout is now independent)
     setChatStarted(true)
     
-    // Close portfolio first to prevent jump
+    // Close portfolio and start chat
     setShowPortfolio(false)
     
-    // Send a message to chat about the selected project after a brief delay
+    // Send a message to chat about the selected project
     setTimeout(() => {
       append({
         role: 'user',
@@ -72,7 +72,7 @@ export default function Home() {
   }
   
   const handleNameClick = () => {
-    // Mark chat as started FIRST to prevent layout shifts
+    // Mark chat as started for analytics (layout is now independent)
     setChatStarted(true)
     
     // Then clear the chat and hide portfolio
@@ -419,6 +419,14 @@ export default function Home() {
         <meta name="color-scheme" content="dark only" />
         <meta name="supported-color-schemes" content="dark" />
         <style>{`
+          /* 
+            FLOATING OVERLAY ARCHITECTURE:
+            - Navigation header: Fixed overlay at top (z-index: 9998)
+            - Input field: Fixed overlay at bottom (z-index: 9999)  
+            - Main content: Flows underneath with fixed padding to account for overlays
+            - All overlays are completely independent of content state/changes
+          */
+          
           @font-face {
             font-family: 'Neue Montreal';
             src: url('/NeueMontreal-Regular.woff2') format('woff2'),
@@ -609,18 +617,17 @@ export default function Home() {
             bottom: 0 !important;
             left: 0 !important;
             right: 0 !important;
-            z-index: 1000 !important;
+            z-index: 9999 !important;
             padding: 16px;
             background: transparent;
             width: 100% !important;
             box-sizing: border-box;
             pointer-events: auto;
             min-height: 64px;
+            /* Complete isolation from content flow */
             transform: none !important;
-            will-change: auto !important;
-            backface-visibility: hidden !important;
-            contain: layout style !important;
-            isolation: isolate !important;
+            margin: 0 !important;
+            top: auto !important;
           }
           
           @media (min-width: 768px) {
@@ -955,8 +962,14 @@ export default function Home() {
         }}
         className="desktop-constrained">
         
-        {/* Terminal Header Bar */}
+        {/* Floating Navigation Header - Independent overlay */}
         <header className="mobile-hide" role="banner" style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          width: '100%',
+          zIndex: 9998,
           background: 'rgba(0, 0, 0, 0.1)',
           backdropFilter: 'blur(20px) saturate(150%)',
           WebkitBackdropFilter: 'blur(20px) saturate(150%)',
@@ -965,9 +978,7 @@ export default function Home() {
           display: 'grid',
           gridTemplateColumns: '1fr 1fr 1fr',
           alignItems: 'center',
-          position: 'sticky',
-          top: 0,
-          zIndex: 100
+          boxSizing: 'border-box'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifySelf: 'start' }}>
             <h1 
@@ -1008,8 +1019,7 @@ export default function Home() {
                 fontFamily: 'inherit'
               }}
               onClick={() => {
-                // Always set chatStarted to maintain consistent layout
-                setChatStarted(true)
+                // Toggle portfolio (layout is now independent of state)
                 setShowPortfolio(!showPortfolio)
                 trackEngagement('portfolio_toggle', showPortfolio ? 'close' : 'open')
               }}
@@ -1030,9 +1040,7 @@ export default function Home() {
                 fontFamily: 'inherit'
               }}
               onClick={() => {
-                // Always set chatStarted to maintain consistent layout before any action
-                setChatStarted(true)
-                // Hide portfolio if showing to prevent conflicts
+                // Hide portfolio if showing and start contact chat
                 setShowPortfolio(false)
                 trackEngagement('contact_click', 'header')
                 append({
@@ -1047,22 +1055,24 @@ export default function Home() {
           </div>
         </header>
 
-        {/* Terminal Content - Mobile optimized */}
+        {/* Terminal Content - Flows underneath floating overlays */}
         <main className="mobile-content mobile-fullscreen" role="region" aria-label="Chat messages" style={{
           height: '100vh',
           overflowY: 'auto',
-          padding: '12px',
-          paddingTop: chatStarted ? '80px' : 'calc(12px + env(safe-area-inset-top))',
-          paddingBottom: '100px',
+          /* Fixed padding that accounts for floating overlays - never changes */
+          paddingTop: '80px',
+          paddingBottom: '100px', 
+          paddingLeft: '12px',
+          paddingRight: '12px',
           background: 'transparent',
           WebkitOverflowScrolling: 'touch',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: (messages.length === 0 && !showPortfolio && !chatStarted) ? 'center' : 'flex-start'
+          justifyContent: (messages.length === 0 && !showPortfolio) ? 'center' : 'flex-start'
         }}>
           
           {/* Welcome Message */}
-          {messages.length === 0 && !showPortfolio && !chatStarted && (
+          {messages.length === 0 && !showPortfolio && (
             <div className="mobile-welcome message-container">
               <div 
                 className="welcome-message"
