@@ -10,6 +10,7 @@ export default function Home() {
   const [sessionContext, setSessionContext] = useState({})
   const [welcomeText, setWelcomeText] = useState('')
   const [isWelcomeComplete, setIsWelcomeComplete] = useState(false)
+  const [isMobileInputVisible, setIsMobileInputVisible] = useState(false)
   
   const { 
     messages, 
@@ -150,6 +151,11 @@ export default function Home() {
     // For mobile, don't auto-focus to prevent keyboard popup on load
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
     
+    // Show input field immediately on desktop, hide on mobile until tap
+    if (!isMobile) {
+      setIsMobileInputVisible(true)
+    }
+    
     // Ensure welcome message is visible first
     setTimeout(() => {
       if (messagesEndRef.current) {
@@ -268,8 +274,18 @@ export default function Home() {
     if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
       return
     }
-    // Focus the input field - especially important for mobile
-    setTimeout(() => inputRef.current?.focus(), 50)
+    
+    // Check if mobile
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    
+    if (isMobile && !isMobileInputVisible) {
+      // Show input field and focus on mobile after first tap
+      setIsMobileInputVisible(true)
+      setTimeout(() => inputRef.current?.focus(), 100)
+    } else if (!isMobile) {
+      // Focus the input field immediately on desktop
+      setTimeout(() => inputRef.current?.focus(), 50)
+    }
   }
 
   return (
@@ -485,6 +501,13 @@ export default function Home() {
           @media (min-width: 1400px) {
             .input-bar {
               padding: calc(16px + var(--safe-b)) calc(64px + var(--safe-r)) calc(16px + var(--safe-b)) calc(64px + var(--safe-l));
+            }
+          }
+          
+          /* Hide input on mobile until user taps */
+          @media (max-width: 767px) {
+            .input-bar.mobile-hidden {
+              display: none !important;
             }
           }
 
@@ -765,7 +788,11 @@ export default function Home() {
         </div>
 
         {/* iOS-style Input Bar */}
-        <div className="input-bar" role="form" aria-label="Chat input">
+        <div 
+          className={`input-bar ${!isMobileInputVisible ? 'mobile-hidden' : ''}`} 
+          role="form" 
+          aria-label="Chat input"
+        >
           <label className="sr-only" htmlFor="chat-input">Message</label>
           <textarea 
             id="chat-input"
