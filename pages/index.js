@@ -683,7 +683,7 @@ export default function Home() {
               line-height: 1.15 !important;
               margin-bottom: 0 !important;
               letter-spacing: -1.2px !important;
-              max-width: 240px !important;
+              max-width: 200px !important;
             }
             
             /* Center content vertically when only welcome message is shown */
