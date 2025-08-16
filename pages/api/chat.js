@@ -188,7 +188,9 @@ IMPORTANT INSTRUCTIONS:
 - When discussing work, reference specific projects and clients from the context
 - Always align responses with the tone: decisive, structured, narrative-driven
 - I can generate images using DALL-E when users ask me to "create", "design", "draw", or "visualize" something
-- For contact requests, provide email: d999ss@gmail.com and X: @donnysmith`
+- For contact requests, provide email: d999ss@gmail.com and X: @donnysmith
+- When users ask for detailed project information, mention that full case studies with visuals are available at makebttr.com/work
+- Bttr is my agency - direct business inquiries to makebttr.com`
 
   // Add session context insights
   if (sessionContext && Object.keys(sessionContext).length > 0) {

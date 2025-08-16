@@ -910,7 +910,7 @@ export default function Home() {
               font-family: 'SuisseBPIntl', 'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
               font-weight: 500 !important;
               font-size: 42px !important;
-              line-height: 1.2 !important;
+              line-height: 47.5px !important;
               margin-bottom: 0 !important;
               letter-spacing: -0.8px !important;
               white-space: normal !important;
@@ -1114,10 +1114,7 @@ export default function Home() {
                 aria-live="polite"
                 aria-atomic="true"
                 style={{
-                  color: '#FFFFFF',
-                  fontSize: '12px',
-                  lineHeight: '1.4',
-                  letterSpacing: '-0.19px'
+                  color: '#FFFFFF'
                 }}>
                 <div style={{ 
                   position: 'relative',
