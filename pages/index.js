@@ -270,20 +270,8 @@ export default function Home() {
     // Check if mobile
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
     
-    if (isMobile && !isMobileInputVisible) {
-      // Show input field and focus on mobile after first tap
-      setIsMobileInputVisible(true)
-      // Mobile Safari requires user interaction context for keyboard
-      // The focus must happen within the same event loop as the tap
-      if (inputRef.current) {
-        inputRef.current.style.display = 'block' // Ensure it's visible first
-      }
-      setTimeout(() => {
-        if (inputRef.current) {
-          inputRef.current.focus()
-        }
-      }, 0)
-    } else if (!isMobile) {
+    // Only handle desktop focus here, mobile is handled by the button
+    if (!isMobile) {
       // Focus the input field immediately on desktop
       setTimeout(() => inputRef.current?.focus(), 50)
     }
@@ -724,6 +712,35 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          )}
+          
+          {/* Mobile tap target for keyboard activation */}
+          {!isMobileInputVisible && typeof window !== 'undefined' && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) && (
+            <button
+              onClick={() => {
+                setIsMobileInputVisible(true)
+                setTimeout(() => {
+                  if (inputRef.current) {
+                    inputRef.current.focus()
+                  }
+                }, 100)
+              }}
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                width: '100%',
+                height: '100%',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                zIndex: 5,
+                WebkitTapHighlightColor: 'transparent'
+              }}
+              aria-label="Tap to start typing"
+            />
           )}
           
           {messages.map((msg, i) => (
