@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown'
 import ErrorBoundary from '../components/ErrorBoundary'
 import NetworkStatus from '../components/NetworkStatus'
 import Portfolio from '../components/Portfolio'
+import { trackEvent, trackEngagement } from '../lib/analytics'
 
 export default function Home() {
   const messagesEndRef = useRef(null)
@@ -729,10 +730,18 @@ export default function Home() {
           
           /* Messages - shifted right by 33% for optimal reading width */
           @media (min-width: 768px) {
-            .message-container {
+            .message-container:not(.mobile-welcome) {
               max-width: 67% !important; /* Wider reading column */
               margin-left: 33% !important; /* Shift right by 33% */
               margin-right: 0 !important;
+            }
+            /* Welcome message should be centered, not shifted */
+            .mobile-welcome.message-container {
+              max-width: none !important;
+              margin-left: auto !important;
+              margin-right: auto !important;
+              display: flex !important;
+              justify-content: center !important;
             }
           }
           
@@ -764,6 +773,29 @@ export default function Home() {
           }
         `}</style>
       </Head>
+      
+      <noscript>
+        <div style={{
+          minHeight: '100vh',
+          background: '#000000',
+          color: '#FFFFFF',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '20px',
+          fontFamily: "'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+          textAlign: 'center'
+        }}>
+          <h1 style={{ fontSize: '24px', marginBottom: '16px' }}>JavaScript Required</h1>
+          <p style={{ fontSize: '14px', opacity: 0.8 }}>
+            This interactive experience requires JavaScript to be enabled.
+          </p>
+          <p style={{ fontSize: '14px', marginTop: '24px' }}>
+            Contact: donny@makebttr.com
+          </p>
+        </div>
+      </noscript>
       
       <NetworkStatus />
       
@@ -876,7 +908,7 @@ export default function Home() {
         }}>
           
           {/* Welcome Message */}
-          {messages.length === 0 && (
+          {messages.length === 0 && !showPortfolio && (
             <div className="mobile-welcome message-container">
               <div 
                 className="welcome-message"
@@ -899,6 +931,13 @@ export default function Home() {
                   )}
                 </div>
               </div>
+            </div>
+          )}
+          
+          {/* Portfolio Section */}
+          {showPortfolio && (
+            <div className="message-container" style={{ marginTop: '24px' }}>
+              <Portfolio onProjectClick={handleProjectClick} />
             </div>
           )}
           
