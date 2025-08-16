@@ -273,12 +273,16 @@ export default function Home() {
     if (isMobile && !isMobileInputVisible) {
       // Show input field and focus on mobile after first tap
       setIsMobileInputVisible(true)
-      // Need to wait for next render cycle for input to be visible
-      requestAnimationFrame(() => {
+      // Mobile Safari requires user interaction context for keyboard
+      // The focus must happen within the same event loop as the tap
+      if (inputRef.current) {
+        inputRef.current.style.display = 'block' // Ensure it's visible first
+      }
+      setTimeout(() => {
         if (inputRef.current) {
           inputRef.current.focus()
         }
-      })
+      }, 0)
     } else if (!isMobile) {
       // Focus the input field immediately on desktop
       setTimeout(() => inputRef.current?.focus(), 50)
@@ -504,7 +508,11 @@ export default function Home() {
           /* Hide input on mobile until user taps */
           @media (max-width: 767px) {
             .input-bar.mobile-hidden {
-              display: none !important;
+              transform: translateY(100%) !important;
+              transition: transform 0.3s ease !important;
+            }
+            .input-bar:not(.mobile-hidden) {
+              transform: translateY(0) !important;
             }
           }
 
