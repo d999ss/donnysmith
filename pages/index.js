@@ -634,8 +634,9 @@ export default function Home() {
               left: 50% !important;
               transform: translateX(-50%) !important;
               max-width: 864px;
-              width: auto !important;
+              width: 864px;
               padding: 16px 32px;
+              box-sizing: border-box;
             }
           }
           
