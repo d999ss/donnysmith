@@ -646,6 +646,23 @@ export default function Home() {
             }
           }
           
+          /* Nav content container width matching */
+          .nav-content-container {
+            width: 100%;
+            max-width: 864px;
+            padding: 8px 32px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            align-items: center;
+            box-sizing: border-box;
+          }
+          
+          @media (min-width: 1400px) {
+            .nav-content-container {
+              padding: 8px 64px;
+            }
+          }
+          
           /* Prevent layout shifts on header buttons */
           header button {
             contain: layout !important;
@@ -936,7 +953,7 @@ export default function Home() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'rgba(0, 0, 0, 0.8)',
+          background: 'rgba(0, 0, 0, 0.5)',
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)',
           zIndex: 1
@@ -964,13 +981,14 @@ export default function Home() {
           backdropFilter: 'blur(20px) saturate(150%)',
           WebkitBackdropFilter: 'blur(20px) saturate(150%)',
           borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-          padding: '8px 12px',
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr 1fr',
-          alignItems: 'center',
+          padding: 0,
+          display: 'flex',
+          justifyContent: 'center',
           boxSizing: 'border-box'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifySelf: 'start' }}>
+          {/* Nav content container - matches conversation/input width */}
+          <div className="nav-content-container">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifySelf: 'start' }}>
             <h1 
               onClick={handleNameClick}
               style={{ 
@@ -987,15 +1005,15 @@ export default function Home() {
             >
               Donny Smith
             </h1>
-          </div>
-          
-          <div style={{ display: 'flex', alignItems: 'center', justifySelf: 'center' }}>
-            <span style={{ color: '#FFFFFF', fontSize: '12px', whiteSpace: 'nowrap' }}>
-              {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: false })}
-            </span>
-          </div>
-          
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifySelf: 'end' }}>
+            </div>
+            
+            <div style={{ display: 'flex', alignItems: 'center', justifySelf: 'center' }}>
+              <span style={{ color: '#FFFFFF', fontSize: '12px', whiteSpace: 'nowrap' }}>
+                {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: false })}
+              </span>
+            </div>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifySelf: 'end' }}>
             <button 
               style={{ 
                 color: '#FFFFFF', 
@@ -1042,6 +1060,7 @@ export default function Home() {
             >
               Inquiries
             </button>
+            </div>
           </div>
         </header>
 
