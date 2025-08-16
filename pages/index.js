@@ -4,6 +4,7 @@ import { useChat } from '@ai-sdk/react'
 import ReactMarkdown from 'react-markdown'
 import ErrorBoundary from '../components/ErrorBoundary'
 import NetworkStatus from '../components/NetworkStatus'
+import Portfolio from '../components/Portfolio'
 
 export default function Home() {
   const messagesEndRef = useRef(null)
@@ -13,6 +14,7 @@ export default function Home() {
   const [welcomeText, setWelcomeText] = useState('')
   const [isWelcomeComplete, setIsWelcomeComplete] = useState(false)
   const [isMobileInputVisible, setIsMobileInputVisible] = useState(true) // Default to true, will be set properly in useEffect
+  const [showPortfolio, setShowPortfolio] = useState(false)
   
   const { 
     messages, 
@@ -42,6 +44,15 @@ export default function Home() {
         inline: 'nearest'
       })
     }
+  }
+  
+  const handleProjectClick = (project) => {
+    // Send a message to chat about the selected project
+    append({
+      role: 'user',
+      content: `Tell me more about the ${project.name} project`
+    })
+    setShowPortfolio(false)
   }
 
   // Load session context from localStorage
@@ -807,7 +818,24 @@ export default function Home() {
             </span>
           </div>
           
-          <div style={{ display: 'flex', alignItems: 'center', justifySelf: 'end' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifySelf: 'end' }}>
+            <button 
+              style={{ 
+                color: '#FFFFFF', 
+                fontSize: '12px', 
+                whiteSpace: 'nowrap',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                fontFamily: 'inherit'
+              }}
+              onClick={() => setShowPortfolio(!showPortfolio)}
+              aria-label="View portfolio"
+            >
+              Work
+            </button>
             <button 
               style={{ 
                 color: '#FFFFFF', 
