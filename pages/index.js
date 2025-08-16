@@ -272,57 +272,45 @@ export default function Home() {
       return
     }
 
-    let currentText = ''
-    let currentIndex = 0
-    let isDeleting = false
-    let typeSpeed = 80
-    let deleteSpeed = 30
-    let pauseTime = 3000
     let timeoutId
-
+    let charIndex = 0
+    let isDeleting = false
     const currentMessage = placeholderMessages[placeholderIndex]
-
-    const typeEffect = () => {
-      if (!isDeleting) {
-        // Typing forward
-        currentText = currentMessage.substring(0, currentIndex + 1)
-        currentIndex++
-        setPlaceholderText(currentText)
+    
+    const type = () => {
+      if (!isDeleting && charIndex <= currentMessage.length) {
+        // Typing phase
+        setPlaceholderText(currentMessage.substring(0, charIndex))
+        charIndex++
         
-        if (currentIndex === currentMessage.length) {
-          // Finished typing, pause then start deleting
+        if (charIndex > currentMessage.length) {
+          // Finished typing - pause before deleting
           timeoutId = setTimeout(() => {
             isDeleting = true
-            typeEffect()
-          }, pauseTime)
-          return
+            type()
+          }, 2000) // Pause at end
+        } else {
+          timeoutId = setTimeout(type, 100) // Typing speed
         }
+      } else if (isDeleting && charIndex >= 0) {
+        // Deleting phase
+        setPlaceholderText(currentMessage.substring(0, charIndex))
+        charIndex--
         
-        timeoutId = setTimeout(typeEffect, typeSpeed)
-      } else {
-        // Deleting backward
-        currentText = currentMessage.substring(0, currentIndex - 1)
-        currentIndex--
-        setPlaceholderText(currentText)
-        
-        if (currentIndex === 0) {
-          // Finished deleting, move to next message
+        if (charIndex < 0) {
+          // Finished deleting - move to next message
           isDeleting = false
+          charIndex = 0
           setPlaceholderIndex((prev) => (prev + 1) % placeholderMessages.length)
-          timeoutId = setTimeout(() => {
-            currentText = ''
-            currentIndex = 0
-            typeEffect()
-          }, 800)
-          return
+          timeoutId = setTimeout(type, 500) // Brief pause before next message
+        } else {
+          timeoutId = setTimeout(type, 50) // Deleting speed
         }
-        
-        timeoutId = setTimeout(typeEffect, deleteSpeed)
       }
     }
 
-    // Start typing after a short delay
-    timeoutId = setTimeout(typeEffect, 1500)
+    // Start typing after initial delay
+    timeoutId = setTimeout(type, 1000)
 
     return () => {
       if (timeoutId) {
