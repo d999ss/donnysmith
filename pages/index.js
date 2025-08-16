@@ -16,6 +16,7 @@ export default function Home() {
   const [isWelcomeComplete, setIsWelcomeComplete] = useState(false)
   const [isMobileInputVisible, setIsMobileInputVisible] = useState(true) // Default to true, will be set properly in useEffect
   const [showPortfolio, setShowPortfolio] = useState(false)
+  const [chatStarted, setChatStarted] = useState(false)
   
   const { 
     messages, 
@@ -24,7 +25,8 @@ export default function Home() {
     handleSubmit, 
     isLoading,
     error,
-    append
+    append,
+    setMessages
   } = useChat({
     api: '/api/chat',
     initialMessages: [],
@@ -51,12 +53,40 @@ export default function Home() {
     // Track portfolio interaction
     trackEngagement('project_click', project.name)
     
-    // Send a message to chat about the selected project
-    append({
-      role: 'user',
-      content: `Tell me more about the ${project.name} project`
-    })
+    // Close portfolio first to prevent jump
     setShowPortfolio(false)
+    
+    // Send a message to chat about the selected project after a brief delay
+    setTimeout(() => {
+      append({
+        role: 'user',
+        content: `Tell me more about the ${project.name} project`
+      })
+    }, 100)
+  }
+  
+  const handleNameClick = () => {
+    // Mark chat as started FIRST to prevent layout shifts
+    setChatStarted(true)
+    
+    // Then clear the chat and hide portfolio
+    setMessages([])
+    setShowPortfolio(false)
+    
+    // Skip welcome animation since this is a manual reset
+    setIsWelcomeComplete(true)
+    setWelcomeText("")
+    
+    // Track interaction
+    trackEngagement('name_click', 'header')
+    
+    // Send "what's up" message from assistant after a brief delay
+    setTimeout(() => {
+      append({
+        role: 'assistant',
+        content: "What's up! 👋"
+      })
+    }, 300)
   }
 
   // Load session context from localStorage
@@ -116,6 +146,10 @@ export default function Home() {
   useEffect(() => {
     scrollToBottom()
     updateSessionContext(messages)
+    // Mark chat as started when first message appears
+    if (messages.length > 0) {
+      setChatStarted(true)
+    }
     // Refocus input after bot responds
     if (!isLoading && messages.length > 0) {
       inputRef.current?.focus()
@@ -251,6 +285,10 @@ export default function Home() {
     
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
+      // Close portfolio when user starts chatting
+      if (showPortfolio) {
+        setShowPortfolio(false)
+      }
       handleSubmit(e)
     }
   }
@@ -561,32 +599,50 @@ export default function Home() {
           }
 
           .input-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 10;
-            padding: calc(16px + var(--safe-b)) calc(16px + var(--safe-r)) calc(16px + var(--safe-b)) calc(16px + var(--safe-l));
-            background: #000000;
-            backdrop-filter: saturate(180%) blur(12px);
-            width: 100%;
+            position: fixed !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            z-index: 1000 !important;
+            padding: 16px;
+            background: transparent;
+            width: 100% !important;
             box-sizing: border-box;
+            pointer-events: auto;
+            min-height: 64px;
+            transform: none !important;
+            will-change: auto !important;
+            backface-visibility: hidden !important;
+            contain: layout style !important;
+            isolation: isolate !important;
           }
           
           @media (min-width: 768px) {
             .input-bar {
-              left: 50%;
-              transform: translateX(-50%);
+              left: 50% !important;
+              transform: translateX(-50%) !important;
               max-width: 864px;
-              width: 100%;
-              padding: calc(16px + var(--safe-b)) calc(32px + var(--safe-r)) calc(16px + var(--safe-b)) calc(32px + var(--safe-l));
+              width: 100% !important;
+              padding: 16px 32px;
+              bottom: 0 !important;
+              position: fixed !important;
             }
           }
           
           @media (min-width: 1400px) {
             .input-bar {
-              padding: calc(16px + var(--safe-b)) calc(64px + var(--safe-r)) calc(16px + var(--safe-b)) calc(64px + var(--safe-l));
+              padding: 16px 64px;
             }
+          }
+          
+          /* Prevent layout shifts on header buttons */
+          header button {
+            contain: layout !important;
+          }
+          
+          /* Disable problematic transitions during state changes */
+          .input-bar, .input-field, main {
+            transition: none !important;
           }
           
           /* Mobile-first redesign */
@@ -676,8 +732,10 @@ export default function Home() {
             font: 12px 'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             letter-spacing: -0.19px;
             color: #FFFFFF;
-            background: #1a1a1a;
-            border: none;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: var(--radius);
             outline: none;
             resize: none;
@@ -685,6 +743,7 @@ export default function Home() {
             line-height: var(--h);
             text-align: left;
             caret-color: white;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
           }
 
           .input-field::placeholder {
@@ -843,7 +902,7 @@ export default function Home() {
         aria-label="Chat interface"
         style={{
           minHeight: '100vh',
-          background: '#000000',
+          background: 'url(/BK1.png) center center / cover no-repeat',
           color: '#FFFFFF',
           fontFamily: "'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
           fontSize: '12px',
@@ -853,21 +912,39 @@ export default function Home() {
           margin: 0,
           cursor: 'text',
           display: 'flex',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          position: 'relative'
         }}>
+        
+        {/* Background overlay - darken and blur */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.8)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          zIndex: 1
+        }} />
         
         <div style={{
           width: '100%',
           maxWidth: '100vw',
           minHeight: '100vh',
-          position: 'relative'
+          position: 'relative',
+          overflow: 'visible',
+          zIndex: 2
         }}
         className="desktop-constrained">
         
         {/* Terminal Header Bar */}
         <header className="mobile-hide" role="banner" style={{
-          background: '#000000',
-          borderBottom: 'max(1px, 0.5px) solid rgba(128, 128, 128, 0.5)',
+          background: 'rgba(0, 0, 0, 0.1)',
+          backdropFilter: 'blur(20px) saturate(150%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(150%)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
           padding: '8px 12px',
           display: 'grid',
           gridTemplateColumns: '1fr 1fr 1fr',
@@ -877,7 +954,20 @@ export default function Home() {
           zIndex: 100
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifySelf: 'start' }}>
-            <h1 style={{ color: '#FFFFFF', fontSize: '12px', whiteSpace: 'nowrap', margin: 0, fontWeight: 'normal' }}>
+            <h1 
+              onClick={handleNameClick}
+              style={{ 
+                color: '#FFFFFF', 
+                fontSize: '12px', 
+                whiteSpace: 'nowrap', 
+                margin: 0, 
+                fontWeight: 'normal',
+                cursor: 'pointer',
+                transition: 'opacity 0.2s ease'
+              }}
+              onMouseEnter={(e) => e.target.style.opacity = '0.7'}
+              onMouseLeave={(e) => e.target.style.opacity = '1'}
+            >
               Donny Smith
             </h1>
           </div>
@@ -902,6 +992,8 @@ export default function Home() {
                 fontFamily: 'inherit'
               }}
               onClick={() => {
+                // Always set chatStarted to maintain consistent layout
+                setChatStarted(true)
                 setShowPortfolio(!showPortfolio)
                 trackEngagement('portfolio_toggle', showPortfolio ? 'close' : 'open')
               }}
@@ -922,6 +1014,10 @@ export default function Home() {
                 fontFamily: 'inherit'
               }}
               onClick={() => {
+                // Always set chatStarted to maintain consistent layout before any action
+                setChatStarted(true)
+                // Hide portfolio if showing to prevent conflicts
+                setShowPortfolio(false)
                 trackEngagement('contact_click', 'header')
                 append({
                   role: 'user',
@@ -937,20 +1033,20 @@ export default function Home() {
 
         {/* Terminal Content - Mobile optimized */}
         <main className="mobile-content mobile-fullscreen" role="region" aria-label="Chat messages" style={{
-          height: 'calc(100vh - 140px)',
+          height: '100vh',
           overflowY: 'auto',
           padding: '12px',
-          paddingTop: 'calc(12px + env(safe-area-inset-top))',
-          paddingBottom: '120px',
-          background: '#000000',
+          paddingTop: chatStarted ? '80px' : 'calc(12px + env(safe-area-inset-top))',
+          paddingBottom: '0px',
+          background: 'transparent',
           WebkitOverflowScrolling: 'touch',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: messages.length === 0 ? 'center' : 'flex-start'
+          justifyContent: (messages.length === 0 && !showPortfolio && !chatStarted) ? 'center' : 'flex-start'
         }}>
           
           {/* Welcome Message */}
-          {messages.length === 0 && !showPortfolio && (
+          {messages.length === 0 && !showPortfolio && !chatStarted && (
             <div className="mobile-welcome message-container">
               <div 
                 className="welcome-message"
@@ -1134,6 +1230,10 @@ export default function Home() {
               disabled={isLoading || !input.trim()}
               onClick={(e) => {
                 e.preventDefault()
+                // Close portfolio when user starts chatting
+                if (showPortfolio) {
+                  setShowPortfolio(false)
+                }
                 handleSubmit(e)
               }}
             >

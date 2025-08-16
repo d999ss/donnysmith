@@ -153,7 +153,8 @@ export default function Portfolio({ onProjectClick }) {
   return (
     <div style={{
       marginTop: '48px',
-      marginBottom: '48px'
+      marginBottom: '120px',
+      paddingBottom: '80px'
     }}>
       <h2 style={{
         fontSize: '14px',
