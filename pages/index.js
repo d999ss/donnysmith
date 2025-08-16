@@ -22,13 +22,7 @@ export default function Home() {
     append
   } = useChat({
     api: '/api/chat',
-    initialMessages: [
-      {
-        id: 'welcome',
-        role: 'assistant',
-        content: ``
-      }
-    ],
+    initialMessages: [],
     body: {
       sessionContext: sessionContext
     },
@@ -279,13 +273,12 @@ export default function Home() {
     if (isMobile && !isMobileInputVisible) {
       // Show input field and focus on mobile after first tap
       setIsMobileInputVisible(true)
-      setTimeout(() => {
+      // Need to wait for next render cycle for input to be visible
+      requestAnimationFrame(() => {
         if (inputRef.current) {
           inputRef.current.focus()
-          // Force the keyboard to open on iOS
-          inputRef.current.click()
         }
-      }, 50)
+      })
     } else if (!isMobile) {
       // Focus the input field immediately on desktop
       setTimeout(() => inputRef.current?.focus(), 50)
@@ -701,6 +694,30 @@ export default function Home() {
           flexDirection: 'column'
         }}>
           
+          {/* Welcome Message */}
+          {messages.length === 0 && (
+            <div style={{ marginBottom: '12px' }}>
+              <div 
+                className="welcome-message"
+                style={{
+                  color: '#FFFFFF',
+                  fontSize: '12px',
+                  lineHeight: '1.4',
+                  letterSpacing: '-0.19px'
+                }}>
+                <div style={{ position: 'relative' }}>
+                  {welcomeText}
+                  {!isWelcomeComplete && (
+                    <span style={{ 
+                      animation: 'blink 1s infinite',
+                      marginLeft: '2px'
+                    }}>|</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+          
           {messages.map((msg, i) => (
             <div key={msg.id || i} style={{ marginBottom: '12px' }}>
               {msg.role === 'user' ? (
@@ -717,25 +734,13 @@ export default function Home() {
                 </div>
               ) : (
                 <div 
-                  className={msg.id === 'welcome' ? 'welcome-message' : ''}
                   style={{
                     color: '#FFFFFF',
                     fontSize: '12px',
                     lineHeight: '1.4',
                     letterSpacing: '-0.19px'
                   }}>
-                  {msg.id === 'welcome' ? (
-                    <div style={{ position: 'relative' }}>
-                      {welcomeText}
-                      {!isWelcomeComplete && (
-                        <span style={{ 
-                          animation: 'blink 1s infinite',
-                          marginLeft: '2px'
-                        }}>|</span>
-                      )}
-                    </div>
-                  ) : msg.content ? (
-                    <ReactMarkdown
+                  <ReactMarkdown
                       components={{
                         p: ({children}) => <div style={{ marginBottom: '8px' }}>{children}</div>,
                         strong: ({children}) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
@@ -748,9 +753,8 @@ export default function Home() {
                         li: ({children}) => <li style={{ marginBottom: '4px' }}>{children}</li>,
                       }}
                     >
-                      {msg.content}
-                    </ReactMarkdown>
-                  ) : null}
+                    {msg.content}
+                  </ReactMarkdown>
                 </div>
               )}
             </div>
