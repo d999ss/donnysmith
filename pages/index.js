@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react'
 import Head from 'next/head'
 import { useChat } from '@ai-sdk/react'
 import ReactMarkdown from 'react-markdown'
+import ErrorBoundary from '../components/ErrorBoundary'
+import NetworkStatus from '../components/NetworkStatus'
 
 export default function Home() {
   const messagesEndRef = useRef(null)
@@ -287,7 +289,7 @@ export default function Home() {
   }
 
   return (
-    <>
+    <ErrorBoundary>
       <Head>
         <title>Donny Smith - Product Designer & Creative Technologist</title>
         <meta name="description" content="Donny Smith is a product designer and creative technologist building innovative digital experiences. Specializing in AI, design systems, and user interfaces." />
@@ -310,6 +312,35 @@ export default function Home() {
         
         {/* Canonical URL */}
         <link rel="canonical" href="https://www.donnysmith.com/" />
+        
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": "Donny Smith",
+              "jobTitle": "Product Designer & Creative Technologist",
+              "description": "Building innovative digital experiences at the intersection of design and technology",
+              "url": "https://www.donnysmith.com",
+              "sameAs": [
+                "https://twitter.com/donnysmith",
+                "https://linkedin.com/in/donnysmith",
+                "https://github.com/donnysmith"
+              ],
+              "knowsAbout": [
+                "Product Design",
+                "User Experience (UX)",
+                "User Interface (UI)",
+                "Creative Technology",
+                "Artificial Intelligence",
+                "Design Systems",
+                "Web Development"
+              ]
+            })
+          }}
+        />
         
         {/* Viewport and Mobile */}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
@@ -412,6 +443,9 @@ export default function Home() {
             }
             .mobile-hide {
               display: none !important;
+            }
+            .mobile-show {
+              display: block !important;
             }
             .mobile-fullscreen {
               height: calc(100vh - 80px) !important;
@@ -664,6 +698,9 @@ export default function Home() {
           
           /* Desktop chat container - full width */
           @media (min-width: 768px) {
+            .mobile-show {
+              display: none !important;
+            }
             .desktop-constrained {
               max-width: 864px !important;
               margin: 0 auto !important;
@@ -716,6 +753,8 @@ export default function Home() {
           }
         `}</style>
       </Head>
+      
+      <NetworkStatus />
       
       <div 
         onClick={handlePageClick}
@@ -835,9 +874,9 @@ export default function Home() {
             </div>
           )}
           
-          {/* Chat Messages */}
+          {/* Mobile Chat Messages - hidden on desktop */}
           {messages.length > 0 && (
-            <div className="mobile-chat" role="log" aria-label="Conversation history" aria-live="polite">
+            <div className="mobile-chat mobile-show" role="log" aria-label="Conversation history" aria-live="polite">
               {messages.map((msg, i) => (
                 <div key={msg.id || i} className="mobile-message message-container">
                   {msg.role === 'user' ? (
@@ -1025,6 +1064,6 @@ export default function Home() {
         />
         </div>
       </div>
-    </>
+    </ErrorBoundary>
   )
 }
