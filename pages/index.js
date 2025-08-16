@@ -10,7 +10,7 @@ export default function Home() {
   const [sessionContext, setSessionContext] = useState({})
   const [welcomeText, setWelcomeText] = useState('')
   const [isWelcomeComplete, setIsWelcomeComplete] = useState(false)
-  const [isMobileInputVisible, setIsMobileInputVisible] = useState(false)
+  const [isMobileInputVisible, setIsMobileInputVisible] = useState(true) // Default to true, will be set properly in useEffect
   
   const { 
     messages, 
@@ -151,10 +151,8 @@ export default function Home() {
     // For mobile, don't auto-focus to prevent keyboard popup on load
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
     
-    // Show input field immediately on desktop, hide on mobile until tap
-    if (!isMobile) {
-      setIsMobileInputVisible(true)
-    }
+    // Set initial visibility based on device type
+    setIsMobileInputVisible(!isMobile) // Hide on mobile, show on desktop
     
     // Ensure welcome message is visible first
     setTimeout(() => {
@@ -763,6 +761,19 @@ export default function Home() {
               height: '17px'
             }}>
               <div className="pulse-dot" style={{ display: 'inline-block' }}></div>
+            </div>
+          )}
+          
+          {!isMobileInputVisible && (
+            <div style={{
+              marginTop: '20px',
+              padding: '12px',
+              color: 'rgba(255, 255, 255, 0.5)',
+              fontSize: '12px',
+              textAlign: 'center',
+              fontStyle: 'italic'
+            }}>
+              Tap anywhere to start chatting
             </div>
           )}
           
