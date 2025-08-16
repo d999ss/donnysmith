@@ -17,6 +17,20 @@ export default function Home() {
   const [isMobileInputVisible, setIsMobileInputVisible] = useState(true) // Default to true, will be set properly in useEffect
   const [showPortfolio, setShowPortfolio] = useState(false)
   const [chatStarted, setChatStarted] = useState(false)
+  const [placeholderText, setPlaceholderText] = useState('')
+  const [placeholderIndex, setPlaceholderIndex] = useState(0)
+  
+  // Rotating placeholder messages
+  const placeholderMessages = [
+    "Ask if you're available for new projects",
+    "Ask me to tell you more about Bttr.",
+    "Ask about my design process", 
+    "Ask if I'm taking on new clients",
+    "Ask how Bttr approaches product strategy",
+    "Ask if I can help with your next project",
+    "Ask what makes my design methodology unique",
+    "Ask if I'm available for consulting work"
+  ]
   
   const { 
     messages, 
@@ -250,6 +264,59 @@ export default function Home() {
       }
     }
   }, [])
+
+  // Typewriter effect for placeholder text
+  useEffect(() => {
+    if (input.length > 0) {
+      // Don't show placeholder animation when user is typing
+      return
+    }
+
+    let currentText = ''
+    let currentIndex = 0
+    let isDeleting = false
+    let typeSpeed = 100
+    let deleteSpeed = 50
+    let pauseTime = 2000
+
+    const currentMessage = placeholderMessages[placeholderIndex]
+
+    const typeEffect = () => {
+      if (!isDeleting) {
+        // Typing forward
+        currentText = currentMessage.substring(0, currentIndex + 1)
+        currentIndex++
+        
+        if (currentIndex === currentMessage.length) {
+          // Finished typing, pause then start deleting
+          setTimeout(() => {
+            isDeleting = true
+            typeEffect()
+          }, pauseTime)
+          return
+        }
+      } else {
+        // Deleting backward
+        currentText = currentMessage.substring(0, currentIndex - 1)
+        currentIndex--
+        
+        if (currentIndex === 0) {
+          // Finished deleting, move to next message
+          isDeleting = false
+          setPlaceholderIndex((prev) => (prev + 1) % placeholderMessages.length)
+          setTimeout(typeEffect, 500)
+          return
+        }
+      }
+      
+      setPlaceholderText(currentText)
+      setTimeout(typeEffect, isDeleting ? deleteSpeed : typeSpeed)
+    }
+
+    const timer = setTimeout(typeEffect, 1000) // Initial delay
+
+    return () => clearTimeout(timer)
+  }, [placeholderIndex, input.length, placeholderMessages])
 
   const handleKeyPress = (e) => {
     // Clear inactivity timer on any key press
@@ -1245,7 +1312,7 @@ export default function Home() {
               ref={inputRef}
               className="input-field"
               rows="1"
-              placeholder="Ask me anything"
+              placeholder={input.length === 0 ? placeholderText : ""}
               value={input}
               onChange={handleInputChange}
               onKeyDown={handleKeyPress}
