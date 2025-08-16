@@ -749,14 +749,14 @@ export default function Home() {
             }
           }
           
-          /* Messages - shifted right by 33% for optimal reading width */
+          /* Messages - consistent left alignment for clean terminal look */
           @media (min-width: 768px) {
             .message-container:not(.mobile-welcome) {
-              max-width: 67% !important; /* Wider reading column */
-              margin-left: 33% !important; /* Shift right by 33% */
+              max-width: 100% !important;
+              margin-left: 0 !important;
               margin-right: 0 !important;
             }
-            /* Welcome message should be centered, not shifted */
+            /* Welcome message should be centered */
             .mobile-welcome.message-container {
               max-width: none !important;
               margin-left: auto !important;
