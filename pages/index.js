@@ -647,11 +647,12 @@ export default function Home() {
             }
           }
           
-          /* Messages only - left half constraint */
+          /* Messages - shifted right by 33% for optimal reading width */
           @media (min-width: 768px) {
             .message-container {
-              max-width: 50% !important;
-              margin-right: auto !important;
+              max-width: 67% !important; /* Wider reading column */
+              margin-left: 33% !important; /* Shift right by 33% */
+              margin-right: 0 !important;
             }
           }
           
