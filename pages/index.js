@@ -882,6 +882,7 @@ export default function Home() {
               )}
             </div>
           ))}
+          </div>
           
           {isLoading && (
             <div style={{ 
