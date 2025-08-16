@@ -601,8 +601,13 @@ export default function Home() {
             .welcome-message {
               font-size: 72px !important;
               line-height: 1.1 !important;
-              margin-bottom: 24px !important;
+              margin-bottom: 0 !important;
               letter-spacing: -1.5px !important;
+            }
+            
+            /* Center content vertically when only welcome message is shown */
+            .mobile-fullscreen {
+              min-height: calc(100vh - 140px) !important;
             }
           }
         `}</style>
@@ -688,7 +693,8 @@ export default function Home() {
           background: '#000000',
           WebkitOverflowScrolling: 'touch',
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          justifyContent: messages.length === 0 ? 'center' : 'flex-start'
         }}>
           
           {/* Welcome Message */}
