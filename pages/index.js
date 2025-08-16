@@ -480,9 +480,10 @@ export default function Home() {
           
           @media (min-width: 768px) {
             .input-bar {
-              left: 50%;
-              transform: translateX(-50%);
-              max-width: 864px;
+              left: 0;
+              transform: none;
+              max-width: 100%;
+              width: 50%; /* Only take up left half */
               padding: calc(16px + var(--safe-b)) calc(32px + var(--safe-r)) calc(16px + var(--safe-b)) calc(32px + var(--safe-l));
             }
           }
@@ -567,20 +568,20 @@ export default function Home() {
             cursor: default;
           }
           
-          /* Desktop chat container - modern chat UI standards */
+          /* Desktop chat container - left half only */
           @media (min-width: 768px) {
             .desktop-constrained {
-              max-width: 864px !important;
-              margin: 0 auto !important;
+              max-width: 100% !important;
+              margin: 0 !important;
               padding-left: 32px !important;
-              padding-right: 32px !important;
+              padding-right: 50% !important; /* This creates the invisible center line */
             }
           }
           
           @media (min-width: 1400px) {
             .desktop-constrained {
               padding-left: 64px !important;
-              padding-right: 64px !important;
+              padding-right: 50% !important; /* Maintains the center line on large screens */
             }
           }
           
