@@ -679,10 +679,11 @@ export default function Home() {
           /* Large welcome message on desktop */
           @media (min-width: 768px) {
             .welcome-message {
-              font-size: 72px !important;
-              line-height: 1.1 !important;
+              font-size: 56px !important;
+              line-height: 1.15 !important;
               margin-bottom: 0 !important;
-              letter-spacing: -1.5px !important;
+              letter-spacing: -1.2px !important;
+              max-width: 400px !important;
             }
             
             /* Center content vertically when only welcome message is shown */
