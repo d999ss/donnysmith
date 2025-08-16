@@ -285,79 +285,63 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
-  // Typewriter effect for placeholder text
+  // Smart typewriter that only deletes back to "Ask"
   useEffect(() => {
     if (input.length > 0) {
-      // Don't show placeholder animation when user is typing
       setPlaceholderText('')
       return
     }
 
-    let timeoutId
-    let charIndex = 0
-    let phase = 'typing' // 'typing', 'pausing', 'deleting'
-    
-    const currentMessage = placeholderMessages[placeholderIndex]
-    const nextIndex = (placeholderIndex + 1) % placeholderMessages.length
-    const nextMessage = placeholderMessages[nextIndex]
-    
-    // Find common prefix between current and next message
-    const findCommonPrefix = (str1, str2) => {
-      let i = 0
-      while (i < str1.length && i < str2.length && str1[i] === str2[i]) {
-        i++
-      }
-      return i
-    }
-    
-    const commonPrefixLength = findCommonPrefix(currentMessage, nextMessage)
-    
-    const animate = () => {
-      if (phase === 'typing') {
-        // Typing the current message
-        if (charIndex <= currentMessage.length) {
-          setPlaceholderText(currentMessage.substring(0, charIndex))
-          charIndex++
-          
-          if (charIndex > currentMessage.length) {
-            // Finished typing - pause before deleting
-            phase = 'pausing'
-            timeoutId = setTimeout(() => {
-              phase = 'deleting'
-              charIndex = currentMessage.length
-              animate()
-            }, 2000)
-          } else {
-            timeoutId = setTimeout(animate, 100)
-          }
+    const messages = [
+      "Ask if I am available for new projects",
+      "Ask if I am taking on new clients", 
+      "Ask about Bttr and our services",
+      "Ask about my design process"
+    ]
+
+    let currentIndex = 0
+    let currentText = ''
+    let isDeleting = false
+    let typeSpeed = 100
+
+    const type = () => {
+      const currentMessage = messages[currentIndex]
+      const nextMessage = messages[(currentIndex + 1) % messages.length]
+      
+      if (!isDeleting) {
+        // Typing forward
+        currentText = currentMessage.substring(0, currentText.length + 1)
+        setPlaceholderText(currentText)
+        
+        if (currentText === currentMessage) {
+          // Finished typing - pause then start deleting
+          setTimeout(() => {
+            isDeleting = true
+            type()
+          }, 2000)
+          return
         }
-      } else if (phase === 'deleting') {
-        // Delete back to common prefix
-        if (charIndex > commonPrefixLength) {
-          setPlaceholderText(currentMessage.substring(0, charIndex))
-          charIndex--
-          timeoutId = setTimeout(animate, 50)
-        } else {
-          // Switch to next message and start typing from common prefix
-          setPlaceholderIndex(nextIndex)
-          charIndex = commonPrefixLength
-          phase = 'typing'
-          timeoutId = setTimeout(animate, 500)
+      } else {
+        // Deleting backward - but only delete back to "Ask"
+        currentText = currentMessage.substring(0, currentText.length - 1)
+        setPlaceholderText(currentText)
+        
+        if (currentText === 'Ask') {
+          // Reached "Ask" - switch to next message and start typing from there
+          isDeleting = false
+          currentIndex = (currentIndex + 1) % messages.length
+          currentText = 'Ask'
+          setTimeout(type, 500)
+          return
         }
       }
+      
+      setTimeout(type, isDeleting ? 50 : typeSpeed)
     }
 
-    // Initial setup - start typing the current message
-    charIndex = 0
-    phase = 'typing'
-    timeoutId = setTimeout(animate, 1000)
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-      }
-    }
-  }, [placeholderIndex, input.length, placeholderMessages])
+    const timer = setTimeout(type, 1000)
+    return () => clearTimeout(timer)
+  }, [input.length])
 
   const handleKeyPress = (e) => {
     // Clear inactivity timer on any key press
