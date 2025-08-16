@@ -22,14 +22,13 @@ export default function Home() {
   
   // Rotating placeholder messages
   const placeholderMessages = [
-    "Ask if you're available for new projects",
-    "Ask me to tell you more about Bttr.",
-    "Ask about my design process", 
-    "Ask if I'm taking on new clients",
-    "Ask how Bttr approaches product strategy",
+    "Ask if I am available for new projects",
+    "Ask if I am taking on new clients",
+    "Ask if I am available for consulting work",
     "Ask if I can help with your next project",
-    "Ask what makes my design methodology unique",
-    "Ask if I'm available for consulting work"
+    "Ask about Bttr and our services",
+    "Ask about my design process",
+    "Ask about our product strategy approach"
   ]
   
   const { 
@@ -269,15 +268,17 @@ export default function Home() {
   useEffect(() => {
     if (input.length > 0) {
       // Don't show placeholder animation when user is typing
+      setPlaceholderText('')
       return
     }
 
     let currentText = ''
     let currentIndex = 0
     let isDeleting = false
-    let typeSpeed = 100
-    let deleteSpeed = 50
-    let pauseTime = 2000
+    let typeSpeed = 80
+    let deleteSpeed = 30
+    let pauseTime = 3000
+    let timeoutId
 
     const currentMessage = placeholderMessages[placeholderIndex]
 
@@ -286,36 +287,48 @@ export default function Home() {
         // Typing forward
         currentText = currentMessage.substring(0, currentIndex + 1)
         currentIndex++
+        setPlaceholderText(currentText)
         
         if (currentIndex === currentMessage.length) {
           // Finished typing, pause then start deleting
-          setTimeout(() => {
+          timeoutId = setTimeout(() => {
             isDeleting = true
             typeEffect()
           }, pauseTime)
           return
         }
+        
+        timeoutId = setTimeout(typeEffect, typeSpeed)
       } else {
         // Deleting backward
         currentText = currentMessage.substring(0, currentIndex - 1)
         currentIndex--
+        setPlaceholderText(currentText)
         
         if (currentIndex === 0) {
           // Finished deleting, move to next message
           isDeleting = false
           setPlaceholderIndex((prev) => (prev + 1) % placeholderMessages.length)
-          setTimeout(typeEffect, 500)
+          timeoutId = setTimeout(() => {
+            currentText = ''
+            currentIndex = 0
+            typeEffect()
+          }, 800)
           return
         }
+        
+        timeoutId = setTimeout(typeEffect, deleteSpeed)
       }
-      
-      setPlaceholderText(currentText)
-      setTimeout(typeEffect, isDeleting ? deleteSpeed : typeSpeed)
     }
 
-    const timer = setTimeout(typeEffect, 1000) // Initial delay
+    // Start typing after a short delay
+    timeoutId = setTimeout(typeEffect, 1500)
 
-    return () => clearTimeout(timer)
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+    }
   }, [placeholderIndex, input.length, placeholderMessages])
 
   const handleKeyPress = (e) => {
