@@ -528,11 +528,11 @@ export default function Home() {
             }
             
             .mobile-welcome .welcome-message {
-              font-size: 24px !important;
-              line-height: 1.3 !important;
-              letter-spacing: -0.5px !important;
+              font-size: 28px !important;
+              line-height: 1.25 !important;
+              letter-spacing: -0.6px !important;
               font-weight: 500 !important;
-              max-width: 280px !important;
+              max-width: 320px !important;
             }
             
             /* Mobile input - hidden initially */
