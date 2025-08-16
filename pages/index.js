@@ -615,7 +615,7 @@ export default function Home() {
             border-radius: 50%;
             border: 0;
             background: #1a1a1a;
-            color: #666666;
+            color: #1a1a1a;
             font-size: 15px;
             font-weight: 700;
             display: flex;
@@ -627,7 +627,7 @@ export default function Home() {
 
           .send-btn:not([disabled]) {
             background: #FFFFFF;
-            color: #000;
+            color: #1a1a1a;
           }
 
           .send-btn:not([disabled]):active {
