@@ -275,8 +275,9 @@ export default function Home() {
       if (!container) return
       
       // Set the project ID immediately
+      // Use exact same config as bttr-ai.com (working liquid animation)
       container.setAttribute('data-us-project', 'lHlDvoJDIXCxxXVqTNOC')
-      container.setAttribute('data-us-scene', 'Folds')
+      console.log('Setting up Unicorn Studio with project:', 'lHlDvoJDIXCxxXVqTNOC')
       
       let retryCount = 0
       const maxRetries = 3
