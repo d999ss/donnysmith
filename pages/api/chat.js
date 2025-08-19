@@ -1,5 +1,5 @@
 import { createOpenAI } from '@ai-sdk/openai'
-import { streamText } from 'ai'
+import { streamText, generateText } from 'ai'
 import { DONNY_CONTEXT } from '../../lib/donny-context'
 
 const openai = createOpenAI({
@@ -15,7 +15,7 @@ export default async function handler(req) {
     return new Response('Method not allowed', { status: 405 })
   }
 
-  const { messages, sessionContext } = await req.json()
+  const { messages, sessionContext, stream } = await req.json()
   
   // Check if this is the user's first real message (not the welcome message)
   const userMessages = messages.filter(msg => msg.role === 'user')
@@ -119,11 +119,11 @@ $ open makebttr.com/work
 
 I work with leaders and teams to turn ambitious ideas into exceptional digital products. From defining the vision to designing the experience to launching at scale — every step is intentional, fast, and built for impact.
 
-[donny@makebttr.com](mailto:donny@makebttr.com)
-
-[makebttr.com](https://makebttr.com)
-
-[@donnysmith](https://x.com/donnysmith)`,
+<div class="conversation-buttons" style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+<button onclick="window.open('mailto:d999ss@gmail.com?subject=Project%20Inquiry', '_blank')" style="background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%); border: none; color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer;">✉️ Email Me</button>
+<button onclick="window.open('https://x.com/donnysmith', '_blank')" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; backdrop-filter: blur(10px);">🐦 Follow on X</button>
+<button onclick="window.open('https://makebttr.com', '_blank')" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; backdrop-filter: blur(10px);">🚀 View Bttr.</button>
+</div>`,
 
       '/philosophy': `$ cat ~/philosophy.md
 # Design Philosophy
@@ -228,6 +228,30 @@ SESSION CONTEXT:
       contextualPrompt += `
 - This is a deeper conversation - you can be more specific and skip basic introductions`
     }
+  }
+
+  // Check if streaming is disabled
+  if (stream === false) {
+    const result = await generateText({
+      model: openai('gpt-4o-mini'),
+      system: contextualPrompt,
+      messages,
+    })
+
+    // Return in the format expected by AI SDK's useChat
+    const encoder = new TextEncoder()
+    const stream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(encoder.encode(`0:"${result.text.replace(/\n/g, '\\n').replace(/"/g, '\\"')}"\n`))
+        controller.close()
+      }
+    })
+    
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+      },
+    })
   }
 
   const result = await streamText({

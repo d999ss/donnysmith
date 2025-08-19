@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import Head from 'next/head'
 import { useChat } from '@ai-sdk/react'
 import ReactMarkdown from 'react-markdown'
+import rehypeRaw from 'rehype-raw'
 import ErrorBoundary from '../components/ErrorBoundary'
 import NetworkStatus from '../components/NetworkStatus'
 import Portfolio from '../components/Portfolio'
@@ -45,7 +46,8 @@ export default function Home() {
     api: '/api/chat',
     initialMessages: [],
     body: {
-      sessionContext: sessionContext
+      sessionContext: sessionContext,
+      stream: false // Disable streaming for instant, complete responses
     },
     onError: (error) => {
       console.error('Chat error:', error)
@@ -264,6 +266,143 @@ export default function Home() {
     const interval = setInterval(updateTime, 1000)
     
     return () => clearInterval(interval)
+  }, [])
+
+  // Load Unicorn Studio Folds background with retry logic (exact copy from bttr-ai.com)
+  useEffect(() => {
+    const loadUnicornStudio = () => {
+      const container = document.getElementById('unicorn-folds-bg')
+      if (!container) return
+      
+      // Set the project ID immediately
+      container.setAttribute('data-us-project', 'lHlDvoJDIXCxxXVqTNOC')
+      container.setAttribute('data-us-scene', 'Folds')
+      
+      let retryCount = 0
+      const maxRetries = 3
+      
+      const initUnicornStudio = () => {
+        if (window.UnicornStudio) {
+          try {
+            window.UnicornStudio.destroy()
+            window.UnicornStudio.init().then(scenes => {
+              console.log('Unicorn Studio Folds loaded:', scenes)
+              container.style.opacity = '1'
+            }).catch(error => {
+              console.log('Unicorn Studio init error:', error)
+              // Retry if failed
+              if (retryCount < maxRetries) {
+                retryCount++
+                console.log(`Retrying Unicorn Studio init (${retryCount}/${maxRetries})`)
+                setTimeout(initUnicornStudio, 1000)
+              }
+            })
+          } catch (error) {
+            console.log('Unicorn Studio initialization error:', error)
+            // Retry if failed
+            if (retryCount < maxRetries) {
+              retryCount++
+              console.log(`Retrying Unicorn Studio init (${retryCount}/${maxRetries})`)
+              setTimeout(initUnicornStudio, 1000)
+            }
+          }
+        } else {
+          // UnicornStudio not loaded yet, retry
+          if (retryCount < maxRetries) {
+            retryCount++
+            console.log(`UnicornStudio not ready, retrying (${retryCount}/${maxRetries})`)
+            setTimeout(initUnicornStudio, 1000)
+          }
+        }
+      }
+      
+      // Check if script already exists
+      const existingScript = document.querySelector('script[src*="unicorn.studio"]')
+      if (existingScript) {
+        setTimeout(initUnicornStudio, 200)
+        return
+      }
+      
+      const script = document.createElement('script')
+      script.type = 'text/javascript'
+      script.async = true
+      script.src = 'https://cdn.unicorn.studio/v1.2.3/unicornStudio.umd.js'
+      
+      script.onload = () => {
+        console.log('Unicorn Studio script loaded')
+        setTimeout(initUnicornStudio, 200)
+      }
+      
+      script.onerror = () => {
+        console.log('Failed to load Unicorn Studio script')
+        // Try to reload the script
+        if (retryCount < maxRetries) {
+          retryCount++
+          console.log(`Retrying script load (${retryCount}/${maxRetries})`)
+          setTimeout(() => {
+            const newScript = script.cloneNode()
+            document.head.appendChild(newScript)
+          }, 1000)
+        }
+      }
+      
+      document.head.appendChild(script)
+      
+      return () => {
+        if (window.UnicornStudio) {
+          window.UnicornStudio.destroy()
+        }
+      }
+    }
+    
+    const cleanupUnicorn = loadUnicornStudio()
+    
+    // Re-initialize Unicorn Studio on page visibility change (handles navigation)
+    const handleVisibilityChange = () => {
+      if (!document.hidden && window.UnicornStudio) {
+        console.log('Page became visible, re-initializing folds background')
+        setTimeout(() => {
+          const container = document.getElementById('unicorn-folds-bg')
+          if (container) {
+            try {
+              window.UnicornStudio.destroy()
+              window.UnicornStudio.init().then(scenes => {
+                console.log('Unicorn Studio Folds re-initialized on visibility:', scenes)
+                container.style.opacity = '1'
+              }).catch(error => {
+                console.log('Unicorn Studio visibility reinit error:', error)
+              })
+            } catch (error) {
+              console.log('Unicorn Studio visibility reinitialization error:', error)
+            }
+          }
+        }, 500)
+      }
+    }
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      if (typeof cleanupUnicorn === 'function') {
+        cleanupUnicorn()
+      }
+    }
+  }, [])
+
+  // Register service worker for performance
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('SW registered: ', registration)
+          })
+          .catch((registrationError) => {
+            console.log('SW registration failed: ', registrationError)
+          })
+      })
+    }
   }, [])
 
   // Remove typewriter animation - just show static placeholder
@@ -781,12 +920,12 @@ export default function Home() {
             max-height: var(--h);
             width: 100%;
             box-sizing: border-box;
-            padding: 0 45px 0 14px; /* Add right padding for button space */
+            padding: 0 38px 0 14px; /* Add right padding for button space */
             font: 12px 'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             letter-spacing: -0.19px;
             color: #FFFFFF;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(40px) saturate(180%);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(80px) saturate(150%);
             -webkit-backdrop-filter: blur(40px) saturate(180%);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: var(--radius);
@@ -809,36 +948,38 @@ export default function Home() {
 
           .send-btn {
             position: absolute;
-            right: 3px;
+            right: 4px;
             top: 50%;
             transform: translateY(-50%);
-            width: var(--btn-size);
-            height: var(--btn-size);
-            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            border-radius: 5px;
             border: 0;
-            background: transparent;
-            color: transparent;
-            font-size: 15px;
-            font-weight: 700;
+            background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
           }
 
-          .send-btn:not([disabled]) {
-            background: #FFFFFF;
-            color: #1a1a1a;
+          .send-btn:not([disabled]):hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
           }
 
           .send-btn:not([disabled]):active {
-            background: #CCCCCC;
+            transform: translateY(-50%) scale(0.95);
           }
 
           .send-btn[disabled] {
-            opacity: 1;
+            opacity: 0;
             cursor: default;
+            pointer-events: none;
           }
           
           /* Desktop chat container - full width */
@@ -957,7 +1098,7 @@ export default function Home() {
         aria-label="Chat interface"
         style={{
           minHeight: '100vh',
-          background: 'url(/BK1.png) center center / cover no-repeat',
+          background: '#000000',
           color: '#FFFFFF',
           fontFamily: "'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
           fontSize: '12px',
@@ -971,18 +1112,21 @@ export default function Home() {
           position: 'relative'
         }}>
         
-        {/* Background overlay - darken and blur */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.5)',
-          backdropFilter: 'blur(8px)',
-          WebkitBackdropFilter: 'blur(8px)',
-          zIndex: 1
-        }} />
+        {/* Animated Folds Background */}
+        <div
+          id="unicorn-folds-bg"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            zIndex: 0,
+            backgroundColor: '#000000',
+            backgroundImage: 'none',
+            pointerEvents: 'none'
+          }}
+        />
         
         <div style={{
           width: '100%',
@@ -1138,18 +1282,39 @@ export default function Home() {
           {messages.length > 0 && (
             <div className="mobile-chat mobile-show" role="log" aria-label="Conversation history" aria-live="polite">
               {messages.map((msg, i) => (
-                <div key={msg.id || i} className="mobile-message message-container">
-                  {msg.role === 'user' ? (
-                    <div style={{
-                      color: 'rgb(123, 123, 123)',
-                      whiteSpace: 'pre-wrap',
-                      wordBreak: 'break-word'
-                    }}>
-                      {msg.content}
-                    </div>
-                  ) : (
-                    <div style={{ color: '#FFFFFF' }}>
+                <div key={msg.id || i} className="mobile-message message-container" style={{
+                  display: 'flex',
+                  justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
+                  marginBottom: '12px'
+                }}>
+                  <div style={{
+                    maxWidth: '85%',
+                    padding: '12px 16px',
+                    borderRadius: '18px',
+                    fontSize: '16px',
+                    lineHeight: '1.4',
+                    ...(msg.role === 'user' ? {
+                      background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
+                      color: '#FFFFFF',
+                      borderBottomRightRadius: '4px'
+                    } : {
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      color: '#FFFFFF',
+                      borderBottomLeftRadius: '4px',
+                      backdropFilter: 'blur(10px)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)'
+                    })
+                  }}>
+                    {msg.role === 'user' ? (
+                      <div style={{
+                        whiteSpace: 'pre-wrap',
+                        wordBreak: 'break-word'
+                      }}>
+                        {msg.content}
+                      </div>
+                    ) : (
                       <ReactMarkdown
+                        rehypePlugins={[rehypeRaw]}
                         components={{
                           p: ({children}) => <div style={{ marginBottom: '8px' }}>{children}</div>,
                           strong: ({children}) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
@@ -1164,8 +1329,8 @@ export default function Home() {
                       >
                         {msg.content}
                       </ReactMarkdown>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -1174,46 +1339,58 @@ export default function Home() {
           {/* Desktop messages - hidden on mobile */}
           <div className="mobile-hide">
             {messages.map((msg, i) => (
-              <div key={msg.id || i} className="message-container" style={{ marginBottom: '12px' }}>
-              {msg.role === 'user' ? (
+              <div key={msg.id || i} className="message-container" style={{ 
+                marginBottom: '12px',
+                display: 'flex',
+                justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start'
+              }}>
                 <div style={{
-                  color: 'rgb(123, 123, 123)',
-                  whiteSpace: 'pre-wrap',
-                  wordBreak: 'break-word',
-                  paddingLeft: '0',
+                  maxWidth: '70%',
+                  padding: '10px 14px',
+                  borderRadius: '16px',
                   fontSize: '12px',
                   lineHeight: '1.4',
-                  letterSpacing: '-0.19px'
-                }}>
-                  {msg.content}
-                </div>
-              ) : (
-                <div 
-                  style={{
+                  letterSpacing: '-0.19px',
+                  ...(msg.role === 'user' ? {
+                    background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
                     color: '#FFFFFF',
-                    fontSize: '12px',
-                    lineHeight: '1.4',
-                    letterSpacing: '-0.19px'
-                  }}>
-                  <ReactMarkdown
-                      components={{
-                        p: ({children}) => <div style={{ marginBottom: '8px' }}>{children}</div>,
-                        strong: ({children}) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
-                        em: ({children}) => <em style={{ fontStyle: 'italic' }}>{children}</em>,
-                        a: ({children, href}) => <a href={href} style={{ color: '#00FFFF', textDecoration: 'underline' }} target="_blank" rel="noopener noreferrer">{children}</a>,
-                        code: ({children}) => <code style={{ background: '#1a1a1a', padding: '2px 4px', borderRadius: '3px' }}>{children}</code>,
-                        pre: ({children}) => <pre style={{ background: '#1a1a1a', padding: '8px', borderRadius: '3px', overflow: 'auto' }}>{children}</pre>,
-                        ul: ({children}) => <ul style={{ marginLeft: '20px', marginBottom: '8px' }}>{children}</ul>,
-                        ol: ({children}) => <ol style={{ marginLeft: '20px', marginBottom: '8px' }}>{children}</ol>,
-                        li: ({children}) => <li style={{ marginBottom: '4px' }}>{children}</li>,
-                      }}
-                    >
-                    {msg.content}
-                  </ReactMarkdown>
+                    borderBottomRightRadius: '4px'
+                  } : {
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    color: '#FFFFFF',
+                    borderBottomLeftRadius: '4px',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  })
+                }}>
+                  {msg.role === 'user' ? (
+                    <div style={{
+                      whiteSpace: 'pre-wrap',
+                      wordBreak: 'break-word'
+                    }}>
+                      {msg.content}
+                    </div>
+                  ) : (
+                    <ReactMarkdown
+                        rehypePlugins={[rehypeRaw]}
+                        components={{
+                          p: ({children}) => <div style={{ marginBottom: '8px' }}>{children}</div>,
+                          strong: ({children}) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
+                          em: ({children}) => <em style={{ fontStyle: 'italic' }}>{children}</em>,
+                          a: ({children, href}) => <a href={href} style={{ color: '#00FFFF', textDecoration: 'underline' }} target="_blank" rel="noopener noreferrer">{children}</a>,
+                          code: ({children}) => <code style={{ background: '#1a1a1a', padding: '2px 4px', borderRadius: '3px' }}>{children}</code>,
+                          pre: ({children}) => <pre style={{ background: '#1a1a1a', padding: '8px', borderRadius: '3px', overflow: 'auto' }}>{children}</pre>,
+                          ul: ({children}) => <ul style={{ marginLeft: '20px', marginBottom: '8px' }}>{children}</ul>,
+                          ol: ({children}) => <ol style={{ marginLeft: '20px', marginBottom: '8px' }}>{children}</ol>,
+                          li: ({children}) => <li style={{ marginBottom: '4px' }}>{children}</li>,
+                        }}
+                      >
+                      {msg.content}
+                    </ReactMarkdown>
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
+              </div>
+            ))}
           </div>
           
           {isLoading && (
@@ -1278,25 +1455,29 @@ export default function Home() {
               autoFocus
             />
 
-            <button 
-              className="send-btn" 
-              type="button" 
-              aria-label="Send"
-              disabled={isLoading || !input.trim()}
-              onClick={(e) => {
-                e.preventDefault()
-                // Close portfolio when user starts chatting
-                if (showPortfolio) {
-                  setShowPortfolio(false)
-                }
-                handleSubmit(e)
-              }}
-            >
-              ↑
-            </button>
+            {input.trim() && !isLoading && (
+              <button 
+                className="send-btn" 
+                type="button" 
+                aria-label="Send"
+                onClick={(e) => {
+                  e.preventDefault()
+                  // Close portfolio when user starts chatting
+                  if (showPortfolio) {
+                    setShowPortfolio(false)
+                  }
+                  handleSubmit(e)
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 19V5M5 12l7-7 7 7"/>
+                </svg>
+              </button>
+            )}
           </div>
         </div>
         
+
         {/* Keyboard-safe spacing script */}
         <script
           dangerouslySetInnerHTML={{
