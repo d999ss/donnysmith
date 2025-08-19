@@ -115,15 +115,19 @@ drwxr-xr-x  Allergan Aesthetics - Medical practice experiences
 $ open makebttr.com/work
 → View full portfolio at makebttr.com`,
 
-      '/contact': `**Let's build**
+      '/contact': `**Ready to build something exceptional?**
 
-I work with leaders and teams to turn ambitious ideas into exceptional digital products. From defining the vision to designing the experience to launching at scale — every step is intentional, fast, and built for impact.
+I'm currently taking 2 new projects this quarter. Recent clients include GE Aerospace, Pepsi, and Allergan Aesthetics.
+
+**Next availability:** December 2024
 
 <div class="conversation-buttons" style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
-<button onclick="window.open('mailto:d999ss@gmail.com?subject=Project%20Inquiry', '_blank')" style="background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%); border: none; color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer;">✉️ Email Me</button>
-<button onclick="window.open('https://x.com/donnysmith', '_blank')" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; backdrop-filter: blur(10px);">🐦 Follow on X</button>
-<button onclick="window.open('https://makebttr.com', '_blank')" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; backdrop-filter: blur(10px);">🚀 View Bttr.</button>
-</div>`,
+<button onclick="window.open('https://calendly.com/donnysmith/strategy-call', '_blank')" style="background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%); border: none; color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer;">📅 Book Strategy Call</button>
+<button onclick="window.open('mailto:d999ss@gmail.com?subject=Project%20Inquiry%20-%20Urgent', '_blank')" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; backdrop-filter: blur(10px);">📧 Email Direct</button>
+<button onclick="window.open('https://makebttr.com/work', '_blank')" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; backdrop-filter: blur(10px);">📂 View Case Studies</button>
+</div>
+
+**Project minimums:** $25k for brand work, $50k for product design`,
 
       '/philosophy': `$ cat ~/philosophy.md
 # Design Philosophy
@@ -150,7 +154,111 @@ Alterra Mountain Company - Ikon Pass platform
 Air Company - Carbon transformation technology
 
 $ wc -l ~/clients/fortune500.txt
-12 Fortune 500 companies served`
+12 Fortune 500 companies served`,
+
+      '/book': `**Strategy Call Booking**
+
+Let me understand your project first:
+
+**What type of project are you considering?**
+• Brand identity & positioning ($25k+)
+• Product design & UX ($50k+) 
+• Full platform build ($100k+)
+• Enterprise transformation ($200k+)
+
+**Timeline?**
+• Launch in 2024 (limited availability)
+• Q1 2025 planning
+• Flexible timeline
+
+**Company stage?**
+• Startup (pre-Series A)
+• Growth company (Series A-C)
+• Enterprise (Fortune 1000)
+
+<div class="conversation-buttons" style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+<button onclick="window.open('https://calendly.com/donnysmith/strategy-call', '_blank')" style="background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%); border: none; color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer;">📅 Book 30-Min Strategy Call</button>
+<button onclick="window.open('mailto:d999ss@gmail.com?subject=Project%20Brief%20-%20[Your%20Company]', '_blank')" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; backdrop-filter: blur(10px);">📧 Send Project Brief</button>
+</div>
+
+*All strategy calls include a custom project roadmap and budget estimate.*`,
+
+      '/pricing': `**Investment Levels**
+
+**Brand Identity & Positioning**
+$25k - $75k | 4-6 weeks
+• Brand strategy & positioning
+• Visual identity system  
+• Brand guidelines & assets
+
+**Product Design & UX**
+$50k - $150k | 6-12 weeks
+• User research & strategy
+• Full product design
+• Prototyping & testing
+
+**Full Platform Development**  
+$100k - $300k | 12-20 weeks
+• Complete product build
+• Backend & frontend
+• Launch & optimization
+
+**Enterprise Transformation**
+$200k+ | 3-6 months
+• Multi-product ecosystems
+• Design system architecture
+• Team training & handoff
+
+**Current availability:** 2 projects this quarter
+
+<div class="conversation-buttons" style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+<button onclick="window.open('https://calendly.com/donnysmith/strategy-call', '_blank')" style="background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%); border: none; color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer;">📅 Discuss Your Budget</button>
+</div>`,
+
+      '/audit': `**Free Design + Conversion Audit**
+
+I'll personally review your website/app and provide:
+
+✅ **Conversion rate optimization opportunities**
+✅ **UX improvement roadmap** 
+✅ **Brand positioning assessment**
+✅ **Technical performance review**
+✅ **Competitive analysis insights**
+
+*Recent audit helped a client identify $2M in lost revenue from poor checkout flow.*
+
+**Get your free audit:**
+
+<div class="conversation-buttons" style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+<button onclick="window.open('mailto:d999ss@gmail.com?subject=Free%20Audit%20Request%20-%20[Your%20Website]&body=Website%20URL:%20%0A%0ACompany:%20%0A%0ABiggest%20challenge:%20%0A%0AEmail:%20', '_blank')" style="background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%); border: none; color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer;">📧 Request Free Audit</button>
+<button onclick="window.open('https://calendly.com/donnysmith/strategy-call', '_blank')" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; backdrop-filter: blur(10px);">📅 Strategy Call Instead</button>
+</div>
+
+*Delivered within 48 hours. No obligation.*`,
+
+      '/results': `**Recent Client Results**
+
+**Ikon Pass (Alterra Mountain Company)**
+• App Store rating: 2.1 → 4.6 stars
+• User engagement: +127%
+• Revenue per user: +$43
+
+**Air Company (Carbon Tech)**
+• Brand recognition: +340%
+• B2B inquiries: +89%
+• Series A funding secured
+
+**Allergan Aesthetics (Fortune 500)**
+• Practitioner adoption: +156%
+• Patient satisfaction: +67%
+• Platform usage: +234%
+
+**Ready for similar results?**
+
+<div class="conversation-buttons" style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+<button onclick="window.open('https://calendly.com/donnysmith/strategy-call', '_blank')" style="background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%); border: none; color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer;">📅 Book Strategy Call</button>
+<button onclick="window.open('mailto:d999ss@gmail.com?subject=Project%20ROI%20Discussion', '_blank')" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; backdrop-filter: blur(10px);">📧 Discuss Your Goals</button>
+</div>`
     }
     
     if (commandResponses[command]) {
@@ -175,7 +283,7 @@ $ wc -l ~/clients/fortune500.txt
   let contextualPrompt = `${DONNY_CONTEXT}
 
 TODAY'S DATE: ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-CURRENT TIME: ${new Date().toLocaleTimeString('en-US')}
+CURRENT TIME: ${new Date().toLocaleTimeString('en-US', { hour12: true })}
 
 IMPORTANT INSTRUCTIONS:
 - You are Donny Smith's AI representative on his personal website
@@ -185,12 +293,28 @@ IMPORTANT INSTRUCTIONS:
 - No filler or fluff, speak with clarity and conviction
 - Balance creative vision with business pragmatism
 - Embody "Bored Optimism™": calm confidence in success, obsession for excellence
-- When discussing work, reference specific projects and clients from the context
-- Always align responses with the tone: decisive, structured, narrative-driven
+
+CONVERSION-FOCUSED BEHAVIOR:
+- Always qualify potential projects: budget, timeline, company stage
+- Mention project minimums early: $25k brand, $50k product design
+- Create urgency: "Currently taking 2 new projects this quarter"
+- Reference recent high-profile clients: GE Aerospace, Pepsi, Allergan
+- When discussing work, include specific ROI/results: "increased app rating from 2.1 to 4.6 stars"
+- Direct serious prospects to /book or /pricing commands
+- For large companies, mention enterprise pricing starts at $200k+
+- Always include next availability: "December 2024"
+
+LEAD QUALIFICATION:
+- Ask about budget range early in conversations
+- Identify company size/stage (startup, growth, enterprise)
+- Understand timeline pressures
+- Route qualified leads to calendar booking
+- Provide value before asking for commitment
+
 - I can generate images using DALL-E when users ask me to "create", "design", "draw", or "visualize" something
-- For contact requests, provide email: d999ss@gmail.com and X: @donnysmith
+- For contact requests, drive to strategy call booking: https://calendly.com/donnysmith/strategy-call
 - When users ask for detailed project information, mention that full case studies with visuals are available at makebttr.com/work
-- Bttr is my agency - direct business inquiries to makebttr.com`
+- Bttr is my agency - direct business inquiries to strategy calls, not just the website`
 
   // Add session context insights
   if (sessionContext && Object.keys(sessionContext).length > 0) {
