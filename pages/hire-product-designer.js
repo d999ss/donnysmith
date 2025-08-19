@@ -15,33 +15,59 @@ export default function HireProductDesigner() {
       
       <div style={{
         minHeight: '100vh',
-        backgroundColor: '#000000',
-        color: '#FFFFFF',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
-        padding: '40px 20px'
+        backgroundColor: '#fafafa',
+        color: '#171717',
+        fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif',
+        lineHeight: '1.5'
       }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <h1 style={{ fontSize: '48px', fontWeight: 'bold', marginBottom: '20px' }}>
+        <div style={{ maxWidth: '640px', margin: '0 auto', padding: '80px 24px' }}>
+          <h1 style={{ 
+            fontSize: '40px', 
+            fontWeight: '700', 
+            marginBottom: '16px',
+            letterSpacing: '-0.025em',
+            lineHeight: '1.1'
+          }}>
             Hire a Product Designer with Fortune 500 Experience
           </h1>
           
-          <p style={{ fontSize: '20px', marginBottom: '40px', color: '#CCCCCC' }}>
+          <p style={{ 
+            fontSize: '18px', 
+            marginBottom: '48px', 
+            color: '#525252',
+            fontWeight: '400'
+          }}>
             15+ years designing for GE Aerospace, Pepsi, Allergan Aesthetics, and high-growth startups.
           </p>
 
           <div style={{ 
-            backgroundColor: '#111111',
-            padding: '30px',
-            borderRadius: '12px',
-            marginBottom: '40px',
-            border: '1px solid #333333'
+            backgroundColor: '#ffffff',
+            padding: '32px',
+            borderRadius: '8px',
+            marginBottom: '48px',
+            border: '1px solid #e5e5e5',
+            boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)'
           }}>
-            <h2 style={{ fontSize: '24px', marginBottom: '20px' }}>Recent Results</h2>
-            <ul style={{ fontSize: '18px', lineHeight: '1.6' }}>
-              <li><strong>Ikon Pass:</strong> App Store rating 2.1 → 4.6 stars</li>
-              <li><strong>Air Company:</strong> Brand recognition +340%</li>
-              <li><strong>Allergan Aesthetics:</strong> Platform usage +234%</li>
-            </ul>
+            <h2 style={{ 
+              fontSize: '20px', 
+              marginBottom: '20px',
+              fontWeight: '600',
+              color: '#171717'
+            }}>Recent Results</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div style={{ padding: '12px 0', borderBottom: '1px solid #f5f5f5' }}>
+                <strong style={{ color: '#171717' }}>Ikon Pass:</strong>
+                <span style={{ color: '#525252', marginLeft: '8px' }}>App Store rating 2.1 → 4.6 stars</span>
+              </div>
+              <div style={{ padding: '12px 0', borderBottom: '1px solid #f5f5f5' }}>
+                <strong style={{ color: '#171717' }}>Air Company:</strong>
+                <span style={{ color: '#525252', marginLeft: '8px' }}>Brand recognition +340%</span>
+              </div>
+              <div style={{ padding: '12px 0' }}>
+                <strong style={{ color: '#171717' }}>Allergan Aesthetics:</strong>
+                <span style={{ color: '#525252', marginLeft: '8px' }}>Platform usage +234%</span>
+              </div>
+            </div>
           </div>
 
           <div style={{ marginBottom: '40px' }}>
@@ -87,28 +113,40 @@ export default function HireProductDesigner() {
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
-                  background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
-                  color: 'white',
-                  padding: '12px 24px',
-                  borderRadius: '8px',
+                  background: '#000000',
+                  color: '#ffffff',
+                  padding: '12px 20px',
+                  borderRadius: '6px',
                   textDecoration: 'none',
-                  fontWeight: 'bold'
+                  fontWeight: '500',
+                  fontSize: '14px',
+                  border: '1px solid #000000',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  transition: 'all 0.2s ease'
                 }}
               >
-                📅 Book Strategy Call
+                Book Strategy Call
               </a>
               <a 
                 href="mailto:d999ss@gmail.com?subject=Product%20Design%20Inquiry"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  color: 'white',
-                  padding: '12px 24px',
-                  borderRadius: '8px',
+                  background: '#ffffff',
+                  color: '#171717',
+                  padding: '12px 20px',
+                  borderRadius: '6px',
                   textDecoration: 'none',
-                  border: '1px solid rgba(255, 255, 255, 0.2)'
+                  fontWeight: '500',
+                  fontSize: '14px',
+                  border: '1px solid #e5e5e5',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  transition: 'all 0.2s ease'
                 }}
               >
-                📧 Email Direct
+                Email Direct
               </a>
             </div>
           </div>
