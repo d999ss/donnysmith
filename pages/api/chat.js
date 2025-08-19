@@ -258,7 +258,75 @@ I'll personally review your website/app and provide:
 <div class="conversation-buttons" style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
 <button onclick="window.open('https://calendly.com/donnysmith/strategy-call', '_blank')" style="background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%); border: none; color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer;">📅 Book Strategy Call</button>
 <button onclick="window.open('mailto:d999ss@gmail.com?subject=Project%20ROI%20Discussion', '_blank')" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; backdrop-filter: blur(10px);">📧 Discuss Your Goals</button>
-</div>`
+<button onclick="navigator.share ? navigator.share({title: 'Check out these design results', text: 'This designer increased Ikon Pass rating from 2.1 to 4.6 stars', url: 'https://donnysmith.com'}) : window.open('https://twitter.com/intent/tweet?text=This%20designer%20increased%20Ikon%20Pass%20rating%20from%202.1%20to%204.6%20stars%20%E2%86%92%20https://donnysmith.com', '_blank')" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; backdrop-filter: blur(10px);">🔄 Share These Results</button>
+</div>`,
+
+      '/share': `**Spread the Word**
+
+Help others find great design work. Share my AI assistant:
+
+**For Twitter/X:**
+"Just found a designer's AI that shows real client results. Ikon Pass: 2.1→4.6 stars ⭐ 
+Check it out: donnysmith.com"
+
+**For LinkedIn:**
+"Interesting AI implementation by a designer. Shows actual ROI from projects including GE, Pepsi, Allergan. Worth a chat: donnysmith.com"
+
+**For Slack/Discord:**
+"Found this designer's AI assistant that actually qualifies projects and shows real results. Pretty smart: donnysmith.com"
+
+<div class="conversation-buttons" style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+<button onclick="window.open('https://twitter.com/intent/tweet?text=Just%20found%20a%20designer%27s%20AI%20that%20shows%20real%20client%20results.%20Ikon%20Pass%3A%202.1%E2%86%924.6%20stars%20%E2%AD%90%20Check%20it%20out%3A%20donnysmith.com', '_blank')" style="background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%); border: none; color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer;">🐦 Tweet This</button>
+<button onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=https://donnysmith.com&text=Interesting%20AI%20implementation%20by%20a%20designer.%20Shows%20actual%20ROI%20from%20projects%20including%20GE,%20Pepsi,%20Allergan.', '_blank')" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; backdrop-filter: blur(10px);">💼 Share on LinkedIn</button>
+<button onclick="navigator.clipboard.writeText('https://donnysmith.com - Designer AI with real client results').then(() => alert('Link copied!'))" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; backdrop-filter: blur(10px);">📋 Copy Link</button>
+</div>
+
+**Referral bonus:** If someone books a call through your share, you get a $500 referral fee.`,
+
+      '/unpopular': `**Unpopular Design Opinions (That Made Me $2M)**
+
+🔥 **Hot takes from 15 years of client work:**
+
+• "Beautiful" design that doesn't convert is just expensive art
+• Most agencies are consultants pretending to be builders  
+• Brand guidelines are worthless if nobody follows them
+• Your users don't care about your design awards
+• 90% of redesigns are ego projects, not business solutions
+• "User-centered design" without revenue metrics is theater
+• If you can't explain ROI, you're not ready for $50k+ projects
+• Design systems fail because designers hate constraints
+
+**The proof:** Ikon Pass rating went from 2.1 → 4.6 stars because I ignored "best practices" and focused on actual user behavior.
+
+**Agree? Disagree? Let's discuss:**
+
+<div class="conversation-buttons" style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+<button onclick="window.open('https://twitter.com/intent/tweet?text=%22Beautiful%22%20design%20that%20doesn%27t%20convert%20is%20just%20expensive%20art%20%F0%9F%94%A5%0A%0AMore%20controversial%20design%20takes%20from%20a%20designer%20who%27s%20worked%20with%20GE%2C%20Pepsi%2C%20%26%20Allergan%3A%0A%0Adonnysmith.com', '_blank')" style="background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%); border: none; color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer;">🔥 Share This Take</button>
+<button onclick="window.open('https://calendly.com/donnysmith/strategy-call', '_blank')" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; backdrop-filter: blur(10px);">📅 Debate This Live</button>
+</div>
+
+*These opinions built a 7-figure design practice. Results speak louder than awards.*`,
+
+      '/roast': `**Get Your Design Roasted (Free)**
+
+I'll brutally honest review of your website/app:
+
+**What you'll get:**
+• Everything wrong with your current design
+• Why your conversion rate sucks  
+• Specific fixes that will actually matter
+• No sugarcoating, just truth
+
+**Recent roast:** "Your hero section looks like a 2015 startup template and your CTA button is harder to find than Waldo. No wonder your conversion rate is trash."
+
+**Client result:** 340% increase in signups after implementing feedback.
+
+<div class="conversation-buttons" style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+<button onclick="window.open('mailto:d999ss@gmail.com?subject=Roast%20My%20Design%20-%20[Your%20URL]&body=Website%20URL:%20%0A%0AWhat%20you%20think%20is%20wrong:%20%0A%0AHow%20brutal%20should%20I%20be%20(1-10):%20', '_blank')" style="background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%); border: none; color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer;">🔥 Roast My Design</button>
+<button onclick="window.open('https://twitter.com/intent/tweet?text=Getting%20my%20website%20roasted%20by%20a%20designer%20who%27s%20worked%20with%20Fortune%20500%20companies%20%F0%9F%94%A5%0A%0AIf%20you%20want%20brutal%20honesty%20about%20your%20design%3A%20donnysmith.com', '_blank')" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; backdrop-filter: blur(10px);">📢 Tell Others</button>
+</div>
+
+*Warning: I don't hold back. Only request if you can handle the truth.*`
     }
     
     if (commandResponses[command]) {
@@ -300,9 +368,11 @@ CONVERSION-FOCUSED BEHAVIOR:
 - Create urgency: "Currently taking 2 new projects this quarter"
 - Reference recent high-profile clients: GE Aerospace, Pepsi, Allergan
 - When discussing work, include specific ROI/results: "increased app rating from 2.1 to 4.6 stars"
-- Direct serious prospects to /book or /pricing commands
+- Direct serious prospects to /book or /pricing commands  
 - For large companies, mention enterprise pricing starts at $200k+
 - Always include next availability: "December 2024"
+- Mention viral features: "/unpopular for hot takes", "/roast for brutal feedback"
+- If someone seems hesitant, offer free audit or design roast
 
 LEAD QUALIFICATION:
 - Ask about budget range early in conversations
