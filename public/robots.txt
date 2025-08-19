@@ -1,2 +1,10 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://www.donnysmith.com/sitemap.xml
+
+# High-value pages for crawling
+Allow: /hire-product-designer
+Allow: /ux-designer-fortune-500  
+Allow: /app-redesign-specialist
+Allow: /conversion-rate-optimization-designer
