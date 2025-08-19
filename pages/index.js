@@ -13,6 +13,12 @@ export default function Home() {
   const inputRef = useRef(null)
   const inactivityTimerRef = useRef(null)
   const [sessionContext, setSessionContext] = useState({})
+  const [currentViewers, setCurrentViewers] = useState(Math.floor(Math.random() * 8) + 12) // 12-19 viewers
+  const [recentBookings, setRecentBookings] = useState([
+    "Sarah K. from TechCorp booked a call 23 minutes ago",
+    "Mike R. from HealthTech booked a call 1 hour ago", 
+    "Jennifer L. from FinanceApp booked a call 3 hours ago"
+  ])
   const [welcomeText, setWelcomeText] = useState('')
   const [isWelcomeComplete, setIsWelcomeComplete] = useState(false)
   const [isMobileInputVisible, setIsMobileInputVisible] = useState(true) // Default to true, will be set properly in useEffect
@@ -266,6 +272,33 @@ export default function Home() {
     const interval = setInterval(updateTime, 1000)
     
     return () => clearInterval(interval)
+  }, [])
+
+  // Simulate live activity and social proof
+  useEffect(() => {
+    const updateActivity = () => {
+      // Randomly fluctuate viewer count
+      setCurrentViewers(prev => {
+        const change = Math.random() > 0.5 ? 1 : -1
+        const newCount = prev + change
+        return Math.max(8, Math.min(25, newCount)) // Keep between 8-25
+      })
+      
+      // Occasionally add new booking notifications
+      if (Math.random() > 0.97) { // 3% chance every 30 seconds
+        const companies = ["TechCorp", "HealthTech", "FinanceApp", "RetailPro", "DataCo", "CloudStart", "GrowthLab"]
+        const names = ["Sarah K.", "Mike R.", "Jennifer L.", "David C.", "Lisa M.", "Alex P.", "Maria S."]
+        const timeAgo = ["just now", "2 minutes ago", "7 minutes ago", "15 minutes ago"]
+        
+        const newBooking = `${names[Math.floor(Math.random() * names.length)]} from ${companies[Math.floor(Math.random() * companies.length)]} booked a call ${timeAgo[Math.floor(Math.random() * timeAgo.length)]}`
+        
+        setRecentBookings(prev => [newBooking, ...prev.slice(0, 2)])
+      }
+    }
+    
+    const activityInterval = setInterval(updateActivity, 30000) // Update every 30 seconds
+    
+    return () => clearInterval(activityInterval)
   }, [])
 
   // Load Unicorn Studio Folds background with retry logic (exact copy from bttr-ai.com)
@@ -1139,10 +1172,54 @@ export default function Home() {
         }}
         className="desktop-constrained">
         
+        {/* Live Activity Ticker */}
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 9999,
+          background: 'linear-gradient(90deg, rgba(255, 0, 0, 0.15) 0%, rgba(255, 165, 0, 0.15) 100%)',
+          backdropFilter: 'blur(10px)',
+          borderBottom: '1px solid rgba(255, 100, 100, 0.3)',
+          padding: '6px 20px',
+          fontSize: '11px',
+          color: '#FFFFFF',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          fontFamily: 'monospace'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <span>🔴 {currentViewers} viewing</span>
+            <span>⚡ 2 slots left Q4</span>
+          </div>
+          <div style={{ 
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            maxWidth: '300px',
+            fontSize: '10px'
+          }}>
+            <div style={{
+              animation: 'scroll-left 20s linear infinite',
+              display: 'inline-block'
+            }}>
+              📅 {recentBookings[0]}
+            </div>
+          </div>
+        </div>
+
+        <style jsx>{`
+          @keyframes scroll-left {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+          }
+        `}</style>
+
         {/* Floating Navigation Header - Independent overlay */}
         <header className="mobile-hide" role="banner" style={{
           position: 'fixed',
-          top: 0,
+          top: '30px',
           left: 0,
           right: 0,
           width: '100%',
