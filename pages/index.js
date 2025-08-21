@@ -1157,7 +1157,10 @@ export default function Home() {
             height: '100vh',
             zIndex: 0,
             backgroundColor: '#000000',
-            backgroundImage: 'none',
+            backgroundImage: 'url(/BK1.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
             pointerEvents: 'none'
           }}
         />
